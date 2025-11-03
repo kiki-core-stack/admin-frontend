@@ -18,6 +18,10 @@ export default defineNuxtConfig({
         host: process.env.DEV_SERVER_HOST,
         port: Number(process.env.DEV_SERVER_PORT) || undefined,
     },
+    experimental: {
+        extractAsyncDataHandlers: true,
+        typescriptPlugin: true,
+    },
     kikiutilsNuxt: {
         autoImportUtils: {
             '@kikiutils/shared': {
