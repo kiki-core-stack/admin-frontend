@@ -1,5 +1,20 @@
 import IconsResolver from 'unplugin-icons/resolver';
 import ViteComponents from 'unplugin-vue-components/vite';
+import type {
+    Plugin,
+    UserConfig,
+} from 'vite';
+
+// Temp for 4.2.0
+function extendViteConfig(config: UserConfig) {
+    const plugin = config.plugins?.find((plugin) => isPlugin(plugin, 'nuxt:environments'));
+    if (plugin) plugin.enforce = 'pre';
+}
+
+// Temp for 4.2.0
+function isPlugin(plugin: unknown, name: string): plugin is Plugin {
+    return !!(plugin && typeof plugin === 'object' && 'name' in plugin && plugin.name === name);
+}
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -22,6 +37,18 @@ export default defineNuxtConfig({
         extractAsyncDataHandlers: true,
         typescriptPlugin: true,
     },
+    // Temp for 4.2.0
+    hooks: { 'vite:extendConfig': extendViteConfig },
+    i18n: {
+        defaultLocale: 'zh-TW',
+        locales: [
+            {
+                code: 'zh-TW',
+                file: 'zh-TW/common.ts',
+                name: '繁體中文',
+            },
+        ],
+    },
     kikiutilsNuxt: {
         autoImportUtils: {
             '@kikiutils/shared': {
@@ -43,10 +70,10 @@ export default defineNuxtConfig({
     },
     modules: [
         '@kikiutils/nuxt',
+        '@nuxtjs/i18n',
         'unplugin-icons/nuxt',
     ],
     plugins: [
-        '@/plugins/init-system-type',
         '@/plugins/auth-redirect',
         '@/plugins/init-session',
     ],
