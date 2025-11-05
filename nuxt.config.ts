@@ -44,10 +44,11 @@ export default defineNuxtConfig({
         locales: [
             {
                 code: 'zh-TW',
-                file: 'zh-TW/common.ts',
+                files: ['zh-TW/common.ts'],
                 name: '繁體中文',
             },
         ],
+        strategy: 'no_prefix',
     },
     kikiutilsNuxt: {
         autoImportUtils: {
