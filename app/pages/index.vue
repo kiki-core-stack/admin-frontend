@@ -20,7 +20,7 @@
                     v-model:start="filter.createdAt.$gte"
                 />
                 <template #before-submit-btn>
-                    <time-range-quick-select
+                    <time-range-quick-selector
                         v-model:end="filter.createdAt.$lt"
                         v-model:start="filter.createdAt.$gte"
                         @select="loadData"

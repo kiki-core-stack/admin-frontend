@@ -47,6 +47,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { ProfileSecurityChangePasswordFormData } from '@/types/data/profile';
+
 // Constants/Refs/Variables
 const formData = ref<ProfileSecurityChangePasswordFormData>({
     confirmPassword: '',

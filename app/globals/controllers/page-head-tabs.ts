@@ -7,6 +7,7 @@ interface PageHeadTabData {
 
 export const pageHeadTabsController = new class {
     // Private properties
+    #registeredPaths = new Set<string>();
     #storage?: RemovableRef<PageHeadTabData[]>;
 
     // Private getters
@@ -15,13 +16,17 @@ export const pageHeadTabsController = new class {
     }
 
     // Private methods
-    #afterClose() {
-        if (
-            window.location.pathname !== '/'
-            && !this.#state.value.tabs.map((tab) => tab.path).includes(window.location.pathname)
-        ) navigateTo(this.#state.value.tabs.at(-1)?.path || '/');
-
+    #afterClose(navigateToIndex?: number) {
         this.save();
+        const tabs = this.#state.value.tabs;
+        if (window.location.pathname !== '/' && !tabs.map((tab) => tab.path).includes(window.location.pathname)) {
+            if (navigateToIndex !== undefined && tabs[navigateToIndex]) {
+                navigateTo(tabs[navigateToIndex].path);
+                return;
+            }
+
+            navigateTo(tabs.at(-1)?.path || '/');
+        }
     }
 
     #getStorage() {
@@ -29,13 +34,13 @@ export const pageHeadTabsController = new class {
     }
 
     #normalizePath(path: string) {
-        return path.replace(/\/+$/, '') || '/';
+        return path.endsWith('/') ? path : `${path}/`;
     }
 
     // Public methods
     close(index: number) {
         this.#state.value.tabs.splice(index, 1);
-        this.#afterClose();
+        this.#afterClose(index);
     }
 
     closeAll() {
@@ -62,28 +67,22 @@ export const pageHeadTabsController = new class {
         this.#afterClose();
     }
 
-    registerCurrentPageHeadTab(title: string, insertIndex?: number) {
+    registerCurrentPageHeadTab(title: string) {
         const path = this.#normalizePath(window.location.pathname);
         const titleRef = this.#state.value.titles[path] ||= ref(title);
         titleRef.value = title;
         useHead({ title: titleRef });
-        for (const tab of this.#state.value.tabs) {
-            if (tab.path === path) {
-                navigateTo(path);
-                tab.title.value = title;
-                this.save();
-                return titleRef;
-            }
+        if (!this.#registeredPaths.has(path)) {
+            this.#registeredPaths.add(path);
+            onActivated(() => {
+                if (!this.#state.value.tabs.some((tab) => tab.path === path)) {
+                    this.#state.value.tabs.push(shallowReactive({
+                        path,
+                        title: titleRef,
+                    }));
+                }
+            });
         }
-
-        this.#state.value.tabs.splice(
-            insertIndex ?? this.#state.value.tabs.length,
-            0,
-            shallowReactive({
-                path,
-                title: titleRef,
-            }),
-        );
 
         this.save();
         return titleRef;
