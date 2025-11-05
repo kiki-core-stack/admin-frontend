@@ -1,5 +1,19 @@
+import type { CachedAdminPermission } from '@kiki-core-stack/pack/types/admin';
+
+interface ProfileState {
+    id: string;
+    permission: CachedAdminPermission;
+}
+
 export function useProfileState() {
-    switch (getSystemType()) {
-        case 'admin': return useAdminProfileState();
-    }
+    return useState<ProfileState>(
+        'profile',
+        () => ({
+            id: '',
+            permission: {
+                isSuperAdmin: false,
+                permissions: [],
+            },
+        }),
+    );
 }

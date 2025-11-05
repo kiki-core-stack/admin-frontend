@@ -28,8 +28,8 @@
                             text="刷新"
                             @trigger="loadData"
                         />
-                        <time-range-quick-select
-                            v-if="capabilities.list && showTimeRangeQuickSelect"
+                        <time-range-quick-selector
+                            v-if="capabilities.list && showTimeRangeQuickSelector"
                             v-model:end="timeRangeEndAt"
                             v-model:start="timeRangeStartAt"
                             @select="loadData"
@@ -157,12 +157,10 @@
     generic="
         CA extends BaseCrudApi<any, any>,
         TR extends TableRowData = CA extends BaseCrudApi<infer T, any> ? T : never,
-        FD extends TableRowData = CA extends BaseCrudApi<any, infer F> ? F : never,
-        MST extends ManagementSystemType | undefined = undefined
+        FD extends TableRowData = CA extends BaseCrudApi<any, infer F> ? F : never
     "
     setup
 >
-import type { ManagementSystemType } from '@kiki-core-stack/pack/types';
 import type { TableRowData } from '@kiki-core-stack/pack/types/data';
 import type {
     AnyRecord,
@@ -204,21 +202,19 @@ interface Props {
     hideRowEditBtnRule?: ControlActionBtnFunction;
     hideTimestampColumns?: boolean;
     hideUpdatedAtColumn?: boolean;
-    permissions: MST extends undefined
-        ? 'ignore'
-        : | 'ignore'
-          | {
-              base: PermissionPattern<MST>;
-              create?: PermissionPattern<MST>;
-              delete?: PermissionPattern<MST>;
-              list?: PermissionPattern<MST>;
-              read?: PermissionPattern<MST>;
-              update?: PermissionPattern<MST>;
-          };
+    permissions:
+      | 'ignore'
+      | {
+          base: PermissionPattern;
+          create?: PermissionPattern;
+          delete?: PermissionPattern;
+          list?: PermissionPattern;
+          read?: PermissionPattern;
+          update?: PermissionPattern;
+      };
 
     rowKey?: string;
-    showTimeRangeQuickSelect?: boolean;
-    systemType?: MST;
+    showTimeRangeQuickSelector?: boolean;
     title: string;
 }
 
@@ -250,6 +246,7 @@ const paginationParams = ref({
     page: 1,
 });
 
+const pageTitle = pageHeadTabsController.registerCurrentPageHeadTab(props.title);
 const sortQueryParam = ref<string | undefined>(undefined);
 const tableData = ref<TableRowData[]>([]);
 const totalTableDataCount = ref(0);
@@ -341,9 +338,11 @@ async function saveData() {
 }
 
 // Hooks
-onActivated(() => headerTabsController.ensure(props.title));
 onMounted(loadData);
 usePreserveScroll(mainContainerRef);
+
+// Watchers
+watch(() => props.title, (nv) => pageTitle.value = nv);
 
 // Exposes
 defineExpose({

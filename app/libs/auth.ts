@@ -1,12 +1,8 @@
 export async function logout(noAlert: boolean = false) {
     if (!noAlert) showLoadingAlert('登出中...');
-    let response;
-    switch (getSystemType()) {
-        case 'admin': response = await AdminApis.Auth.use().logout();
-    }
-
+    const response = await useAuthApi().logout();
     if (!response?.data?.success) return !noAlert && showErrorAlert('登出失敗');
-    assignUrlWithRedirectParamFromCurrentLocation(buildSystemRoute('/auth/login/'), 1000);
+    assignUrlWithRedirectParamFromCurrentLocation('/auth/login/', 1000);
     if (noAlert) return;
     showSuccessAlert(
         '登出成功',

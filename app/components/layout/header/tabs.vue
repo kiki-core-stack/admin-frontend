@@ -7,26 +7,26 @@
         <nuxt-link
             class="relative"
             active-class="active"
-            :to="buildSystemRoute()"
+            to="/"
             @auxclick.middle.prevent
             @click.middle.prevent
         >
             <i-fa6-solid-house class="fs-17.5px" />
         </nuxt-link>
         <nuxt-link
-            v-for="(tab, index) in headerTabsController.tabs"
+            v-for="(tab, index) in pageHeadTabsState.tabs"
             :key="index"
             class="relative flex items-center whitespace-nowrap"
             active-class="active"
-            :to="tab.url"
-            @auxclick.middle.prevent="headerTabsController.close(index)"
+            :to="tab.path"
+            @auxclick.middle.prevent="pageHeadTabsController.close(index)"
             @contextmenu="showContextMenu($event, index)"
             @click.middle.prevent
         >
             {{ tab.title }}
             <div
                 class="close-xmark flex-middle ml-2"
-                @click.prevent="headerTabsController.close(index)"
+                @click.prevent="pageHeadTabsController.close(index)"
             >
                 <i-mdi-close />
             </div>
@@ -41,25 +41,27 @@
 <script lang="ts" setup>
 // Constants/Refs/Variables
 const contextMenuAtTabIndex = ref(0);
+const contextMenuRef = useTemplateRef('contextMenuRef');
+const pageHeadTabsState = usePageHeadTabsState();
 const contextMenuItems = shallowRef([
     {
-        action: () => headerTabsController.closeAll(),
+        action: () => pageHeadTabsController.closeAll(),
         label: '關閉全部',
     },
     {
-        action: () => headerTabsController.closeFromIndexTo(contextMenuAtTabIndex.value - 1, 0),
+        action: () => pageHeadTabsController.closeFromIndexTo(contextMenuAtTabIndex.value - 1, 0),
         label: '關閉左邊所有',
     },
     {
         action: () => {
-            headerTabsController.closeFromIndexTo(contextMenuAtTabIndex.value + 1, headerTabsController.tabs.length);
+            pageHeadTabsController.closeFromIndexTo(
+                contextMenuAtTabIndex.value + 1,
+                pageHeadTabsState.value.tabs.length,
+            );
         },
         label: '關閉右邊所有',
     },
 ]);
-
-const contextMenuRef = useTemplateRef('contextMenuRef');
-const route = useRoute();
 
 // Functions
 function showContextMenu(event: MouseEvent, tabIndex: number) {
@@ -69,7 +71,7 @@ function showContextMenu(event: MouseEvent, tabIndex: number) {
 
 // Watchers
 watch(
-    () => route.fullPath,
+    () => useRoute().fullPath,
     () => {
         setTimeout(
             () => document.querySelector('#layout-header-tabs-container .active')?.scrollIntoView({
@@ -79,7 +81,6 @@ watch(
             50,
         );
     },
-
 );
 </script>
 

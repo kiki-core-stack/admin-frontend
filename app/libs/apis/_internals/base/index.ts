@@ -1,4 +1,5 @@
 import type { ApiResponseData } from '@kiki-core-stack/pack/types/data';
+import type { AnyRecord } from '@kikiutils/shared/types';
 import type {
     AxiosInstance,
     AxiosRequestConfig,
@@ -10,8 +11,6 @@ import queryString from 'query-string';
 import type { Except } from 'type-fest';
 
 import { createApiAxiosInstance } from '../instance';
-
-const apiInstances = new WeakMap<new (...args: any[]) => any, Map<string, BaseApi>>();
 
 export class BaseApi {
     // Protected properties
@@ -25,18 +24,36 @@ export class BaseApi {
         });
     }
 
-    // Static methods
-    static use<T extends typeof BaseApi>(this: T, ...args: ConstructorParameters<T>) {
-        let cache = apiInstances.get(this);
-        if (!cache) apiInstances.set(this, cache = new Map());
-        const key = JSON.stringify(args);
-        let instance = cache.get(key);
-        // @ts-expect-error Ignore this error.
-        if (!instance) cache.set(key, instance = new this(...args));
-        return instance as InstanceType<T>;
+    // Protected methods
+    protected buildQueryFilter(filter: AnyRecord) {
+        filter = cloneDeep(filter);
+        Object.entries(filter).forEach(([field, condition]) => {
+            if (condition === null) return;
+            if (Array.isArray(condition)) {
+                if (!condition.length) delete filter[field];
+                return;
+            }
+
+            if (typeof condition === 'object') {
+                Object.entries(condition).forEach(([operator, operand]) => {
+                    if (operator === '$in') {
+                        if (!Array.isArray(operand) || operand.length === 0) delete condition[operator];
+                        return;
+                    }
+
+                    if (operator === '$regex' && (typeof operand !== 'string' || !operand)) delete condition[operator];
+                });
+
+                if (!Object.keys(condition).length) delete filter[field];
+                return;
+            }
+
+            if (typeof condition === 'string' && !condition) delete filter[field];
+        });
+
+        return JSON.stringify(filter);
     }
 
-    // Protected methods
     protected deleteRequest<T extends object | undefined = undefined, E extends string | undefined = undefined>(
         url?: string,
         params?: any,

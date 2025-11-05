@@ -4,7 +4,7 @@
             :size="btnSize"
             :type="btnType"
         >
-            {{ btnText }}
+            {{ btnText ?? $t('actions') }}
         </el-action-btn>
         <template #dropdown>
             <el-dropdown-menu>
@@ -26,7 +26,6 @@ withDefaults(
     defineProps<Props>(),
     {
         btnSize: 'small',
-        btnText: '操作',
         btnType: 'primary',
     },
 );

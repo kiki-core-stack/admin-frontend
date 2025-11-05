@@ -1,10 +1,12 @@
-import type { ManagementSystemType } from '@kiki-core-stack/pack/types';
+import type {
+    AdminPermission,
+    AdminPermissionGroup,
+} from '@/generated/static/types/admin/permission';
 
-import type { AdminTypes } from './admin';
-
-export type PermissionPattern<T extends ManagementSystemType | undefined = undefined> =
-    ManagementSystemTypeToPermissionPatternMap[T extends undefined ? ManagementSystemType : T];
-
-export interface ManagementSystemTypeToPermissionPatternMap {
-    admin: AdminTypes.AdminPermissionPattern;
-}
+export type PermissionPattern =
+  | 'ignore'
+  | `!${AdminPermissionGroup}.*`
+  | `!${AdminPermission}`
+  | `${AdminPermissionGroup}.*`
+  | AdminPermission
+  | (string & {});

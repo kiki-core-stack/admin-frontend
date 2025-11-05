@@ -1,20 +1,15 @@
-import type { ManagementSystemType } from '@kiki-core-stack/pack/types';
 import type { Arrayable } from 'type-fest';
 
-import type { ManagementSystemTypeToPermissionPatternMap } from './permission';
+import type { PermissionPattern } from '@/types/permission';
 
-export type SidebarMenuItem<T extends ManagementSystemType | undefined = undefined> =
+export type SidebarMenuItem =
   ({
       basePath: `${string}/`;
-      children: SidebarMenuItem<T>[];
+      children: SidebarMenuItem[];
       title: string;
   }
   | {
       path: `${string}/`;
       title: string;
   })
-  & {
-      requiredPermissions: Arrayable<
-          T extends undefined ? never : ManagementSystemTypeToPermissionPatternMap[NonNullable<T>]
-      >;
-  };
+  & { requiredPermissions: Arrayable<PermissionPattern> };

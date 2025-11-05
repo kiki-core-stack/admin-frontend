@@ -17,19 +17,21 @@
 </template>
 
 <script lang="ts" setup>
-import type { ManagementSystemType } from '@kiki-core-stack/pack/types';
+import type { WritableDeep } from 'type-fest';
 
+import { sidebarMenuItems } from '@/constants/sidebar';
 import type { SidebarMenuItem } from '@/types/sidebar';
 
 // Constants/Refs/Variables
 const route = useRoute();
-const sidebarState = useSidebarState();
 
 // Computed properties
-const processedMenuItems = computed(() => processAccessibleMenuItems(cloneDeep(sidebarState.value.menuItems)));
+const processedMenuItems = computed(() => {
+    return processAccessibleMenuItems(cloneDeep(sidebarMenuItems) as WritableDeep<SidebarMenuItem[]>);
+});
 
 // Functions
-function processAccessibleMenuItems(menuItems: SidebarMenuItem<ManagementSystemType>[]) {
+function processAccessibleMenuItems(menuItems: SidebarMenuItem[]) {
     for (let i = menuItems.length - 1; i >= 0; i--) {
         const menuItem = menuItems[i]!;
         if (!hasPermission(menuItem.requiredPermissions)) menuItems.splice(i, 1);

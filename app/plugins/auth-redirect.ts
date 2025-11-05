@@ -1,9 +1,6 @@
-import { updateProfileState } from '@/libs/profile';
-
 export default defineNuxtPlugin(async () => {
-    const urlPath = useRoute().fullPath;
-    const isLoginPage = urlPath.startsWith(buildSystemRoute('/auth/login'));
+    const isLoginPage = useRoute().fullPath.startsWith('/auth/login');
     if ((await updateProfileState()).value.id) {
-        if (isLoginPage) window.location.assign(extractFirstValue(useRoute().query.redirect, buildSystemRoute()));
-    } else if (!isLoginPage) assignUrlWithRedirectParamFromCurrentLocation(buildSystemRoute('/auth/login/'));
+        if (isLoginPage) window.location.assign(extractFirstValue(useRoute().query.redirect, '/'));
+    } else if (!isLoginPage) assignUrlWithRedirectParamFromCurrentLocation('/auth/login');
 });

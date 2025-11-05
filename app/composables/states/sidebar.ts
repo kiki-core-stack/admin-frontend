@@ -1,5 +1,7 @@
+interface SidebarState {
+    isShow: boolean;
+}
+
 export function useSidebarState() {
-    switch (getSystemType()) {
-        case 'admin': return useAdminSidebarState();
-    }
+    return useState<SidebarState>('sidebar', () => ({ isShow: false }));
 }

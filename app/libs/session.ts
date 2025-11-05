@@ -1,8 +1,4 @@
 export function initializeAppSession() {
-    switch (getSystemType()) {
-        case 'admin':
-            if (!useAdminProfileState().value.id) return;
-    }
-
-    headerTabsController.load();
+    if (!useProfileState().value.id) return;
+    pageHeadTabsController.load();
 }

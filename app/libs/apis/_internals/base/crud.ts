@@ -27,7 +27,7 @@ export abstract class BaseCrudApi<
             '/list',
             {
                 ...params,
-                filter: params?.filter ? buildApiQueryFilter(params.filter) : undefined,
+                filter: params?.filter ? this.buildQueryFilter(params.filter) : undefined,
             },
         );
     }
