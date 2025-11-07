@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@element-plus/nuxt": "^1.1.4",
-    "@kiki-core-stack/pack": "^0.85.2",
+    "@kiki-core-stack/pack": "^0.87.0",
     "@kikiutils/micromatch": "^4.0.9",
     "@kikiutils/nuxt": "^9.0.1",
     "@kikiutils/shared": "^13.5.2",
@@ -31,13 +31,13 @@
     "es-toolkit": "^1.41.0",
     "html5-qrcode": "^2.3.8",
     "nanoid": "^5.1.6",
-    "nuxt": "^4.2.0",
+    "nuxt": "^4.2.1",
     "nuxt-security": "^2.4.0",
     "qrcode": "^1.5.4",
     "query-string": "^9.3.1",
     "sweetalert2": "^11.26.3",
     "ua-parser-js": "^2.0.6",
-    "vue": "^3.5.22"
+    "vue": "^3.5.23"
   },
   "devDependencies": {
     "@iconify-json/fa6-solid": "^1.2.4",
