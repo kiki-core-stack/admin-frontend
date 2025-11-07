@@ -2,9 +2,7 @@ import type { TableRowData } from '@kiki-core-stack/pack/types/data';
 import type { AxiosRequestConfig } from 'axios';
 import type { Promisable } from 'type-fest';
 
-import { BaseApi } from './';
-
-export abstract class BaseCrudApi<
+export class BaseCrudApi<
     T extends TableRowData = TableRowData,
     CreateOrUpdateData = T | TablePageFormData<T>,
 > extends BaseApi {

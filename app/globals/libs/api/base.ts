@@ -10,7 +10,9 @@ import type {
 import queryString from 'query-string';
 import type { Except } from 'type-fest';
 
-import { createApiAxiosInstance } from '../instance';
+import { createApiAxiosInstance } from '@/libs/api/instance';
+
+const apiInstances = new WeakMap<new (...args: any[]) => any, Map<string, BaseApi>>();
 
 export class BaseApi {
     // Protected properties
@@ -22,6 +24,17 @@ export class BaseApi {
             baseURL: baseUrl,
             paramsSerializer: { serialize: (params) => queryString.stringify(params, { arrayFormat: 'none' }) },
         });
+    }
+
+    // Static methods
+    static use<T extends typeof BaseApi>(this: T, ...args: ConstructorParameters<T>) {
+        let cache = apiInstances.get(this);
+        if (!cache) apiInstances.set(this, cache = new Map());
+        const key = JSON.stringify(args);
+        let instance = cache.get(key);
+        // @ts-expect-error Ignore this error.
+        if (!instance) cache.set(key, instance = new this(...args));
+        return instance as InstanceType<T>;
     }
 
     // Protected methods

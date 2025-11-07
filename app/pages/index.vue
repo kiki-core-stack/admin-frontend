@@ -89,7 +89,7 @@ const hasViewDashboardPermission = computed(() => hasPermission('home.dashboard.
 async function loadData() {
     if (isLoadingData.value || !hasViewDashboardPermission.value) return;
     isLoadingData.value = true;
-    const response = await useHomeApi().getDashboardData(filter.value);
+    const response = await HomeApi.use().getDashboardData(filter.value);
     Object.assign(dashboardData.value, defaultHomeDashboardData, response?.data?.data);
     isLoadingData.value = false;
 }

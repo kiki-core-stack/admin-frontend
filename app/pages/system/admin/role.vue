@@ -3,7 +3,7 @@
         v-model:form-data="formData"
         dialog-title-suffix="管理員身分組"
         title="管理員身分組管理"
-        :crud-api="useAdminRoleApi()"
+        :crud-api="AdminRoleApi.use()"
         :form-rules="formRules"
         :permissions="{ base: 'admin.role' }"
     >
@@ -60,7 +60,7 @@ const permissionTree = ref<ElTreeNode[]>([]);
 
 // Hooks
 onMounted(async () => {
-    const response = await useAdminPermissionApi().getTree();
+    const response = await AdminPermissionApi.use().getTree();
     permissionTree.value = response?.data?.data || [];
 });
 </script>

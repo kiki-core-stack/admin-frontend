@@ -5,7 +5,7 @@
         dialog-title-suffix="管理員"
         title="管理員管理"
         :confirm-delete-message="(row) => `確定要刪除 ${row.account} 嗎？`"
-        :crud-api="useAdminApi()"
+        :crud-api="AdminApi.use()"
         :disable-row-delete-btn-rule="(row) => row.id === profileState.id"
         :form-rules="formRules"
         :permissions="{ base: 'admin' }"
@@ -23,7 +23,7 @@
                 field="enabled"
                 label="啟用"
                 :confirm-message="(row) => `是否切換管理員 ${row.account} 的啟用狀態？`"
-                :crud-api="useAdminApi()"
+                :crud-api="AdminApi.use()"
                 :disabled-condition="(row) => !dataTablePageRef?.capabilities.toggle || row.id === profileState.id"
                 @status-change="dataTablePageRef?.loadData()"
             />

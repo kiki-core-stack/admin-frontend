@@ -97,7 +97,7 @@ import type { CameraDevice } from 'html5-qrcode';
 import { UAParser } from 'ua-parser-js';
 
 // Constants/Refs/Variables
-const authApi = useAuthApi();
+const authApi = AuthApi.use();
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 let html5QrCode: Html5Qrcode | undefined;
 const isScanLoginQrCodeDialogVisible = ref(false);
@@ -108,7 +108,7 @@ const loginQrCodeScannerSelectedCameraId = useLocalStorage<Nullable<string>>(
 );
 
 const loginQrCodeScannerStatusOverlayRef = useTemplateRef('loginQrCodeScannerStatusOverlayRef');
-const profileSecuritySessionApi = useProfileSecuritySessionApi();
+const profileSecuritySessionApi = ProfileSecuritySessionApi.use();
 
 // Functions
 const confirmLogoutAllSessions = createElMessageBoxConfirmHandler(

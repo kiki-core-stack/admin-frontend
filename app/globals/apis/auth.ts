@@ -4,8 +4,6 @@ import type {
 } from '@kiki-core-stack/pack/types/data/admin';
 import type { AxiosRequestConfig } from 'axios';
 
-import { BaseApi } from './_internals/base';
-
 export class AuthApi extends BaseApi {
     constructor() {
         super('/api/admin/auth');

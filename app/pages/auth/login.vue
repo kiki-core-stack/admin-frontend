@@ -100,7 +100,7 @@ definePageMeta({
 
 // Constants/Refs/Variables
 const accountInputRef = useTemplateRef('accountInputRef');
-const authApi = useAuthApi();
+const authApi = AuthApi.use();
 let currentQrCodeLoginPollingAbortController: AbortController | undefined;
 const formData = ref<AdminLoginFormData>({
     account: '',

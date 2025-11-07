@@ -21,8 +21,6 @@
 import type { TableRowData } from '@kiki-core-stack/pack/types/data';
 import { get } from 'es-toolkit/compat';
 
-import type { BaseCrudApi } from '@/libs/apis/_internals/base/crud';
-
 interface Props {
     confirmMessage: ((row: TR) => string) | string;
     crudApi: CA;

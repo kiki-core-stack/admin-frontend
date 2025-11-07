@@ -168,7 +168,6 @@ import type {
 } from '@kikiutils/shared/types';
 import type { Except } from 'type-fest';
 
-import type { BaseCrudApi } from '@/libs/apis/_internals/base/crud';
 import type { PermissionPattern } from '@/types/permission';
 
 type ControlActionBtnFunction = (row: TR) => boolean | undefined;

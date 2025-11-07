@@ -26,7 +26,7 @@ const items = ref<AdminData[]>([]);
 // Functions
 async function loadData(query: string) {
     isLoadingData.value = true;
-    const response = await useAdminApi().getList({
+    const response = await AdminApi.use().getList({
         fields: ['account'],
         filter: { account: { $regex: query } },
         limit: 100,

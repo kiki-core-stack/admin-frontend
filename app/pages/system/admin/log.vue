@@ -4,7 +4,7 @@
         v-model:time-range-end="filter.createdAt.$lt"
         v-model:time-range-start="filter.createdAt.$gte"
         title="管理員日誌"
-        :crud-api="useAdminLogApi()"
+        :crud-api="AdminLogApi.use()"
         :filter="filter"
         :permissions="{ base: 'admin.log' }"
         hide-actions-column
