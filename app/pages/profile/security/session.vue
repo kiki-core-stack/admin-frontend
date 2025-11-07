@@ -4,7 +4,7 @@
         permissions="ignore"
         title="目前登入的裝置"
         :confirm-delete-message="(row) => `確定要刪除 ${parseDataToDeviceColumnText(row)} (${row.lastActiveIp}) 嗎？`"
-        :crud-api="useProfileSecuritySessionApi()"
+        :crud-api="profileSecuritySessionApi"
         :disable-row-delete-btn-rule="(row) => row.isCurrent"
         hide-add-data-btn
         hide-created-at-column
@@ -14,6 +14,9 @@
         <template #toolbar-actions-append>
             <el-button @click="isScanLoginQrCodeDialogVisible = true">
                 掃描登入QR Code
+            </el-button>
+            <el-button @click="confirmLogoutAllSessions">
+                登出所有裝置
             </el-button>
         </template>
         <template #table>
@@ -105,8 +108,29 @@ const loginQrCodeScannerSelectedCameraId = useLocalStorage<Nullable<string>>(
 );
 
 const loginQrCodeScannerStatusOverlayRef = useTemplateRef('loginQrCodeScannerStatusOverlayRef');
+const profileSecuritySessionApi = useProfileSecuritySessionApi();
 
 // Functions
+const confirmLogoutAllSessions = createElMessageBoxConfirmHandler(
+    '確定要登出所有裝置嗎？',
+    '登出中...',
+    async () => !!(await profileSecuritySessionApi.deleteAll())?.data?.success,
+    () => {
+        assignUrlWithRedirectParamFromCurrentLocation('/auth/login/', 1000);
+        showSuccessAlert(
+            '登出成功',
+            {
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                showConfirmButton: false,
+            },
+        );
+    },
+    undefined,
+    undefined,
+    { type: 'warning' },
+);
+
 const confirmQrCodeLogin = createElMessageBoxConfirmHandler<
     Pick<AdminQrCodeLoginData, 'ip' | 'userAgent'> & { token: string }
 >(
