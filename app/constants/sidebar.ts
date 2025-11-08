@@ -9,6 +9,23 @@ export const sidebarMenuItems: ReadonlyDeep<SidebarMenuItem[]> = [
         title: '首頁',
     },
     {
+        basePath: '/email/',
+        children: [
+            {
+                path: '/email/platform/',
+                requiredPermissions: ['email.platform.*'],
+                title: '平台管理',
+            },
+            {
+                path: '/email/send-record/',
+                requiredPermissions: ['email.sendRecord.*'],
+                title: '發送記錄',
+            },
+        ],
+        requiredPermissions: 'email.*',
+        title: '電子郵件',
+    },
+    {
         basePath: '/system/',
         children: [
             {
