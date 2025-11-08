@@ -6,7 +6,6 @@ import { createVueConfig } from '@kikiutils/eslint-config/vue';
 export default antfu(
     {
         formatters: { css: true },
-        type: 'lib',
         typescript: true,
         vue: true,
     },
