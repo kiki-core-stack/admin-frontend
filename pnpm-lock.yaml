@@ -4,6 +4,10 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@kikiutils/eslint-plugin-tailwindcss': ^3.19.0
+  tailwindcss: ^3.4.18
+
 importers:
 
   .:
@@ -88,8 +92,14 @@ importers:
         specifier: ^1.2.3
         version: 1.2.3
       '@kikiutils/eslint-config':
-        specifier: ^4.0.1
-        version: 4.0.1(@vue/compiler-sfc@3.5.24)(eslint-flat-config-utils@2.1.4)(eslint@9.39.1(jiti@2.6.1))(tailwindcss@3.4.18(yaml@2.8.1))(typescript@5.9.3)(vue-eslint-parser@10.2.0(eslint@9.39.1(jiti@2.6.1)))
+        specifier: ^5.0.0
+        version: 5.0.0(@kikiutils/eslint-plugin-tailwindcss@3.19.0(tailwindcss@3.4.18(yaml@2.8.1)))(@kikiutils/eslint-plugin-vue@10.2.2(eslint@9.39.1(jiti@2.6.1))(vue-eslint-parser@10.2.0(eslint@9.39.1(jiti@2.6.1))))(@vue/compiler-sfc@3.5.24)(eslint-flat-config-utils@2.1.4)(eslint-plugin-format@1.0.2(eslint@9.39.1(jiti@2.6.1)))(eslint-plugin-tailwindcss@3.18.2(tailwindcss@3.4.18(yaml@2.8.1)))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+      '@kikiutils/eslint-plugin-tailwindcss':
+        specifier: ^3.19.0
+        version: 3.19.0(tailwindcss@3.4.18(yaml@2.8.1))
+      '@kikiutils/eslint-plugin-vue':
+        specifier: ^10.2.2
+        version: 10.2.2(eslint@9.39.1(jiti@2.6.1))(vue-eslint-parser@10.2.0(eslint@9.39.1(jiti@2.6.1)))
       '@kikiutils/mongoose':
         specifier: ^6.2.0
         version: 6.2.0
@@ -114,6 +124,12 @@ importers:
       dotenv-cli:
         specifier: ^11.0.0
         version: 11.0.0
+      eslint-plugin-format:
+        specifier: ^1.0.2
+        version: 1.0.2(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-tailwindcss:
+        specifier: ^3.18.2
+        version: 3.18.2(tailwindcss@3.4.18(yaml@2.8.1))
       postcss-pxtorem:
         specifier: ^6.1.0
         version: 6.1.0(postcss@8.5.6)
@@ -856,21 +872,33 @@ packages:
       zod:
         optional: true
 
-  '@kikiutils/eslint-config@4.0.1':
-    resolution: {integrity: sha512-dm5OKNxv7LcOWQRBt/H29fwt73t6ZTpAVpjhxXkX4mKMJRMvQ1IfQ2WIaJZ50xjj12oKsQTizNbdnd2LBff7lA==}
+  '@kikiutils/eslint-config@5.0.0':
+    resolution: {integrity: sha512-Aq0r2IGCxiTLBznz8VhFOWiVytXQ1TdkeBetSDGYIBBU19722R7daEc2d4X0WZUuy0d8UUp5ce8dd3ELLRgSHw==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
+      '@kikiutils/eslint-plugin-tailwindcss': ^3.19.0
+      '@kikiutils/eslint-plugin-vue': ^10.2.2
       eslint: ^9.35.0
       eslint-flat-config-utils: ^2.1.1
+      eslint-plugin-format: ^1.0.2
+      eslint-plugin-tailwindcss: ^3.18.2
     peerDependenciesMeta:
+      '@kikiutils/eslint-plugin-tailwindcss':
+        optional: true
+      '@kikiutils/eslint-plugin-vue':
+        optional: true
       eslint-flat-config-utils:
+        optional: true
+      eslint-plugin-format:
+        optional: true
+      eslint-plugin-tailwindcss:
         optional: true
 
   '@kikiutils/eslint-plugin-tailwindcss@3.19.0':
     resolution: {integrity: sha512-6vnD/Zkk51bzPldVjY+XPcqe8pXdIUvIL69k81oesEP3p+5Jk5NMt+UGP8b9elvdi75UcdgtqcK2WxHYiE8Zmg==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
-      tailwindcss: ^3.4.0
+      tailwindcss: ^3.4.18
 
   '@kikiutils/eslint-plugin-vue@10.2.2':
     resolution: {integrity: sha512-vNcqjcdQJy7m0GW9LD3w0nIc0yKrJVXZZqlAJ2B35oqArbjiYHAbSDklUxM2rJbrD49La0Q3A9dVBASbuHUMBw==}
@@ -3277,7 +3305,7 @@ packages:
     resolution: {integrity: sha512-QbkMLDC/OkkjFQ1iz/5jkMdHfiMu/uwujUHLAJK5iwNHD8RTxVTlsUezE0toTZ6VhybNBsk+gYGPDq2agfeRNA==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
-      tailwindcss: ^3.4.0
+      tailwindcss: ^3.4.18
 
   eslint-plugin-toml@0.12.0:
     resolution: {integrity: sha512-+/wVObA9DVhwZB1nG83D2OAQRrcQZXy+drqUnFJKymqnmbnbfg/UPmEMCKrJNcEboUGxUjYrJlgy+/Y930mURQ==}
@@ -6084,8 +6112,8 @@ packages:
       '@nuxt/kit':
         optional: true
 
-  vite-plugin-vue-tracer@1.1.2:
-    resolution: {integrity: sha512-cuJaOlvnv6oy4kaM8Ntw6ksrqM+fBDIpqVk41HW/EqoIoAj2tNRFfHKqjC5XQe3X/JDeUTv+BugF4kivvi/kYQ==}
+  vite-plugin-vue-tracer@1.1.3:
+    resolution: {integrity: sha512-fM7hfHELZvbPnSn8EKZwHfzxm5EfYFQIclz8rwcNXfodNbRkwNvh0AGMtaBfMxQ9HC5KVa3KitwHnmE4ezDemw==}
     peerDependencies:
       vite: ^6.0.0 || ^7.0.0
       vue: ^3.5.0
@@ -7038,17 +7066,17 @@ snapshots:
       nanoid: 5.1.6
       type-fest: 5.2.0
 
-  '@kikiutils/eslint-config@4.0.1(@vue/compiler-sfc@3.5.24)(eslint-flat-config-utils@2.1.4)(eslint@9.39.1(jiti@2.6.1))(tailwindcss@3.4.18(yaml@2.8.1))(typescript@5.9.3)(vue-eslint-parser@10.2.0(eslint@9.39.1(jiti@2.6.1)))':
+  '@kikiutils/eslint-config@5.0.0(@kikiutils/eslint-plugin-tailwindcss@3.19.0(tailwindcss@3.4.18(yaml@2.8.1)))(@kikiutils/eslint-plugin-vue@10.2.2(eslint@9.39.1(jiti@2.6.1))(vue-eslint-parser@10.2.0(eslint@9.39.1(jiti@2.6.1))))(@vue/compiler-sfc@3.5.24)(eslint-flat-config-utils@2.1.4)(eslint-plugin-format@1.0.2(eslint@9.39.1(jiti@2.6.1)))(eslint-plugin-tailwindcss@3.18.2(tailwindcss@3.4.18(yaml@2.8.1)))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
       '@antfu/eslint-config': 6.2.0(@vue/compiler-sfc@3.5.24)(eslint-plugin-format@1.0.2(eslint@9.39.1(jiti@2.6.1)))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+      eslint: 9.39.1(jiti@2.6.1)
+      eslint-plugin-promise: 7.2.1(eslint@9.39.1(jiti@2.6.1))
+    optionalDependencies:
       '@kikiutils/eslint-plugin-tailwindcss': 3.19.0(tailwindcss@3.4.18(yaml@2.8.1))
       '@kikiutils/eslint-plugin-vue': 10.2.2(eslint@9.39.1(jiti@2.6.1))(vue-eslint-parser@10.2.0(eslint@9.39.1(jiti@2.6.1)))
-      eslint: 9.39.1(jiti@2.6.1)
-      eslint-plugin-format: 1.0.2(eslint@9.39.1(jiti@2.6.1))
-      eslint-plugin-promise: 7.2.1(eslint@9.39.1(jiti@2.6.1))
-      eslint-plugin-tailwindcss: 3.18.2(tailwindcss@3.4.18(yaml@2.8.1))
-    optionalDependencies:
       eslint-flat-config-utils: 2.1.4
+      eslint-plugin-format: 1.0.2(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-tailwindcss: 3.18.2(tailwindcss@3.4.18(yaml@2.8.1))
     transitivePeerDependencies:
       - '@eslint-react/eslint-plugin'
       - '@eslint/json'
@@ -7068,10 +7096,8 @@ snapshots:
       - prettier-plugin-slidev
       - supports-color
       - svelte-eslint-parser
-      - tailwindcss
       - typescript
       - vitest
-      - vue-eslint-parser
 
   '@kikiutils/eslint-plugin-tailwindcss@3.19.0(tailwindcss@3.4.18(yaml@2.8.1))':
     dependencies:
@@ -7297,7 +7323,7 @@ snapshots:
       tinyglobby: 0.2.15
       vite: 7.2.2(@types/node@24.10.0)(jiti@2.6.1)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.44.1)(yaml@2.8.1)
       vite-plugin-inspect: 11.3.3(@nuxt/kit@4.2.1(magicast@0.5.1))(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.44.1)(yaml@2.8.1))
-      vite-plugin-vue-tracer: 1.1.2(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.44.1)(yaml@2.8.1))(vue@3.5.24(typescript@5.9.3))
+      vite-plugin-vue-tracer: 1.1.3(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.44.1)(yaml@2.8.1))(vue@3.5.24(typescript@5.9.3))
       which: 5.0.0
       ws: 8.18.3
     transitivePeerDependencies:
@@ -12994,7 +13020,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-vue-tracer@1.1.2(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.44.1)(yaml@2.8.1))(vue@3.5.24(typescript@5.9.3)):
+  vite-plugin-vue-tracer@1.1.3(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.44.1)(yaml@2.8.1))(vue@3.5.24(typescript@5.9.3)):
     dependencies:
       estree-walker: 3.0.3
       exsolve: 1.0.7

@@ -43,7 +43,9 @@
     "@iconify-json/fa6-solid": "^1.2.4",
     "@iconify-json/line-md": "^1.2.11",
     "@iconify-json/mdi": "^1.2.3",
-    "@kikiutils/eslint-config": "^4.0.1",
+    "@kikiutils/eslint-config": "^5.0.0",
+    "@kikiutils/eslint-plugin-tailwindcss": "^3.19.0",
+    "@kikiutils/eslint-plugin-vue": "^10.2.2",
     "@kikiutils/mongoose": "^6.2.0",
     "@kikiutils/stylelint-config": "^0.2.0",
     "@nuxtjs/i18n": "^10.2.0",
@@ -52,6 +54,8 @@
     "@unocss/nuxt": "^66.5.5",
     "depcheck": "^1.4.7",
     "dotenv-cli": "^11.0.0",
+    "eslint-plugin-format": "^1.0.2",
+    "eslint-plugin-tailwindcss": "^3.18.2",
     "postcss-pxtorem": "^6.1.0",
     "ts-unused-exports": "^11.0.1",
     "type-fest": "^5.2.0",
@@ -65,6 +69,10 @@
       "@parcel/watcher",
       "esbuild",
       "vue-demi"
-    ]
+    ],
+    "overrides": {
+      "@kikiutils/eslint-plugin-tailwindcss": "^3.19.0",
+      "tailwindcss": "^3.4.18"
+    }
   }
 }
