@@ -1,7 +1,10 @@
 <template>
     <el-input-number
-        @keypress="(event: KeyboardEvent) => {
-            if (event.key.match(filterCharsRegex)) event.preventDefault();
+        @beforeinput="(event: InputEvent) => {
+            if (typeof event.data === 'string' && filterCharsRegex.test(event.data)) event.preventDefault();
+        }"
+        @keydown="(event: KeyboardEvent) => {
+            if (filterCharsRegex.test(event.key)) event.preventDefault();
         }"
     />
 </template>
