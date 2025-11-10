@@ -16,7 +16,7 @@
                 prop="account"
             />
             <el-table-column
-                label="Email"
+                label="電子郵件"
                 prop="email"
             />
             <el-table-confirmable-status-switch-column
@@ -38,7 +38,7 @@
             />
             <el-form-input
                 v-model="formData.email"
-                label="Email"
+                label="電子郵件"
                 name="email"
                 prop="email"
                 type="email"
@@ -105,7 +105,7 @@ const formRules: ElFormRules<AdminFormData> = {
     account: [createElFormItemRuleWithDefaults('請輸入帳號')],
     email: [
         createElFormItemRuleWithDefaults(
-            '請輸入正確的Email',
+            '請輸入正確的電子郵件',
             {
                 required: false,
                 type: 'email',
