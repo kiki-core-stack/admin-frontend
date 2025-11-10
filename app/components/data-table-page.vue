@@ -3,9 +3,6 @@
         v-loading="isLoadingData"
         class="h-full"
     >
-        <Head>
-            <Title>{{ title }}</Title>
-        </Head>
         <div
             ref="mainContainerRef"
             class="h-full overflow-auto p-4"
