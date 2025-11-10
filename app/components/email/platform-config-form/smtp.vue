@@ -5,7 +5,10 @@
         prop="config.host"
         :rules="[
             createElFormItemRuleWithDefaults('請輸入主機位址'),
-            { pattern: /^[a-zA-Z0-9.-]+$/ },
+            {
+                pattern: /^[a-zA-Z0-9.-]+$/,
+                message: '請輸入正確的主機位址',
+            },
         ]"
     />
     <el-form-item
