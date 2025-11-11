@@ -100,7 +100,6 @@ definePageMeta({
 
 // Constants/Refs/Variables
 const accountInputRef = useTemplateRef('accountInputRef');
-const authApi = AuthApi.use();
 let currentQrCodeLoginPollingAbortController: AbortController | undefined;
 const formData = ref<AdminLoginFormData>({
     account: '',
@@ -151,7 +150,7 @@ async function login() {
     await formRef.value?.validate(async (valid) => {
         if (!valid) return;
         statusOverlayRef.value!.showLoading('登入中...');
-        const response = await authApi.login(formData.value);
+        const response = await AuthApi.use().login(formData.value);
         if (response?.status === 404) accountInputRef.value?.focus();
         else if (response?.data?.errorCode === 'invalidVerificationCode') verCodeInputRef.value?.focus();
         else if (response?.data?.success) return await handleLoginSuccess();
@@ -162,7 +161,7 @@ async function login() {
 
 async function reloadLoginQrCodeAndStartPolling() {
     currentQrCodeLoginPollingAbortController?.abort();
-    const response = await authApi.getQrCodeLoginToken(qrCodeLoginToken.value || undefined);
+    const response = await AuthApi.use().getQrCodeLoginToken(qrCodeLoginToken.value || undefined);
     if (response?.data?.success) {
         qrCodeLoginToken.value = response.data.data!.token;
         startQrCodeLoginPolling();
@@ -177,7 +176,7 @@ function reloadVerCode() {
 async function startQrCodeLoginPolling() {
     currentQrCodeLoginPollingAbortController?.abort();
     currentQrCodeLoginPollingAbortController = new AbortController();
-    const response = await authApi.checkQrCodeLoginStatus(
+    const response = await AuthApi.use().checkQrCodeLoginStatus(
         qrCodeLoginToken.value,
         undefined,
         {

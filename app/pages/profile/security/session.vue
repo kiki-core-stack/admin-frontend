@@ -4,7 +4,7 @@
         permissions="ignore"
         title="目前登入的裝置"
         :confirm-delete-message="(row) => `確定要刪除 ${parseDataToDeviceColumnText(row)} (${row.lastActiveIp}) 嗎？`"
-        :crud-api="profileSecuritySessionApi"
+        :crud-api="ProfileSecuritySessionApi.use()"
         :disable-row-delete-btn-rule="(row) => row.isCurrent"
         hide-add-data-btn
         hide-created-at-column
@@ -97,7 +97,6 @@ import type { CameraDevice } from 'html5-qrcode';
 import { UAParser } from 'ua-parser-js';
 
 // Constants/Refs/Variables
-const authApi = AuthApi.use();
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 let html5QrCode: Html5Qrcode | undefined;
 const isScanLoginQrCodeDialogVisible = ref(false);
@@ -108,13 +107,12 @@ const loginQrCodeScannerSelectedCameraId = useLocalStorage<Nullable<string>>(
 );
 
 const loginQrCodeScannerStatusOverlayRef = useTemplateRef('loginQrCodeScannerStatusOverlayRef');
-const profileSecuritySessionApi = ProfileSecuritySessionApi.use();
 
 // Functions
 const confirmLogoutAllSessions = createElMessageBoxConfirmHandler(
     '確定要登出所有裝置嗎？',
     '登出中...',
-    async () => !!(await profileSecuritySessionApi.deleteAll())?.data?.success,
+    async () => !!(await ProfileSecuritySessionApi.use().deleteAll())?.data?.success,
     () => {
         assignUrlWithRedirectParamFromCurrentLocation('/auth/login/', 1000);
         showSuccessAlert(
@@ -137,7 +135,7 @@ const confirmQrCodeLogin = createElMessageBoxConfirmHandler<
     (data) => `確定要允許 ${parseUserAgentToDeviceInfo(data.userAgent)} (${data.ip}) 的登入嗎？`,
     '登入中...',
     async (data) => {
-        const response = await authApi.confirmQrCodeLogin(
+        const response = await AuthApi.use().confirmQrCodeLogin(
             data.token,
             undefined,
             { skipShowErrorMessage: true },
@@ -167,7 +165,7 @@ const confirmQrCodeLogin = createElMessageBoxConfirmHandler<
 
 async function onScanLoginQrCodeSuccess(decodedText: string) {
     html5QrCode?.pause();
-    const response = await authApi.getQrCodeLoginData(decodedText, undefined, { skipShowErrorMessage: true });
+    const response = await AuthApi.use().getQrCodeLoginData(decodedText, undefined, { skipShowErrorMessage: true });
     if (response?.data?.success) {
         confirmQrCodeLogin({
             token: decodedText,
