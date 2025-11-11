@@ -11,7 +11,7 @@ export default defineNuxtConfig({
         },
         keepalive: true,
     },
-    colorMode: { storage: 'cookie' },
+    colorMode: { storage: 'localStorage' },
     compatibilityDate: '2100-01-01',
     css: ['@/assets/scss/index.scss'],
     devServer: {
