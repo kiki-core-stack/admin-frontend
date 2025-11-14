@@ -32,7 +32,7 @@
             <el-form-input
                 v-model="formData.account"
                 label="帳號"
-                maxlength="16"
+                maxlength="32"
                 name="account"
                 prop="account"
             />
