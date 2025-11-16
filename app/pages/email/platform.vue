@@ -4,7 +4,7 @@
         v-model:form-data="formData"
         dialog-title-suffix="電子郵件平台"
         title="電子郵件平台管理"
-        :before-dialog-open="(row?: EmailPlatformData) => formData.config = row?.config || {}"
+        :before-dialog-open="(row) => formData.config = row?.config || {}"
         :crud-api="EmailPlatformApi.use()"
         :form-rules="formRules"
         :permissions="{ base: 'email.platform' }"

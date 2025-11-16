@@ -17,6 +17,11 @@ export const sidebarMenuItems: ReadonlyDeep<SidebarMenuItem[]> = [
                 title: '平台管理',
             },
             {
+                path: '/email/sender-identity/',
+                requiredPermissions: ['email.senderIdentity.*'],
+                title: '寄件身份管理',
+            },
+            {
                 path: '/email/send-record/',
                 requiredPermissions: ['email.sendRecord.*'],
                 title: '發送記錄',
