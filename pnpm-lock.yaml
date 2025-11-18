@@ -15,8 +15,8 @@ importers:
         specifier: ^1.1.4
         version: 1.1.4(@element-plus/icons-vue@2.3.2(vue@3.5.24(typescript@5.9.3)))(element-plus@2.11.8(vue@3.5.24(typescript@5.9.3)))(magicast@0.5.1)
       '@kiki-core-stack/pack':
-        specifier: ^0.89.5
-        version: 0.89.5(@kikiutils/mongoose@6.2.0)(@kikiutils/shared@13.6.0(@types/node@24.10.1)(async-validator@4.2.5)(consola@3.4.2)(date-fns@4.1.0)(decimal.js@10.6.0)(element-plus@2.11.8(vue@3.5.24(typescript@5.9.3)))(ioredis@5.8.2)(superjson@2.2.5)(vue-router@4.6.3(vue@3.5.24(typescript@5.9.3)))(vue@3.5.24(typescript@5.9.3)))(consola@3.4.2)(es-toolkit@1.42.0)(mongoose@8.20.0)(nanoid@5.1.6)(type-fest@5.2.0)
+        specifier: ^0.90.0
+        version: 0.90.0(@kikiutils/mongoose@6.2.0)(@kikiutils/shared@13.6.0(@types/node@24.10.1)(async-validator@4.2.5)(consola@3.4.2)(date-fns@4.1.0)(decimal.js@10.6.0)(element-plus@2.11.8(vue@3.5.24(typescript@5.9.3)))(ioredis@5.8.2)(superjson@2.2.5)(vue-router@4.6.3(vue@3.5.24(typescript@5.9.3)))(vue@3.5.24(typescript@5.9.3)))(consola@3.4.2)(es-toolkit@1.42.0)(mongoose@8.20.0)(nanoid@5.1.6)(type-fest@5.2.0)
       '@kikiutils/micromatch':
         specifier: ^4.0.9
         version: 4.0.9
@@ -805,8 +805,8 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
-  '@kiki-core-stack/pack@0.89.5':
-    resolution: {integrity: sha512-jwQ5V4nkGAHLN7phNUJ+ApGTQW0k3iwMVZ60w7DdThlWxC7YBv5SuHCtdke1Jw60mQj6cJjzuFRcOr/X69JHzg==}
+  '@kiki-core-stack/pack@0.90.0':
+    resolution: {integrity: sha512-FkWmfSlqtblSHFBUxL09+WPhcxkONZ0DzfZIqqLK1B2cQv+r7Lb6wTuAB+c5kSTb+bJULJtotEjs+vo+jS8GGg==}
     engines: {node: '>=24.0.0'}
     peerDependencies:
       '@hono/zod-validator': ^0.7.4
@@ -7070,7 +7070,7 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@kiki-core-stack/pack@0.89.5(@kikiutils/mongoose@6.2.0)(@kikiutils/shared@13.6.0(@types/node@24.10.1)(async-validator@4.2.5)(consola@3.4.2)(date-fns@4.1.0)(decimal.js@10.6.0)(element-plus@2.11.8(vue@3.5.24(typescript@5.9.3)))(ioredis@5.8.2)(superjson@2.2.5)(vue-router@4.6.3(vue@3.5.24(typescript@5.9.3)))(vue@3.5.24(typescript@5.9.3)))(consola@3.4.2)(es-toolkit@1.42.0)(mongoose@8.20.0)(nanoid@5.1.6)(type-fest@5.2.0)':
+  '@kiki-core-stack/pack@0.90.0(@kikiutils/mongoose@6.2.0)(@kikiutils/shared@13.6.0(@types/node@24.10.1)(async-validator@4.2.5)(consola@3.4.2)(date-fns@4.1.0)(decimal.js@10.6.0)(element-plus@2.11.8(vue@3.5.24(typescript@5.9.3)))(ioredis@5.8.2)(superjson@2.2.5)(vue-router@4.6.3(vue@3.5.24(typescript@5.9.3)))(vue@3.5.24(typescript@5.9.3)))(consola@3.4.2)(es-toolkit@1.42.0)(mongoose@8.20.0)(nanoid@5.1.6)(type-fest@5.2.0)':
     optionalDependencies:
       '@kikiutils/mongoose': 6.2.0
       '@kikiutils/shared': 13.6.0(@types/node@24.10.1)(async-validator@4.2.5)(consola@3.4.2)(date-fns@4.1.0)(decimal.js@10.6.0)(element-plus@2.11.8(vue@3.5.24(typescript@5.9.3)))(ioredis@5.8.2)(superjson@2.2.5)(vue-router@4.6.3(vue@3.5.24(typescript@5.9.3)))(vue@3.5.24(typescript@5.9.3))

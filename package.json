@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@element-plus/nuxt": "^1.1.4",
-    "@kiki-core-stack/pack": "^0.89.5",
+    "@kiki-core-stack/pack": "^0.90.0",
     "@kikiutils/micromatch": "^4.0.9",
     "@kikiutils/nuxt": "^9.0.2",
     "@kikiutils/shared": "^13.6.0",
