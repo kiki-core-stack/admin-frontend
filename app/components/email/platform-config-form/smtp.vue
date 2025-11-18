@@ -40,6 +40,10 @@
         v-model="config.requireTls"
         label="啟用TLS"
     />
+    <el-form-switch
+        v-model="config.rejectTlsUnauthorized"
+        label="拒絕自簽名憑證"
+    />
 </template>
 
 <script lang="ts" setup>
@@ -55,6 +59,7 @@ const config = ref<EmailPlatformConfigs.Smtp>({
     host: '',
     password: '',
     port: 25,
+    rejectTlsUnauthorized: true,
     requireTls: false,
     secure: false,
     username: '',
