@@ -46,10 +46,6 @@
                 label="錯誤原因"
                 prop="failureReason"
             />
-            <el-table-datetime-column
-                field="sentAt"
-                label="寄出時間"
-            />
             <el-table-column
                 label="平台"
                 prop="platform.name"
