@@ -1,6 +1,10 @@
 <template>
-    <el-dropdown trigger="click">
+    <el-dropdown
+        trigger="click"
+        :disabled="disabled"
+    >
         <el-action-btn
+            :disabled="disabled"
             :size="btnSize"
             :type="btnType"
         >
@@ -19,6 +23,7 @@ interface Props {
     btnSize?: string;
     btnText?: string;
     btnType?: string;
+    disabled?: boolean;
 }
 
 // Define props, models and emits
