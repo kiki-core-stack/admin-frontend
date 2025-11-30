@@ -25,7 +25,6 @@
     "@sylke/email-validation": "^1.0.0",
     "@vueuse/integrations": "^14.0.0",
     "@vueuse/nuxt": "^14.0.0",
-    "@vueuse/shared": "^14.0.0",
     "axios": "^1.13.2",
     "date-fns": "^4.1.0",
     "element-plus": "^2.11.8",

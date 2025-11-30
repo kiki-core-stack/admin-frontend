@@ -1,5 +1,3 @@
-import type { RemovableRef } from '@vueuse/shared';
-
 interface PageHeadTabData {
     path: string;
     title: string;
@@ -8,11 +6,14 @@ interface PageHeadTabData {
 export const pageHeadTabsController = new class {
     // Private properties
     #registeredPaths = new Set<string>();
-    #storage?: RemovableRef<PageHeadTabData[]>;
 
     // Private getters
     get #state() {
         return usePageHeadTabsState();
+    }
+
+    get #storageKey() {
+        return `headerTabs:${useProfileState().value.id}`;
     }
 
     // Private methods
@@ -27,10 +28,6 @@ export const pageHeadTabsController = new class {
 
             navigateTo(tabs.at(-1)?.path || '/');
         }
-    }
-
-    #getStorage() {
-        return this.#storage ||= useLocalStorage<PageHeadTabData[]>(`headerTabs:${useProfileState().value.id}`, []);
     }
 
     #normalizePath(path: string) {
@@ -82,6 +79,8 @@ export const pageHeadTabsController = new class {
                     }));
                 }
             });
+
+            watch(() => titleRef.value, () => this.save());
         }
 
         this.save();
@@ -89,18 +88,29 @@ export const pageHeadTabsController = new class {
     }
 
     load() {
-        this.#getStorage().value.forEach((pageHeadTabData) => {
-            this.#state.value.tabs.push(shallowReactive({
-                path: pageHeadTabData.path,
-                title: this.#state.value.titles[pageHeadTabData.path] ||= ref(pageHeadTabData.title),
-            }));
-        });
+        const storageData = globalThis.localStorage.getItem(this.#storageKey);
+        if (!storageData) return;
+        try {
+            (JSON.parse(storageData) as PageHeadTabData[]).forEach((pageHeadTabData) => {
+                this.#state.value.tabs.push(
+                    shallowReactive({
+                        path: pageHeadTabData.path,
+                        title: this.#state.value.titles[pageHeadTabData.path] ||= ref(pageHeadTabData.title),
+                    }),
+                );
+            });
+        } catch {}
     }
 
     save() {
-        this.#getStorage().value = this.#state.value.tabs.map((tab) => ({
-            path: tab.path,
-            title: tab.title.value,
-        }));
+        globalThis.localStorage.setItem(
+            this.#storageKey,
+            JSON.stringify(
+                this.#state.value.tabs.map((tab) => ({
+                    path: tab.path,
+                    title: tab.title.value,
+                })),
+            ),
+        );
     }
 }();
