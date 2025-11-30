@@ -16,12 +16,25 @@
             <i-fa6-solid-moon v-if="isDark" />
             <i-fa6-solid-sun v-else />
         </el-button>
-        <el-button
-            class="ml-1!"
-            @click="logout()"
+        <el-actions-dropdown
+            class="ml-1"
+            btn-size="default"
+            btn-text="操作"
+            btn-type="default"
         >
-            登出
-        </el-button>
+            <el-dropdown-item
+                class="justify-center"
+                @click="clearCache"
+            >
+                清除快取
+            </el-dropdown-item>
+            <el-dropdown-item
+                class="justify-center"
+                @click="logout()"
+            >
+                登出
+            </el-dropdown-item>
+        </el-actions-dropdown>
     </el-header>
 </template>
 
@@ -37,6 +50,21 @@ const isDark = computed(() => colorMode.preference === 'dark');
 
 // Functions
 const toggleDark = () => void (colorMode.preference = colorMode.preference === 'dark' ? 'light' : 'dark');
+
+async function clearCache() {
+    showLoadingAlert('清除中...');
+    await PublicApi.use().clearClientCache().catch(() => {});
+    showSuccessAlert(
+        '清除完成',
+        {
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            showConfirmButton: false,
+        },
+    );
+
+    setTimeout(() => globalThis.location.reload(), 1000);
+}
 
 function toggleTheme(event: MouseEvent) {
     const button = event.currentTarget as HTMLElement;
