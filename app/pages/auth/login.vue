@@ -48,17 +48,14 @@
                         @click="reloadVerCode"
                     >
                 </div>
-                <div class="mt-4 flex justify-center gap-1">
+                <div class="gap-btns mt-4 flex justify-center">
                     <el-button
                         class="md:hidden!"
                         @click="isLoginQrCodeDialogVisible = true"
                     >
                         QR Code登入
                     </el-button>
-                    <el-button
-                        class="ml-0!"
-                        native-type="submit"
-                    >
+                    <el-button native-type="submit">
                         {{ $t('login') }}
                     </el-button>
                 </div>
