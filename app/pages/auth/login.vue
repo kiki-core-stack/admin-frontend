@@ -1,10 +1,10 @@
 <template>
     <div>
         <Head>
-            <Title>{{ $t('login') }}</Title>
+            <Title>{{ $t('common.login') }}</Title>
         </Head>
         <h1 class="fs-32px">
-            總後台登入
+            {{ $t('pages.auth.login.title') }}
         </h1>
         <div class="mt-4 flex w-full items-center gap-8 md:px-8">
             <el-form
@@ -20,14 +20,14 @@
                     v-model="formData.account"
                     name="account"
                     prop="account"
-                    :label="$t('account')"
+                    :label="$t('common.account')"
                 />
                 <el-form-input
                     v-model="formData.password"
                     name="password"
                     prop="password"
                     type="password"
-                    :label="$t('password')"
+                    :label="$t('common.password')"
                 />
                 <div class="flex items-center">
                     <el-form-input
@@ -38,7 +38,7 @@
                         maxlength="4"
                         name="ver-code"
                         prop="verCode"
-                        :label="$t('verCode')"
+                        :label="$t('common.verCode')"
                     />
                     <img
                         class="ml-2 cursor-pointer"
@@ -53,10 +53,10 @@
                         class="md:hidden!"
                         @click="isLoginQrCodeDialogVisible = true"
                     >
-                        QR Code登入
+                        {{ $t('pages.auth.login.qrCodeLogin') }}
                     </el-button>
                     <el-button native-type="submit">
-                        {{ $t('login') }}
+                        {{ $t('common.login') }}
                     </el-button>
                 </div>
             </el-form>

@@ -8,7 +8,7 @@
             :size="btnSize"
             :type="btnType"
         >
-            {{ btnText ?? $t('actions') }}
+            {{ btnText ?? $t('common.actions') }}
         </el-action-btn>
         <template #dropdown>
             <el-dropdown-menu>

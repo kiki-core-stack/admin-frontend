@@ -15,12 +15,17 @@ export function createApiAxiosInstance(config?: CreateAxiosDefaults) {
         (error) => {
             if (!(error instanceof AxiosError)) throw error;
             if (!error.response) {
-                if (!error.config?.skipShowErrorMessage) ElNotification.error('請檢查網路連線');
+                if (!error.config?.skipShowErrorMessage) ElNotification.error(use$t('messages.pleaseCheckNetwork'));
                 return { error };
             }
 
             if (error.response.status === 401) assignUrlWithRedirectParamFromCurrentLocation('/auth/login/');
-            else if (!error.config?.skipShowErrorMessage) ElNotification.error(error.response.data.message || '系統錯誤');
+            else if (!error.config?.skipShowErrorMessage) {
+                ElNotification.error(
+                    use$t(`errors.apiResponse.code.${error.response.data.errorCode || 'internalServerError'}`),
+                );
+            }
+
             return Object.assign(error.response, { error });
         },
     );

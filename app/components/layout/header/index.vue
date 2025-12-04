@@ -19,8 +19,8 @@
         <el-actions-dropdown
             class="ml-1"
             btn-size="default"
-            btn-text="操作"
             btn-type="default"
+            :btn-text="$t('common.actions')"
         >
             <el-dropdown-item
                 class="justify-center"
@@ -32,7 +32,7 @@
                 class="justify-center"
                 @click="logout()"
             >
-                登出
+                {{ $t('common.logout') }}
             </el-dropdown-item>
         </el-actions-dropdown>
     </el-header>
