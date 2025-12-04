@@ -6,8 +6,8 @@ export default defineNuxtConfig({
     app: {
         head: {
             htmlAttrs: { lang: 'zh-Hant-TW' },
-            title: '後台管理系統',
-            titleTemplate: '%s｜後台管理系統',
+            title: '總後台',
+            titleTemplate: '%s｜總後台',
         },
         keepalive: true,
     },

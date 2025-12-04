@@ -7,7 +7,7 @@
             class="mr-4 mt-0.5 cursor-pointer md:hidden"
             @click="sidebarState.isShow = true"
         />
-        <span class="fs-20px">後台管理系統</span>
+        <span class="fs-20px">總後台系統</span>
         <div class="grow" />
         <el-button
             class="rounded-full! w-1"
