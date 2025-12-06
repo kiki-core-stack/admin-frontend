@@ -75,6 +75,6 @@ defineExpose({
     showError: (text: string, duration: false | number = 1000) => show('error', text, duration),
     showLoading: (text: string) => show('loading', text, false),
     showSuccess: (text: string, duration: false | number = 1000) => show('success', text, duration),
-    status,
+    status: readonly(status),
 });
 </script>
