@@ -73,7 +73,7 @@ export default defineNuxtConfig({
                     'blob:',
                 ],
             },
-            permissionsPolicy: { camera: ['self'] },
+            permissionsPolicy: { camera: ['"self"'] },
         },
     },
     ssr: false,
