@@ -163,6 +163,7 @@ import type {
     AnyRecord,
     Nullable,
 } from '@kikiutils/shared/types';
+import type { ComponentRef } from '@kikiutils/shared/types/vue';
 import type { Except } from 'type-fest';
 
 import type { PermissionPattern } from '@/types/permission';
@@ -229,10 +230,10 @@ const timeRangeEndAt = defineModel<Date>('timeRangeEnd', { default: () => new Da
 const timeRangeStartAt = defineModel<Date>('timeRangeStart', { default: () => new Date() });
 
 // Constants/Refs/Variables
-const autoReloadDataCountdownDropdownBtnRef = useTemplateRef('autoReloadDataCountdownDropdownBtnRef');
+const autoReloadDataCountdownDropdownBtnRef = ref<ComponentRef<'CountdownDropdownBtn'>>(null); // TODO: useTemplateRef
 const defaultFormData = cloneDeep(formData.value);
-const dialogStatusOverlayRef = useTemplateRef('dialogStatusOverlayRef');
-const formRef = useTemplateRef('formRef');
+const dialogStatusOverlayRef = ref<ComponentRef<'StatusOverlay'>>(null); // TODO: useTemplateRef
+const formRef = ref<ComponentRef<'ElForm'>>(null); // TODO: useTemplateRef
 const isDialogVisible = ref(false);
 const isEditing = ref(false);
 const isLoadingData = ref(false);
