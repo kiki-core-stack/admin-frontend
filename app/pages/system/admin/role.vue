@@ -32,7 +32,7 @@
                 <el-tree-select
                     v-model="formData.permissions"
                     size="large"
-                    :data="permissionTree"
+                    :data="permissionTreeNodes"
                     :max-collapse-tags="20"
                     clearable
                     collapse-tags
@@ -49,6 +49,7 @@
 import type { AdminRoleData } from '@kiki-core-stack/pack/types/data/admin';
 
 // Constants/Refs/Variables
+const { locale } = useI18n();
 const formData = ref<TablePageFormData<AdminRoleData>>({
     id: '',
     name: '',
@@ -56,11 +57,25 @@ const formData = ref<TablePageFormData<AdminRoleData>>({
 });
 
 const formRules: TablePageElFormRules<AdminRoleData> = { name: [createElFormItemRuleWithDefaults('請輸入名稱')] };
-const permissionTree = ref<ElTreeNode[]>([]);
+const permissionTreeNodes = ref<ElTreeNode[]>([]);
+
+// Functions
+async function loadPermissionTreeNodes() {
+    const response = await AdminPermissionApi.use().getTreeNodes();
+    permissionTreeNodes.value = response?.data?.data || [];
+    translatePermissionTreeNodes(permissionTreeNodes.value);
+}
+
+function translatePermissionTreeNodes(nodes: ElTreeNode[]) {
+    nodes.forEach((node) => {
+        if (node.children?.length) translatePermissionTreeNodes(node.children);
+        node.label = $t(`permissions.${node.label}`);
+    });
+}
 
 // Hooks
-onMounted(async () => {
-    const response = await AdminPermissionApi.use().getTree();
-    permissionTree.value = response?.data?.data || [];
-});
+onMounted(loadPermissionTreeNodes);
+
+// Watchers
+watch(() => locale.value, loadPermissionTreeNodes);
 </script>

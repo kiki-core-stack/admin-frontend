@@ -3,7 +3,7 @@ export class AdminPermissionApi extends BaseApi {
         super('/api/admin/admin/permission');
     }
 
-    getTree() {
-        return this.getRequest<ElTreeNode[]>('/tree');
+    getTreeNodes() {
+        return this.getRequest<ElTreeNode[]>('/tree-nodes');
     }
 }

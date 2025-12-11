@@ -27,7 +27,10 @@ export default defineNuxtConfig({
         locales: [
             {
                 code: 'zh-TW',
-                file: 'zh-TW.ts',
+                files: [
+                    'zh-TW/index.ts',
+                    'zh-TW/permissions.ts',
+                ],
                 name: '繁體中文',
             },
         ],

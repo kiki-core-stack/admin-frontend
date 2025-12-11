@@ -1,8 +1,14 @@
 import type { CommonApiResponseErrorCode } from '@kiki-core-stack/pack/hono-backend/types/api';
 
+import type {
+    AdminPermission,
+    AdminPermissionGroup,
+} from '@/generated/static/types/admin/permission';
 import type { ApiResponseErrorCode } from '@/types/api';
 
-export interface LocaleMessages {
+export type PermissionsLocaleMessages = Record<`permissions.${AdminPermission | AdminPermissionGroup}`, string>;
+
+export interface AppLocaleMessages {
     common: {
         account: string;
         actions: string;
@@ -28,7 +34,6 @@ export interface LocaleMessages {
         };
     };
 }
-
 declare module 'vue-i18n' {
-    export interface DefineLocaleMessage extends LocaleMessages {}
+    export interface DefineLocaleMessage extends AppLocaleMessages, PermissionsLocaleMessages {}
 }
