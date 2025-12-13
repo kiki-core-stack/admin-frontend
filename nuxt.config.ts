@@ -11,7 +11,6 @@ export default defineNuxtConfig({
         },
         keepalive: true,
     },
-    colorMode: { storage: 'localStorage' },
     compatibilityDate: '2100-01-01',
     css: ['@/assets/scss/index.scss'],
     devServer: {
@@ -81,16 +80,6 @@ export default defineNuxtConfig({
     },
     ssr: false,
     typescript: { tsConfig: { include: ['./vite-components.d.ts'] } },
-    unfonts: {
-        google: {
-            families: [
-                {
-                    name: 'Noto+Sans+TC',
-                    styles: 'wght@100..900',
-                },
-            ],
-        },
-    },
     vite: {
         plugins: [
             ViteComponents({
@@ -100,4 +89,6 @@ export default defineNuxtConfig({
         ],
         server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') },
     },
+    // eslint-disable-next-line style/max-len
+    vitePluginWebfontDl: { webfontUrls: ['https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap'] },
 });

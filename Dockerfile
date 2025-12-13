@@ -18,6 +18,7 @@ RUN apk update && \
 COPY ./.npmrc ./package.json ./pnpm-lock.yaml ./
 RUN --mount=id=pnpm-cache,target=/root/.cache/pnpm,type=cache \
     --mount=id=pnpm-store,target=/root/.local/share/pnpm/store,type=cache \
+    --mount=id=vite-cache,target=/app/node_modules/.vite/cache,type=cache \
     corepack enable pnpm && \
     pnpm i --frozen-lockfile --prod=false
 
