@@ -74,6 +74,10 @@ export default defineNuxtConfig({
                     `'self'`,
                     'blob:',
                 ],
+                'script-src-attr': [
+                    `'unsafe-hashes'`,
+                    `'sha256-nNExX8dGhf3ce7nlLMW210YbT1+ATSaoMpg5lf/l+Ng='`,
+                ],
             },
             permissionsPolicy: { camera: ['self'] },
         },
