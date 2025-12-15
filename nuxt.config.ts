@@ -13,10 +13,7 @@ export default defineNuxtConfig({
         host: process.env.DEV_SERVER_HOST,
         port: Number(process.env.DEV_SERVER_PORT) || undefined,
     },
-    kikiutilsNuxt: {
-        enabledModules: { security: true },
-        unoCss: { enabledResets: false },
-    },
+    kikiutilsNuxt: { enabledModules: { security: true } },
     modules: ['@kikiutils/nuxt'],
     nitro: { preset: process.env.NITRO_PRESET || 'node-cluster' },
     ssr: true,
