@@ -3,8 +3,9 @@
         class="dark:bg-dark py-2! flex flex-wrap items-center justify-between bg-white"
         height="unset"
     >
-        <i-fa6-solid-bars
+        <nuxt-icon
             class="mr-4 mt-0.5 cursor-pointer md:hidden"
+            name="fa6-solid:bars"
             @click="sidebarState.isShow = true"
         />
         <span class="fs-20px">總後台系統</span>
@@ -13,8 +14,14 @@
             class="rounded-full! w-1"
             @click="toggleTheme"
         >
-            <i-fa6-solid-moon v-if="isDark" />
-            <i-fa6-solid-sun v-else />
+            <nuxt-icon
+                v-if="isDark"
+                name="fa6-solid:moon"
+            />
+            <nuxt-icon
+                v-else
+                name="fa6-solid:sun"
+            />
         </el-button>
         <el-actions-dropdown
             class="ml-1"

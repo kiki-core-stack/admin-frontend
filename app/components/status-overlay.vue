@@ -8,17 +8,20 @@
             absolute,
         }"
     >
-        <i-mdi-error
+        <nuxt-icon
             v-if="status === 'error'"
             class="fs-3rem text-[#dc3545]"
+            name="mdi:error"
         />
-        <i-mdi-success
+        <nuxt-icon
             v-else-if="status === 'success'"
             class="fs-3rem text-[#198754]"
+            name="mdi:success"
         />
-        <i-line-md-loading-loop
+        <nuxt-icon
             v-else
             class="fs-3rem text-red"
+            name="line-md:loading-loop"
         />
         <p
             v-if="!hideText"

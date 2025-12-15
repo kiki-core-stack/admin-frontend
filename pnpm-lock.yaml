@@ -111,6 +111,9 @@ importers:
       '@kikiutils/stylelint-config':
         specifier: ^0.3.1
         version: 0.3.1(postcss-html@1.8.0)(postcss@8.5.6)(stylelint-order@7.0.0(stylelint@16.26.1(typescript@5.9.3)))(typescript@5.9.3)
+      '@nuxt/icon':
+        specifier: ^2.1.1
+        version: 2.1.1(magicast@0.5.1)(vite@7.2.7(jiti@2.6.1)(sass-embedded@1.96.0)(sass@1.96.0)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))
       '@nuxtjs/i18n':
         specifier: ^10.2.1
         version: 10.2.1(@vue/compiler-dom@3.5.25)(db0@0.3.4)(eslint@9.39.2(jiti@2.6.1))(ioredis@5.8.2)(magicast@0.5.1)(rollup@4.53.3)(vue@3.5.25(typescript@5.9.3))
@@ -147,12 +150,9 @@ importers:
       unocss:
         specifier: ^66.5.10
         version: 66.5.10(@unocss/webpack@66.5.10(webpack@5.103.0))(postcss@8.5.6)(vite@7.2.7(jiti@2.6.1)(sass-embedded@1.96.0)(sass@1.96.0)(terser@5.44.1)(yaml@2.8.2))
-      unplugin-icons:
-        specifier: ^22.5.0
-        version: 22.5.0(@vue/compiler-sfc@3.5.25)
-      unplugin-vue-components:
-        specifier: ^30.0.0
-        version: 30.0.0(@babel/parser@7.28.5)(@nuxt/kit@4.2.2(magicast@0.5.1))(vue@3.5.25(typescript@5.9.3))
+      vue-i18n:
+        specifier: ^11.2.2
+        version: 11.2.2(vue@3.5.25(typescript@5.9.3))
 
 packages:
 
@@ -871,11 +871,19 @@ packages:
   '@iconify-json/mdi@1.2.3':
     resolution: {integrity: sha512-O3cLwbDOK7NNDf2ihaQOH5F9JglnulNDFV7WprU2dSoZu3h3cWH//h74uQAB87brHmvFVxIOkuBX2sZSzYhScg==}
 
+  '@iconify/collections@1.0.629':
+    resolution: {integrity: sha512-1iT8HyMKpOvml6jxZDaW2dkdgzls4Ik7I/tn79hHqbPGWkNpIQsJSB3Dto+vAyboXLtsRvIKIwtSvfgrHR0HRw==}
+
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
 
   '@iconify/utils@3.1.0':
     resolution: {integrity: sha512-Zlzem1ZXhI1iHeeERabLNzBHdOa4VhQbqAcOQaMKuTuyZCpwKbC2R4Dd0Zo3g9EAc+Y4fiarO8HIHRAth7+skw==}
+
+  '@iconify/vue@5.0.0':
+    resolution: {integrity: sha512-C+KuEWIF5nSBrobFJhT//JS87OZ++QDORB6f2q2Wm6fl2mueSTpFBeBsveK0KW9hWiZ4mNiPjsh6Zs4jjdROSg==}
+    peerDependencies:
+      vue: '>=3'
 
   '@intlify/bundle-utils@11.0.3':
     resolution: {integrity: sha512-dURCDz1rQXwAb1+Hv4NDit6aZSRaAt4zUYBPEeaDCe3FSs8dMtdF6kEvgd9JwsYFSTAHcvbTs2CqwBjjt9Ltsw==}
@@ -1258,6 +1266,9 @@ packages:
     peerDependenciesMeta:
       '@vitejs/devtools':
         optional: true
+
+  '@nuxt/icon@2.1.1':
+    resolution: {integrity: sha512-KX991xA64ttUQYXnLFafOw8EYxmmGRtnd2z1P9PjMOeSxxLXxUL1v9fKH2njqtPkamiOI0fvthxfJpJ4uH71sw==}
 
   '@nuxt/kit@3.20.2':
     resolution: {integrity: sha512-laqfmMcWWNV1FsVmm1+RQUoGY8NIJvCRl0z0K8ikqPukoEry0LXMqlQ+xaf8xJRvoH2/78OhZmsEEsUBTXipcw==}
@@ -6070,29 +6081,6 @@ packages:
       vite:
         optional: true
 
-  unplugin-icons@22.5.0:
-    resolution: {integrity: sha512-MBlMtT5RuMYZy4TZgqUL2OTtOdTUVsS1Mhj6G1pEzMlFJlEnq6mhUfoIt45gBWxHcsOdXJDWLg3pRZ+YmvAVWQ==}
-    peerDependencies:
-      '@svgr/core': '>=7.0.0'
-      '@svgx/core': ^1.0.1
-      '@vue/compiler-sfc': ^3.0.2 || ^2.7.0
-      svelte: ^3.0.0 || ^4.0.0 || ^5.0.0
-      vue-template-compiler: ^2.6.12
-      vue-template-es2015-compiler: ^1.9.0
-    peerDependenciesMeta:
-      '@svgr/core':
-        optional: true
-      '@svgx/core':
-        optional: true
-      '@vue/compiler-sfc':
-        optional: true
-      svelte:
-        optional: true
-      vue-template-compiler:
-        optional: true
-      vue-template-es2015-compiler:
-        optional: true
-
   unplugin-remove@1.0.3:
     resolution: {integrity: sha512-BZMt9v8Y/Z27cY7YQv+DpcW928znjP1cqplBXOirbANiFQtM2YCdiyNAJhHCvjppT0lScNn1aDrQnXqnRp32pQ==}
 
@@ -6103,19 +6091,6 @@ packages:
   unplugin-utils@0.3.1:
     resolution: {integrity: sha512-5lWVjgi6vuHhJ526bI4nlCOmkCIF3nnfXkCMDeMJrtdvxTs6ZFCM8oNufGTsDbKv/tJ/xj8RpvXjRuPBZJuJog==}
     engines: {node: '>=20.19.0'}
-
-  unplugin-vue-components@30.0.0:
-    resolution: {integrity: sha512-4qVE/lwCgmdPTp6h0qsRN2u642tt4boBQtcpn4wQcWZAsr8TQwq+SPT3NDu/6kBFxzo/sSEK4ioXhOOBrXc3iw==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@babel/parser': ^7.15.8
-      '@nuxt/kit': ^3.2.2 || ^4.0.0
-      vue: 2 || 3
-    peerDependenciesMeta:
-      '@babel/parser':
-        optional: true
-      '@nuxt/kit':
-        optional: true
 
   unplugin-vue-router@0.16.2:
     resolution: {integrity: sha512-lE6ZjnHaXfS2vFI/PSEwdKcdOo5RwAbCKUnPBIN9YwLgSWas3x+qivzQvJa/uxhKzJldE6WK43aDKjGj9Rij9w==}
@@ -6774,7 +6749,7 @@ snapshots:
   '@babel/template@7.27.2':
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/parser': 7.28.5
+      '@babel/parser': 7.27.7
       '@babel/types': 7.28.5
 
   '@babel/traverse@7.27.7':
@@ -7202,6 +7177,10 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
+  '@iconify/collections@1.0.629':
+    dependencies:
+      '@iconify/types': 2.0.0
+
   '@iconify/types@2.0.0': {}
 
   '@iconify/utils@3.1.0':
@@ -7209,6 +7188,11 @@ snapshots:
       '@antfu/install-pkg': 1.1.0
       '@iconify/types': 2.0.0
       mlly: 1.8.0
+
+  '@iconify/vue@5.0.0(vue@3.5.25(typescript@5.9.3))':
+    dependencies:
+      '@iconify/types': 2.0.0
+      vue: 3.5.25(typescript@5.9.3)
 
   '@intlify/bundle-utils@11.0.3(vue-i18n@11.2.2(vue@3.5.25(typescript@5.9.3)))':
     dependencies:
@@ -7608,6 +7592,27 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
+      - vue
+
+  '@nuxt/icon@2.1.1(magicast@0.5.1)(vite@7.2.7(jiti@2.6.1)(sass-embedded@1.96.0)(sass@1.96.0)(terser@5.44.1)(yaml@2.8.2))(vue@3.5.25(typescript@5.9.3))':
+    dependencies:
+      '@iconify/collections': 1.0.629
+      '@iconify/types': 2.0.0
+      '@iconify/utils': 3.1.0
+      '@iconify/vue': 5.0.0(vue@3.5.25(typescript@5.9.3))
+      '@nuxt/devtools-kit': 3.1.1(magicast@0.5.1)(vite@7.2.7(jiti@2.6.1)(sass-embedded@1.96.0)(sass@1.96.0)(terser@5.44.1)(yaml@2.8.2))
+      '@nuxt/kit': 4.2.2(magicast@0.5.1)
+      consola: 3.4.2
+      local-pkg: 1.1.2
+      mlly: 1.8.0
+      ohash: 2.0.11
+      pathe: 2.0.3
+      picomatch: 4.0.3
+      std-env: 3.10.0
+      tinyglobby: 0.2.15
+    transitivePeerDependencies:
+      - magicast
+      - vite
       - vue
 
   '@nuxt/kit@3.20.2(magicast@0.5.1)':
@@ -13100,18 +13105,6 @@ snapshots:
       - postcss
       - supports-color
 
-  unplugin-icons@22.5.0(@vue/compiler-sfc@3.5.25):
-    dependencies:
-      '@antfu/install-pkg': 1.1.0
-      '@iconify/utils': 3.1.0
-      debug: 4.4.3
-      local-pkg: 1.1.2
-      unplugin: 2.3.11
-    optionalDependencies:
-      '@vue/compiler-sfc': 3.5.25
-    transitivePeerDependencies:
-      - supports-color
-
   unplugin-remove@1.0.3(rollup@4.53.3):
     dependencies:
       '@babel/core': 7.28.5
@@ -13134,23 +13127,6 @@ snapshots:
     dependencies:
       pathe: 2.0.3
       picomatch: 4.0.3
-
-  unplugin-vue-components@30.0.0(@babel/parser@7.28.5)(@nuxt/kit@4.2.2(magicast@0.5.1))(vue@3.5.25(typescript@5.9.3)):
-    dependencies:
-      chokidar: 4.0.3
-      debug: 4.4.3
-      local-pkg: 1.1.2
-      magic-string: 0.30.21
-      mlly: 1.8.0
-      tinyglobby: 0.2.15
-      unplugin: 2.3.11
-      unplugin-utils: 0.3.1
-      vue: 3.5.25(typescript@5.9.3)
-    optionalDependencies:
-      '@babel/parser': 7.28.5
-      '@nuxt/kit': 4.2.2(magicast@0.5.1)
-    transitivePeerDependencies:
-      - supports-color
 
   unplugin-vue-router@0.16.2(@vue/compiler-sfc@3.5.25)(typescript@5.9.3)(vue-router@4.6.4(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3)):
     dependencies:

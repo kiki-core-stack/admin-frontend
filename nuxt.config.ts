@@ -1,6 +1,3 @@
-import IconsResolver from 'unplugin-icons/resolver';
-import ViteComponents from 'unplugin-vue-components/vite';
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     app: {
@@ -35,6 +32,19 @@ export default defineNuxtConfig({
         ],
         strategy: 'no_prefix',
     },
+    icon: {
+        clientBundle: { scan: true },
+        componentName: 'NuxtIcon',
+        customCollections: [
+            {
+                dir: './app/assets/icons',
+                prefix: 'icon',
+                recursive: true,
+            },
+        ],
+        mode: 'svg',
+        provider: 'none',
+    },
     kikiutilsNuxt: {
         autoImportUtils: {
             '@kikiutils/shared': {
@@ -54,8 +64,8 @@ export default defineNuxtConfig({
     },
     modules: [
         '@kikiutils/nuxt',
+        '@nuxt/icon',
         '@nuxtjs/i18n',
-        'unplugin-icons/nuxt',
     ],
     plugins: [
         '@/plugins/auth-redirect',
@@ -89,15 +99,7 @@ export default defineNuxtConfig({
         wind3: false,
         wind4: true,
     },
-    vite: {
-        plugins: [
-            ViteComponents({
-                dts: '../.nuxt/vite-components.d.ts',
-                resolvers: [IconsResolver()],
-            }),
-        ],
-        server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') },
-    },
+    vite: { server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') } },
     // eslint-disable-next-line style/max-len
     vitePluginWebfontDl: { webfontUrls: ['https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap'] },
 });

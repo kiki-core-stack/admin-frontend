@@ -5,13 +5,16 @@
         height="unset"
     >
         <nuxt-link
-            class="relative"
+            class="relative flex items-center"
             active-class="active"
             to="/"
             @auxclick.middle.prevent
             @click.middle.prevent
         >
-            <i-fa6-solid-house class="fs-17.5px" />
+            <nuxt-icon
+                name="fa6-solid:house"
+                size="21px"
+            />
         </nuxt-link>
         <nuxt-link
             v-for="(tab, index) in pageHeadTabsState.tabs"
@@ -28,7 +31,7 @@
                 class="close-xmark flex-middle ml-2"
                 @click.prevent="pageHeadTabsController.close(index)"
             >
-                <i-mdi-close />
+                <nuxt-icon name="mdi:close" />
             </div>
         </nuxt-link>
         <context-menu
