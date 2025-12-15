@@ -61,7 +61,6 @@ export default defineNuxtConfig({
         '@/plugins/auth-redirect',
         '@/plugins/init-session',
     ],
-    postcss: { plugins: { 'postcss-pxtorem': {} } },
     robots: { disallow: '/' },
     security: {
         headers: {
