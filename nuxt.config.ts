@@ -20,10 +20,5 @@ export default defineNuxtConfig({
     modules: ['@kikiutils/nuxt'],
     nitro: { preset: process.env.NITRO_PRESET || 'node-cluster' },
     ssr: true,
-    unocss: {
-        preflight: true,
-        wind3: false,
-        wind4: true,
-    },
     vite: { server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') } },
 });
