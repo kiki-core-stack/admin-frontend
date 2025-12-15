@@ -94,11 +94,6 @@ export default defineNuxtConfig({
     },
     ssr: false,
     typescript: { tsConfig: { include: ['./vite-components.d.ts'] } },
-    unocss: {
-        preflight: true,
-        wind3: false,
-        wind4: true,
-    },
     vite: { server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') } },
     // eslint-disable-next-line style/max-len
     vitePluginWebfontDl: { webfontUrls: ['https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap'] },

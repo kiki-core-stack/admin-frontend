@@ -1,9 +1,11 @@
 import {
     defineConfig,
+    presetWind4,
     transformerDirectives,
 } from 'unocss';
 
 export default defineConfig({
+    presets: [presetWind4()],
     rules: [
         [
             /^fs-(\d+(\.\d+)?(px|rem))$/,
