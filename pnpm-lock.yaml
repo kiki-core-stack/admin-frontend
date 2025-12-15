@@ -80,6 +80,9 @@ importers:
       vue:
         specifier: ^3.5.25
         version: 3.5.25(typescript@5.9.3)
+      vue-i18n:
+        specifier: ^11.2.2
+        version: 11.2.2(vue@3.5.25(typescript@5.9.3))
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^6.7.1
@@ -150,9 +153,6 @@ importers:
       unocss:
         specifier: ^66.5.10
         version: 66.5.10(@unocss/webpack@66.5.10(webpack@5.103.0))(postcss@8.5.6)(vite@7.2.7(jiti@2.6.1)(sass-embedded@1.96.0)(sass@1.96.0)(terser@5.44.1)(yaml@2.8.2))
-      vue-i18n:
-        specifier: ^11.2.2
-        version: 11.2.2(vue@3.5.25(typescript@5.9.3))
 
 packages:
 

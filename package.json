@@ -37,7 +37,8 @@
     "query-string": "^9.3.1",
     "sweetalert2": "^11.26.10",
     "ua-parser-js": "^2.0.7",
-    "vue": "^3.5.25"
+    "vue": "^3.5.25",
+    "vue-i18n": "^11.2.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.7.1",
@@ -62,8 +63,7 @@
     "nuxt-vite-plugin-webfont-dl": "^0.1.2",
     "ts-unused-exports": "^11.0.1",
     "type-fest": "^5.3.1",
-    "unocss": "^66.5.10",
-    "vue-i18n": "^11.2.2"
+    "unocss": "^66.5.10"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
