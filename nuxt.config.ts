@@ -50,6 +50,7 @@ export default defineNuxtConfig({
             robots: true,
             security: true,
         },
+        unoCss: { enabledResets: false },
     },
     modules: [
         '@kikiutils/nuxt',
@@ -84,6 +85,11 @@ export default defineNuxtConfig({
     },
     ssr: false,
     typescript: { tsConfig: { include: ['./vite-components.d.ts'] } },
+    unocss: {
+        preflight: true,
+        wind3: false,
+        wind4: true,
+    },
     vite: {
         plugins: [
             ViteComponents({
