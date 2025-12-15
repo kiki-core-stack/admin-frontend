@@ -60,7 +60,6 @@ export default defineNuxtConfig({
             robots: true,
             security: true,
         },
-        unoCss: { enabledResets: false },
     },
     modules: [
         '@kikiutils/nuxt',
