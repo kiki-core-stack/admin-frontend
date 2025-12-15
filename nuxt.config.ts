@@ -13,10 +13,18 @@ export default defineNuxtConfig({
         host: process.env.DEV_SERVER_HOST,
         port: Number(process.env.DEV_SERVER_PORT) || undefined,
     },
-    kikiutilsNuxt: { enabledModules: { security: true } },
+    kikiutilsNuxt: {
+        enabledModules: { security: true },
+        unoCss: { enabledResets: false },
+    },
     modules: ['@kikiutils/nuxt'],
     nitro: { preset: process.env.NITRO_PRESET || 'node-cluster' },
     postcss: { plugins: { 'postcss-pxtorem': {} } },
     ssr: true,
+    unocss: {
+        preflight: true,
+        wind3: false,
+        wind4: true,
+    },
     vite: { server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') } },
 });
