@@ -31,7 +31,7 @@
         >
             <el-dropdown-item
                 class="justify-center"
-                @click="clearCache"
+                @click="pruneCache"
             >
                 清除快取
             </el-dropdown-item>
@@ -58,19 +58,10 @@ const isDark = computed(() => colorMode.preference === 'dark');
 // Functions
 const toggleDark = () => void (colorMode.preference = colorMode.preference === 'dark' ? 'light' : 'dark');
 
-async function clearCache() {
-    showLoadingAlert('清除中...');
+async function pruneCache() {
+    ElNotification.info('清除中...');
     await PublicApi.use().clearClientCache().catch(() => {});
-    showSuccessAlert(
-        '清除完成',
-        {
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-        },
-    );
-
-    setTimeout(() => globalThis.location.reload(), 1000);
+    ElNotification.success('清除完成');
 }
 
 function toggleTheme(event: MouseEvent) {
