@@ -25,6 +25,16 @@ export default defineNuxtConfig({
     kikiutilsNuxt: { enabledModules: { security: true } },
     modules: ['@kikiutils/nuxt'],
     nitro: { preset: process.env.NITRO_PRESET || 'node-cluster' },
+    security: {
+        headers: {
+            contentSecurityPolicy: {
+                'script-src-attr': [
+                    `'unsafe-hashes'`,
+                    `'sha256-nNExX8dGhf3ce7nlLMW210YbT1+ATSaoMpg5lf/l+Ng='`,
+                ],
+            },
+        },
+    },
     ssr: true,
     vite: { server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') } },
 });
