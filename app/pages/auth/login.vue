@@ -88,7 +88,7 @@ import type { AdminLoginFormData } from '@kiki-core-stack/pack/types/data/admin'
 import { useQRCode } from '@vueuse/integrations/useQRCode';
 import { CanceledError } from 'axios';
 
-import { initializeAppSession } from '@/libs/session';
+import { initializeAuthenticatedSession } from '@/libs/session';
 
 definePageMeta({
     keepalive: false,
@@ -138,7 +138,7 @@ async function handleLoginSuccess() {
     currentQrCodeLoginPollingAbortController?.abort();
     await updateProfileState();
     ElNotification.success('登入成功');
-    initializeAppSession();
+    initializeAuthenticatedSession();
     navigateTo(extractFirstValue(useRoute().query.redirect, '/'), { replace: true });
 }
 

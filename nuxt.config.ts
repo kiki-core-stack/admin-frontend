@@ -67,8 +67,9 @@ export default defineNuxtConfig({
         '@nuxtjs/i18n',
     ],
     plugins: [
+        '@/plugins/load-profile',
         '@/plugins/auth-redirect',
-        '@/plugins/init-session',
+        '@/plugins/initialize-session',
     ],
     robots: { disallow: '/' },
     security: {

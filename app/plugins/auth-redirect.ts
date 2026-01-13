@@ -1,6 +1,11 @@
-export default defineNuxtPlugin(async () => {
-    const isLoginPage = useRoute().fullPath.startsWith('/auth/login');
-    if ((await updateProfileState()).value.id) {
-        if (isLoginPage) window.location.assign(extractFirstValue(useRoute().query.redirect, '/'));
+const noLoginRequiredPathPrefixes = new Set([]);
+
+export default defineNuxtPlugin(() => {
+    const route = useRoute();
+    for (const prefix of noLoginRequiredPathPrefixes) if (route.fullPath.startsWith(prefix)) return;
+
+    const isLoginPage = route.fullPath.startsWith('/auth/login');
+    if (useProfileState().value.id) {
+        if (isLoginPage) globalThis.location.assign(extractFirstValue(route.query.redirect, '/'));
     } else if (!isLoginPage) assignUrlWithRedirectParamFromCurrentLocation('/auth/login');
 });
