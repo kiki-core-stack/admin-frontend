@@ -15,8 +15,13 @@ export default defineNuxtConfig({
         port: Number(process.env.DEV_SERVER_PORT) || undefined,
     },
     experimental: {
+        asyncContext: true,
+        browserDevtoolsTiming: true,
         extractAsyncDataHandlers: true,
+        navigationRepaint: true,
         typescriptPlugin: true,
+        viewTransition: true,
+        watcher: 'parcel',
     },
     i18n: {
         defaultLocale: 'zh-TW',
@@ -93,7 +98,6 @@ export default defineNuxtConfig({
         },
     },
     ssr: false,
-    typescript: { tsConfig: { include: ['./vite-components.d.ts'] } },
     vite: { server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') } },
     // eslint-disable-next-line style/max-len
     vitePluginWebfontDl: { webfontUrls: ['https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap'] },
