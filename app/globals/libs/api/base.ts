@@ -15,6 +15,14 @@ import { createApiAxiosInstance } from '@/libs/api/instance';
 const apiInstances = new WeakMap<new (...args: any[]) => any, Map<string, BaseApi>>();
 
 export class BaseApi {
+    // Private properties
+    readonly #rangeOperators = new Set([
+        '$gt',
+        '$gte',
+        '$lt',
+        '$lte',
+    ]);
+
     // Protected properties
     protected readonly axiosInstance: AxiosInstance;
 
@@ -41,16 +49,30 @@ export class BaseApi {
     protected buildQueryFilter(filter: AnyRecord) {
         filter = cloneDeep(filter);
         Object.entries(filter).forEach(([field, condition]) => {
-            if (condition === null) return;
+            if (condition === null || condition === undefined || (typeof condition === 'string' && !condition)) {
+                delete filter[field];
+                return;
+            }
+
             if (Array.isArray(condition)) {
                 if (!condition.length) delete filter[field];
                 return;
             }
 
+            if (condition instanceof Date) {
+                filter[field] = condition.toISOString();
+                return;
+            }
+
             if (typeof condition === 'object') {
                 Object.entries(condition).forEach(([operator, operand]) => {
+                    if (this.#rangeOperators.has(operator) && operand instanceof Date) {
+                        condition[operator] = operand.toISOString();
+                        return;
+                    }
+
                     if (operator === '$in') {
-                        if (!Array.isArray(operand) || operand.length === 0) delete condition[operator];
+                        if (!Array.isArray(operand) || !operand.length) delete condition[operator];
                         return;
                     }
 
@@ -58,10 +80,7 @@ export class BaseApi {
                 });
 
                 if (!Object.keys(condition).length) delete filter[field];
-                return;
             }
-
-            if (typeof condition === 'string' && !condition) delete filter[field];
         });
 
         return JSON.stringify(filter);
