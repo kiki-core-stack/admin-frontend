@@ -6,6 +6,6 @@ export class ProfileSecuritySessionApi extends BaseCrudApi<AdminSessionData> {
     }
 
     deleteAll() {
-        return this.deleteRequest('/delete-all');
+        return this.deleteRequest('/all');
     }
 }

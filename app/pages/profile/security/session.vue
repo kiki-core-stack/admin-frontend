@@ -7,9 +7,9 @@
         :crud-api="ProfileSecuritySessionApi.use()"
         :disable-row-delete-btn-rule="(row) => row.isCurrent"
         hide-add-data-btn
-        hide-created-at-column
         hide-edit-btn
         hide-footer
+        hide-timestamp-columns
     >
         <template #toolbar-actions-append>
             <el-button @click="isScanLoginQrCodeDialogVisible = true">
@@ -36,7 +36,10 @@
                 label="登入IP"
                 prop="loginIp"
             />
-            <el-table-datetime-column label="登入時間" />
+            <el-table-datetime-column
+                field="loggedAt"
+                label="登入時間"
+            />
         </template>
         <el-dialog
             v-model="isScanLoginQrCodeDialogVisible"
