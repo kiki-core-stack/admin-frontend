@@ -20,7 +20,6 @@ export default defineNuxtConfig({
         extractAsyncDataHandlers: true,
         navigationRepaint: true,
         typescriptPlugin: true,
-        viewTransition: true,
         watcher: 'parcel',
     },
     i18n: {
