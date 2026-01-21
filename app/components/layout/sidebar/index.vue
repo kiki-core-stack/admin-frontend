@@ -1,10 +1,12 @@
 <template>
     <el-menu
+        ref="elMenuRef"
         class="sidebar h-full w-[200px] py-[48px] tracking-[2px]"
         background-color="#252828"
         text-color="#fff"
         :default-active="route.path"
         router
+        @open="onMenuOpen"
     >
         <el-scrollbar>
             <layout-sidebar-menu-item
@@ -23,6 +25,7 @@ import { sidebarMenuItems } from '@/constants/sidebar';
 import type { SidebarMenuItem } from '@/types/sidebar';
 
 // Constants/Refs/Variables
+const elMenuRef = useTemplateRef('elMenuRef');
 const route = useRoute();
 
 // Computed properties
@@ -31,6 +34,21 @@ const processedMenuItems = computed(() => {
 });
 
 // Functions
+function onMenuOpen(_: string, paths: string[]) {
+    const el = elMenuRef.value?.$el as Element | undefined;
+    if (el) {
+        setTimeout(
+            () => {
+                el.querySelector(`[data-path="${paths.at(-1)}"]`)?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                });
+            },
+            250,
+        );
+    }
+}
+
 function processAccessibleMenuItems(menuItems: SidebarMenuItem[]) {
     for (let i = menuItems.length - 1; i >= 0; i--) {
         const menuItem = menuItems[i]!;

@@ -1,6 +1,7 @@
 <template>
     <el-sub-menu
         v-if="'children' in item"
+        :data-path="item.basePath"
         :index="item.basePath"
     >
         <template #title>
@@ -14,8 +15,10 @@
     </el-sub-menu>
     <el-menu-item
         v-else
+        ref="elMenuItemRef"
+        :data-path="item.path"
         :index="item.path"
-        @click="sidebarState.isShow = false"
+        @click="onMenuItemClick"
     >
         {{ item.title }}
     </el-menu-item>
@@ -32,5 +35,23 @@ interface Props {
 defineProps<Props>();
 
 // Constants/Refs/Variables
+const elMenuItemRef = useTemplateRef('elMenuItemRef');
 const sidebarState = useSidebarState();
+
+// Functions
+function onMenuItemClick() {
+    sidebarState.value.isShow = false;
+    const el = elMenuItemRef.value?.$el as Element | undefined;
+    if (el) {
+        setTimeout(
+            () => {
+                el.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                });
+            },
+            250,
+        );
+    }
+}
 </script>
