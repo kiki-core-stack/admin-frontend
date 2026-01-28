@@ -85,6 +85,7 @@
 
 <script lang="ts" setup>
 import type { AdminLoginFormData } from '@kiki-core-stack/pack/types/data/admin';
+import type { Nullable } from '@kikiutils/shared/types';
 import { useQRCode } from '@vueuse/integrations/useQRCode';
 import { CanceledError } from 'axios';
 
@@ -129,6 +130,7 @@ const qrCodeLoginImageSrc = useQRCode(
     },
 );
 
+let startQrCodeLoginPollingTimeout: Nullable<NodeJS.Timeout> = null;
 const statusOverlayRef = useTemplateRef('statusOverlayRef');
 const verCodeInputRef = useTemplateRef('verCodeInputRef');
 const verCodeSrc = ref('/api/ver-code');
@@ -171,6 +173,9 @@ function reloadVerCode() {
 }
 
 async function startQrCodeLoginPolling() {
+    if (startQrCodeLoginPollingTimeout) clearTimeout(startQrCodeLoginPollingTimeout);
+    startQrCodeLoginPollingTimeout = null;
+
     currentQrCodeLoginPollingAbortController?.abort();
     currentQrCodeLoginPollingAbortController = new AbortController();
     const response = await AuthApi.use().checkQrCodeLoginStatus(
@@ -190,7 +195,9 @@ async function startQrCodeLoginPolling() {
             await reloadLoginQrCodeAndStartPolling();
         } else {
             ElNotification.error(response?.data?.message || '系統錯誤');
-            return setTimeout(startQrCodeLoginPolling, 1000);
+            if (startQrCodeLoginPollingTimeout) clearTimeout(startQrCodeLoginPollingTimeout);
+            startQrCodeLoginPollingTimeout = setTimeout(startQrCodeLoginPolling, 1000);
+            return;
         }
     }
 
