@@ -1,5 +1,4 @@
 export {
-    cloneDeep,
     merge,
     omit,
     pick,

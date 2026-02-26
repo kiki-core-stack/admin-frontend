@@ -47,7 +47,7 @@ export class BaseApi {
 
     // Protected methods
     protected buildQueryFilter(filter: AnyRecord) {
-        filter = cloneDeep(filter);
+        filter = structuredClone(filter);
         Object.entries(filter).forEach(([field, condition]) => {
             if (condition === null || condition === undefined || (typeof condition === 'string' && !condition)) {
                 delete filter[field];

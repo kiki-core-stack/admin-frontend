@@ -231,7 +231,7 @@ const timeRangeStartAt = defineModel<Date>('timeRangeStart', { default: () => ne
 
 // Constants/Refs/Variables
 const autoReloadDataCountdownDropdownBtnRef = ref<ComponentRef<'CountdownDropdownBtn'>>(null); // TODO: useTemplateRef
-const defaultFormData = cloneDeep(formData.value);
+const defaultFormData = structuredClone(formData.value);
 const dialogStatusOverlayRef = ref<ComponentRef<'StatusOverlay'>>(null); // TODO: useTemplateRef
 const formRef = ref<ComponentRef<'ElForm'>>(null); // TODO: useTemplateRef
 const isDialogVisible = ref(false);
@@ -313,7 +313,7 @@ function openDialog(row?: TR) {
     dialogStatusOverlayRef.value?.hide();
     formRef.value?.resetFields();
     isEditing.value = row !== undefined;
-    formData.value = merge(cloneDeep(defaultFormData), row || {});
+    formData.value = merge(structuredClone(defaultFormData), row || {});
     props.beforeDialogOpen?.(row);
     isDialogVisible.value = true;
 }

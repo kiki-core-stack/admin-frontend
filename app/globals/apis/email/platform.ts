@@ -7,7 +7,7 @@ export class EmailPlatformApi extends BaseCrudApi<EmailPlatformData> {
     }
 
     override processCreateOrUpdateData(data: TablePageFormData<EmailPlatformData>) {
-        data = cloneDeep(data);
+        data = structuredClone(data);
         switch (data.serviceProvider) {
             case EmailServiceProvider.Smtp:
                 data.config = {
