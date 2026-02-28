@@ -30,7 +30,7 @@ const route = useRoute();
 
 // Computed properties
 const processedMenuItems = computed(() => {
-    return processAccessibleMenuItems(structuredClone(sidebarMenuItems) as WritableDeep<SidebarMenuItem[]>);
+    return processAccessibleMenuItems(cloneDeep(sidebarMenuItems) as WritableDeep<SidebarMenuItem[]>);
 });
 
 // Functions
