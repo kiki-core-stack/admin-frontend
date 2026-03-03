@@ -1,5 +1,6 @@
 import { antfu } from '@antfu/eslint-config';
 import { createBaseConfigs } from '@kikiutils/eslint-config/base';
+import { createVsCodeJsonConfigs } from '@kikiutils/eslint-config/json';
 import { createStyleFilesConfigs } from '@kikiutils/eslint-config/style';
 import { createVueConfig } from '@kikiutils/eslint-config/vue';
 
@@ -11,5 +12,6 @@ export default antfu(
     },
     createBaseConfigs(),
     createStyleFilesConfigs(),
+    createVsCodeJsonConfigs(),
     createVueConfig(),
 );
