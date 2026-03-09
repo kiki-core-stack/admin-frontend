@@ -3,16 +3,16 @@
   "private": true,
   "scripts": {
     "build": "dotenv -e ./.env.production.local -v NODE_ENV=production -- nuxt build",
-    "depcheck": "depcheck",
     "dev": "dotenv -e ./.env.development.local -v NODE_ENV=development -- pnpm run dev:internal",
     "dev:internal": "node generate-permission-files.ts && nuxt dev",
     "generate": "dotenv -e ./.env.production.local -v NODE_ENV=production -- nuxt generate",
+    "knip:deps": "knip --dependencies",
+    "knip:exports": "knip --exports",
     "lint": "eslint --max-warnings 0 && stylelint './app/**/*.{css,scss,vue}' -i ./.gitignore --mw 0",
     "lint:fix": "eslint --fix --max-warnings 0 && stylelint './app/**/*.{css,scss,vue}' -i ./.gitignore --fix --mw 0",
     "postinstall": "nuxt prepare",
     "preview": "nuxt preview",
-    "typecheck": "nuxt typecheck",
-    "unused-exports": "ts-unused-exports ./tsconfig.json"
+    "typecheck": "nuxt typecheck"
   },
   "dependencies": {
     "@element-plus/nuxt": "^1.1.5",
@@ -54,12 +54,11 @@
     "@types/micromatch": "^4.0.10",
     "@types/qrcode": "^1.5.6",
     "@unocss/nuxt": "^66.6.6",
-    "depcheck": "^1.4.7",
     "dotenv-cli": "^11.0.0",
     "eslint-plugin-format": "^2.0.1",
     "eslint-plugin-tailwindcss": "^3.18.2",
+    "knip": "^5.86.0",
     "nuxt-vite-plugin-webfont-dl": "^0.1.4",
-    "ts-unused-exports": "^11.0.1",
     "type-fest": "^5.4.4",
     "unocss": "^66.6.6",
     "vue-i18n": "^11.3.0"
