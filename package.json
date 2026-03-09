@@ -44,7 +44,7 @@
     "@iconify-json/fa6-solid": "^1.2.4",
     "@iconify-json/line-md": "^1.2.16",
     "@iconify-json/mdi": "^1.2.3",
-    "@kikiutils/eslint-config": "^7.0.1",
+    "@kikiutils/eslint-config": "^7.0.2",
     "@kikiutils/eslint-plugin-tailwindcss": "^3.19.0",
     "@kikiutils/eslint-plugin-vue": "^10.2.2",
     "@kikiutils/mongoose": "^7.0.1",
