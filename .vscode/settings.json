@@ -42,6 +42,7 @@
     "xml",
     "yaml"
   ],
+  "js/ts.experimental.useTsgo": false,
   "prettier.enable": false,
   "scss.validate": false,
   "stylelint.enable": true,
@@ -58,6 +59,5 @@
     "postcss",
     "scss",
     "vue"
-  ],
-  "typescript.experimental.useTsgo": false
+  ]
 }
