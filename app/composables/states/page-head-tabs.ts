@@ -9,8 +9,8 @@ export function usePageHeadTabsState() {
     return useState<PageHeadTabsState>(
         'pageHeadTabs',
         () => ({
-            tabs: [],
-            titles: shallowReactive({}),
+            tabs: shallowReactive([]),
+            titles: shallowReactive<Record<string, Ref<string>>>({}),
         }),
     );
 }
