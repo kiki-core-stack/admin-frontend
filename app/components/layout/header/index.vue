@@ -1,17 +1,17 @@
 <template>
     <el-header
-        class="dark:bg-dark py-2! flex flex-wrap items-center justify-between bg-white"
+        class="dark:bg-dark flex flex-wrap items-center justify-between bg-white py-2!"
         height="unset"
     >
         <nuxt-icon
-            class="mr-4 mt-0.5 cursor-pointer md:hidden"
+            class="mt-0.5 mr-4 cursor-pointer md:hidden"
             name="fa6-solid:bars"
             @click="sidebarState.isShow = true"
         />
         <span class="fs-20px">總後台系統</span>
         <div class="grow" />
         <el-button
-            class="rounded-full! w-1"
+            class="w-1 rounded-full!"
             @click="toggleTheme"
         >
             <nuxt-icon

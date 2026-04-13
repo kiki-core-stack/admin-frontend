@@ -1,7 +1,7 @@
 <template>
     <div
         v-if="status"
-        class="flex-middle z-10000 inset-0 size-full flex-col"
+        class="flex-middle inset-0 z-10000 size-full flex-col"
         :class="{
             'bg-white/70': !withoutBackground,
             'dark:bg-dark/80': !withoutBackground,

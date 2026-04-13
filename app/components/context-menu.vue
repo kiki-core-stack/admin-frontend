@@ -2,7 +2,7 @@
     <div
         v-if="isShow"
         ref="menuRef"
-        class="z-2000 fixed flex min-w-40 flex-col rounded bg-white py-2 dark:bg-[#18181b]"
+        class="fixed z-2000 flex min-w-40 flex-col rounded-sm bg-white py-2 dark:bg-[#18181b]"
         :style="{ top: `${menuY}px`, left: `${menuX}px` }"
     >
         <button

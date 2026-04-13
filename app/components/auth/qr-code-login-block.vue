@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col items-center">
-        <div class="bg-gray/40 dark:bg-light pointer-events-none select-none rounded-[10px] p-3">
+        <div class="bg-gray/40 dark:bg-light pointer-events-none rounded-[10px] p-3 select-none">
             <img :src="qrCodeImageSrc">
         </div>
         <p class="fs-24px mt-4">
