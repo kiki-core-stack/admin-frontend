@@ -39,9 +39,6 @@ importers:
       '@kikiutils/eslint-config':
         specifier: ^9.0.1
         version: 9.0.1(@eslint/css@1.1.0)(@typescript-eslint/rule-tester@8.59.0(eslint@9.39.4(jiti@2.6.1))(typescript@6.0.3))(@typescript-eslint/typescript-estree@8.59.0(typescript@6.0.3))(@typescript-eslint/utils@8.59.0(eslint@9.39.4(jiti@2.6.1))(typescript@6.0.3))(@vue/compiler-sfc@3.5.32)(eslint-plugin-better-tailwindcss@4.4.1(@eslint/css@1.1.0)(eslint@9.39.4(jiti@2.6.1))(tailwindcss@4.2.3)(typescript@6.0.3))(eslint-plugin-format@2.0.1(eslint@9.39.4(jiti@2.6.1)))(eslint@9.39.4(jiti@2.6.1))(tailwind-csstree@0.3.1(@eslint/css@1.1.0))(tailwindcss@4.2.3)(typescript@6.0.3)(vue-eslint-parser@10.4.0(eslint@9.39.4(jiti@2.6.1)))
-      '@kikiutils/eslint-plugin-vue':
-        specifier: ^10.2.2
-        version: 10.2.2(eslint@9.39.4(jiti@2.6.1))(vue-eslint-parser@10.4.0(eslint@9.39.4(jiti@2.6.1)))
       '@kikiutils/stylelint-config':
         specifier: ^0.4.1
         version: 0.4.1(postcss-html@1.8.1)(postcss@8.5.10)(stylelint-order@8.1.1(stylelint@17.8.0(typescript@6.0.3)))(typescript@6.0.3)
@@ -724,13 +721,6 @@ packages:
         optional: true
       vue-eslint-parser:
         optional: true
-
-  '@kikiutils/eslint-plugin-vue@10.2.2':
-    resolution: {integrity: sha512-vNcqjcdQJy7m0GW9LD3w0nIc0yKrJVXZZqlAJ2B35oqArbjiYHAbSDklUxM2rJbrD49La0Q3A9dVBASbuHUMBw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
-      vue-eslint-parser: ^10.0.0
 
   '@kikiutils/nuxt@11.0.0':
     resolution: {integrity: sha512-/FURyl/DMPwXPizzrgLfoMQ2hZLDlkkZEK32b+JBnDVLhO5VgVMsU13OfRiSWmXff3CUFjQQf8TAyaOK2lGksA==}
@@ -2747,8 +2737,8 @@ packages:
       bare-events:
         optional: true
 
-  bare-url@2.4.1:
-    resolution: {integrity: sha512-fZapLWNB25gS+etK27NV9KgBNXgo2yeYHuj+OyPblQd6GYAE3JVy6aKxszMV5jhGGFwraXQKA5fldvf3lMyEqw==}
+  bare-url@2.4.2:
+    resolution: {integrity: sha512-/9a2j4ac6ckpmAHvod/ob7x439OAHst/drc2Clnq+reRYd/ovddwcF4LfoxHyNk5AuGBnPg+HqFjmE/Zpq6v0A==}
 
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
@@ -4820,10 +4810,6 @@ packages:
     peerDependencies:
       postcss: ^8.4.29
 
-  postcss-selector-parser@6.1.2:
-    resolution: {integrity: sha512-Q8qQfPiZ+THO/3ZrOrO0cJJKfpYCagtMUkXbnEfmgUjwXg6z/WBeOyS9APBBPCTSiDV+s4SwQGu8yFsiMRIudg==}
-    engines: {node: '>=4'}
-
   postcss-selector-parser@7.1.1:
     resolution: {integrity: sha512-orRsuYpJVw8LdAwqqLykBj9ecS5/cRHlI5+nvTo8LcCKmzDmqVORXtOIYEEQuL9D4BxtA1lm5isAqzQZCoQ6Eg==}
     engines: {node: '>=4'}
@@ -6604,17 +6590,6 @@ snapshots:
       - svelte-eslint-parser
       - typescript
       - vitest
-
-  '@kikiutils/eslint-plugin-vue@10.2.2(eslint@9.39.4(jiti@2.6.1))(vue-eslint-parser@10.4.0(eslint@9.39.4(jiti@2.6.1)))':
-    dependencies:
-      '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.4(jiti@2.6.1))
-      eslint: 9.39.4(jiti@2.6.1)
-      natural-compare: 1.4.0
-      nth-check: 2.1.1
-      postcss-selector-parser: 6.1.2
-      semver: 7.7.4
-      vue-eslint-parser: 10.4.0(eslint@9.39.4(jiti@2.6.1))
-      xml-name-validator: 4.0.0
 
   '@kikiutils/nuxt@11.0.0(ba9ad52ebacd18f0138bcb2b57edb4be)':
     dependencies:
@@ -8485,7 +8460,7 @@ snapshots:
       bare-events: 2.8.2
       bare-path: 3.0.0
       bare-stream: 2.13.0(bare-events@2.8.2)
-      bare-url: 2.4.1
+      bare-url: 2.4.2
       fast-fifo: 1.3.2
     transitivePeerDependencies:
       - bare-abort-controller
@@ -8506,7 +8481,7 @@ snapshots:
     transitivePeerDependencies:
       - react-native-b4a
 
-  bare-url@2.4.1:
+  bare-url@2.4.2:
     dependencies:
       bare-path: 3.0.0
 
@@ -11179,11 +11154,6 @@ snapshots:
   postcss-scss@4.0.9(postcss@8.5.10):
     dependencies:
       postcss: 8.5.10
-
-  postcss-selector-parser@6.1.2:
-    dependencies:
-      cssesc: 3.0.0
-      util-deprecate: 1.0.2
 
   postcss-selector-parser@7.1.1:
     dependencies:
