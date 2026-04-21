@@ -96,7 +96,7 @@ export default defineNuxtConfig({
             permissionsPolicy: { camera: ['self'] },
         },
     },
-    ssr: true,
+    ssr: false,
     unfonts: {
         google: {
             families: [
