@@ -23,8 +23,7 @@ RUN --mount=id=pnpm-cache,target=/root/.cache/pnpm,type=cache \
 
 ## Copy source files and build-related files, then build the app
 COPY --exclude=./docker-entrypoint.sh ./ ./
-RUN --mount=id=vite-cache,target=/app/node_modules/.cache/vite,type=cache \
-    pnpm run lint && \
+RUN pnpm run lint && \
     pnpm run typecheck && \
     pnpm run generate
 
