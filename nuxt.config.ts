@@ -41,7 +41,7 @@ export default defineNuxtConfig({
             families: [
                 // {
                 //     name: 'Noto+Sans+TC',
-                //     styles: 'wght@100..900&display=swap',
+                //     styles: 'wght@100..900',
                 // },
             ],
         },
