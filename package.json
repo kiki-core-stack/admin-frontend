@@ -69,8 +69,10 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@parcel/watcher",
-      "esbuild",
-      "vue-demi"
-    ]
+      "esbuild"
+    ],
+    "overrides": {
+      "unimport": "6.0.2"
+    }
   }
 }

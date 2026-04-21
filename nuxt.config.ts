@@ -90,14 +90,23 @@ export default defineNuxtConfig({
                 ],
                 'script-src-attr': [
                     `'unsafe-hashes'`,
-                    `'sha256-nNExX8dGhf3ce7nlLMW210YbT1+ATSaoMpg5lf/l+Ng='`,
+                    `'sha256-F1noxsLOnJhyRSgc0zu5JgzoLjG2BBMaXaSG24k2mRM='`,
                 ],
             },
             permissionsPolicy: { camera: ['self'] },
         },
     },
-    ssr: false,
+    ssr: true,
+    unfonts: {
+        google: {
+            families: [
+                {
+                    name: 'Noto+Sans+TC',
+                    styles: 'wght@100..900&display=swap',
+                },
+            ],
+        },
+        inlineFontFace: false,
+    },
     vite: { server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') } },
-    // eslint-disable-next-line style/max-len
-    vitePluginWebfontDl: { webfontUrls: ['https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap'] },
 });
