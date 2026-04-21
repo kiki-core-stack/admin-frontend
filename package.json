@@ -46,7 +46,6 @@
     "@iconify-json/line-md": "^1.2.16",
     "@iconify-json/mdi": "^1.2.3",
     "@kikiutils/eslint-config": "^9.0.1",
-    "@kikiutils/eslint-plugin-vue": "^10.2.2",
     "@kikiutils/mongoose": "^7.0.1",
     "@kikiutils/stylelint-config": "^0.4.1",
     "@nuxt/icon": "^2.2.1",
