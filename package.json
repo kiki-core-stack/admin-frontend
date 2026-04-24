@@ -16,7 +16,7 @@
   "dependencies": {
     "@kikiutils/nuxt": "^11.0.0",
     "@kikiutils/shared": "^15.0.2",
-    "@nuxtjs/robots": "^6.0.7",
+    "@nuxtjs/robots": "^6.0.8",
     "@vueuse/nuxt": "^14.2.1",
     "nuxt": "^4.4.2",
     "nuxt-security": "^2.5.1"
@@ -24,15 +24,16 @@
   "devDependencies": {
     "@antfu/eslint-config": "^8.2.0",
     "@eslint/css": "^1.1.0",
+    "@html-eslint/parser": "^0.59.0",
     "@kikiutils/eslint-config": "^9.0.1",
     "@kikiutils/stylelint-config": "^0.4.1",
     "@unocss/nuxt": "^66.6.8",
     "dotenv-cli": "^11.0.0",
     "eslint-plugin-better-tailwindcss": "^4.4.1",
     "eslint-plugin-format": "^2.0.1",
-    "knip": "^6.6.0",
+    "knip": "^6.6.2",
     "tailwind-csstree": "^0.3.1",
-    "tailwindcss": "^4.2.3",
+    "tailwindcss": "^4.2.4",
     "unocss": "^66.6.8",
     "unplugin-fonts": "^2.0.0",
     "vue-eslint-parser": "^10.4.0"
