@@ -10,7 +10,7 @@ cd "${SCRIPTS_DIR}"
 
 # Pull images
 docker pull docker/dockerfile:labs &
-docker pull node:24-slim &
+docker pull node:26-slim &
 wait
 
 # Build and run

@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:labs
 
 # Build stage
-FROM node:24-slim AS build-stage
+FROM node:26-slim AS build-stage
 
 ## Set args, envs and workdir
 ARG NPM_CONFIG_REGISTRY
@@ -28,7 +28,7 @@ RUN pnpm run lint && \
     pnpm run build
 
 # Runtime stage
-FROM node:24-slim
+FROM node:26-slim
 
 ## Set envs and workdir
 ENV NODE_ENV='production' \
