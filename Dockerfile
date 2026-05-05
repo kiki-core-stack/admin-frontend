@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:labs
 
 # Build stage
-FROM node:24-alpine AS build-stage
+FROM node:26-alpine AS build-stage
 
 ## Set args, envs and workdir
 ARG NPM_CONFIG_REGISTRY
