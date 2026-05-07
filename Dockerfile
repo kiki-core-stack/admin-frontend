@@ -10,15 +10,15 @@ ENV NODE_ENV='production' \
 
 WORKDIR /app
 
-## Upgrade packages
+## Upgrade packages and install pnpm
 RUN apk update && \
-    apk upgrade
+    apk upgrade && \
+    npm i -g pnpm@latest
 
 ## Copy package-related files and install dependencies
 COPY ./.npmrc ./package.json ./pnpm-lock.yaml ./
 RUN --mount=id=pnpm-cache,target=/root/.cache/pnpm,type=cache \
     --mount=id=pnpm-store,target=/root/.local/share/pnpm/store,type=cache \
-    corepack enable pnpm && \
     pnpm i --frozen-lockfile --prod=false
 
 ## Copy source files and build-related files, then build the app
