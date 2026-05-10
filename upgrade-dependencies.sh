@@ -6,7 +6,7 @@ SCRIPTS_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 cd "${SCRIPTS_DIR}"
 
 . ./.env.development.local
-export NPM_CONFIG_REGISTRY
+export PNPM_CONFIG_REGISTRY
 
 rm -rf ./.nuxt
 [[ " $@ " =~ ' -c ' ]] && rm -rf ./node_modules ./pnpm-lock.yaml

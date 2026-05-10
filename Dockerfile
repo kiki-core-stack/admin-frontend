@@ -4,9 +4,9 @@
 FROM node:26-alpine AS build-stage
 
 ## Set args, envs and workdir
-ARG NPM_CONFIG_REGISTRY
-ENV NODE_ENV='production' \
-    NPM_CONFIG_REGISTRY="${NPM_CONFIG_REGISTRY}"
+ARG PNPM_CONFIG_REGISTRY
+ENV PNPM_CONFIG_REGISTRY="${PNPM_CONFIG_REGISTRY}" \
+    NODE_ENV='production'
 
 WORKDIR /app
 

@@ -18,8 +18,8 @@
     "@element-plus/nuxt": "^1.1.5",
     "@kiki-core-stack/pack": "^0.94.4",
     "@kikiutils/micromatch": "^4.0.9",
-    "@kikiutils/nuxt": "^11.0.0",
-    "@kikiutils/shared": "^15.0.2",
+    "@kikiutils/nuxt": "^11.0.1",
+    "@kikiutils/shared": "^15.0.3",
     "@nuxtjs/color-mode": "^4.0.0",
     "@nuxtjs/robots": "^6.0.8",
     "@sylke/email-validation": "^1.0.0",
@@ -27,7 +27,7 @@
     "@vueuse/nuxt": "^14.3.0",
     "axios": "^1.16.0",
     "date-fns": "^4.1.0",
-    "element-plus": "^2.13.7",
+    "element-plus": "^2.14.0",
     "es-toolkit": "^1.46.1",
     "html5-qrcode": "^2.3.8",
     "nanoid": "^5.1.11",
@@ -37,7 +37,7 @@
     "query-string": "^9.3.1",
     "sweetalert2": "^11.26.24",
     "ua-parser-js": "^2.0.9",
-    "vue": "^3.5.33"
+    "vue": "^3.5.34"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^8.2.0",
@@ -48,9 +48,9 @@
     "@iconify-json/mdi": "^1.2.3",
     "@kikiutils/eslint-config": "^9.1.2",
     "@kikiutils/eslint-plugin-vue": "^10.9.1",
-    "@kikiutils/mongoose": "^7.0.1",
+    "@kikiutils/mongoose": "^7.0.2",
     "@kikiutils/stylelint-config": "^0.4.1",
-    "@nuxt/icon": "^2.2.1",
+    "@nuxt/icon": "^2.2.2",
     "@nuxtjs/i18n": "^10.3.0",
     "@types/micromatch": "^4.0.10",
     "@types/qrcode": "^1.5.6",
@@ -58,22 +58,13 @@
     "dotenv-cli": "^11.0.0",
     "eslint-plugin-better-tailwindcss": "^4.5.0",
     "eslint-plugin-format": "^2.0.1",
-    "knip": "^6.11.0",
+    "knip": "^6.12.1",
     "tailwind-csstree": "^0.3.1",
-    "tailwindcss": "^4.2.4",
+    "tailwindcss": "^4.3.0",
     "type-fest": "^5.6.0",
     "unocss": "^66.6.8",
     "unplugin-fonts": "^2.0.0",
     "vue-eslint-parser": "^10.4.0",
-    "vue-i18n": "^11.4.0"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "esbuild"
-    ],
-    "overrides": {
-      "unimport": "6.0.2"
-    }
+    "vue-i18n": "^11.4.2"
   }
 }
