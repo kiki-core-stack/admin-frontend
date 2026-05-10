@@ -16,7 +16,7 @@ RUN apt-get update && \
     npm i -g pnpm@latest
 
 ## Copy package-related files and install dependencies
-COPY ./.npmrc ./package.json ./pnpm-lock.yaml ./
+COPY ./package.json ./pnpm-lock.yaml ./
 RUN --mount=id=pnpm-cache,target=/root/.cache/pnpm,type=cache \
     --mount=id=pnpm-store,target=/root/.local/share/pnpm/store,type=cache \
     pnpm i --frozen-lockfile --prod=false
