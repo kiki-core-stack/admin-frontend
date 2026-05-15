@@ -141,7 +141,7 @@ async function handleLoginSuccess() {
     await updateProfileState();
     ElNotification.success('登入成功');
     initializeAuthenticatedSession();
-    navigateTo(extractFirstValue(useRoute().query.redirect, '/'), { replace: true });
+    navigateTo(normalizeRedirectPath(useRoute().query.redirect), { replace: true });
 }
 
 async function login() {
