@@ -5,8 +5,8 @@ FROM node:26-slim AS build-stage
 
 ## Set args, envs and workdir
 ARG PNPM_CONFIG_REGISTRY
-ENV PNPM_CONFIG_REGISTRY="${PNPM_CONFIG_REGISTRY}" \
-    NODE_ENV='production'
+ENV NODE_ENV='production' \
+    PNPM_CONFIG_REGISTRY="${PNPM_CONFIG_REGISTRY}"
 
 WORKDIR /app
 
