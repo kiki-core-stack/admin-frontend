@@ -8,3 +8,4 @@ trustPolicy: no-downgrade
 trustPolicyExclude:
   - chokidar@4.0.3
   - semver@6.3.1
+  - tinyexec@1.2.2
