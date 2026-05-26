@@ -61,10 +61,8 @@ const formRules: ElFormRules<ProfileSecurityChangePasswordFormData> = {
     confirmPassword: [
         createElFormItemRuleWithDefaults('請輸入確認密碼'),
         {
-            validator(_, value, callback) {
-                if (value !== formData.value.newPassword) return callback('確認密碼與新密碼不一致');
-                return callback();
-            },
+            message: '確認密碼與新密碼不一致',
+            validator: (_, value) => value === formData.value.newPassword,
         },
     ],
     newPassword: [

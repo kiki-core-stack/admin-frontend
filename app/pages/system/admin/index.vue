@@ -22,7 +22,7 @@
             <el-table-confirmable-status-switch-column
                 field="enabled"
                 label="啟用"
-                :confirm-message="(row) => `是否切換管理員 ${row.account} 的啟用狀態？`"
+                :confirm-message="(row) => `是否切換 ${row.account} 的啟用狀態？`"
                 :crud-api="AdminApi.use()"
                 :disabled-condition="(row) => !dataTablePageRef?.capabilities.toggle || row.id === profileState.id"
                 @status-change="dataTablePageRef?.loadData()"
@@ -123,10 +123,8 @@ const formConfirmPasswordFieldItemRules = computed<FormItemRule[]>(() => [
         required: !formData.value.id || !!formData.value.password,
     },
     {
-        validator(_, value, callback) {
-            if (value !== formData.value.password) return callback('確認密碼與密碼不一致');
-            return callback();
-        },
+        message: '確認密碼與密碼不一致',
+        validator: (_, value) => value === formData.value.password,
     },
 ]);
 </script>
