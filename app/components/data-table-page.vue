@@ -159,11 +159,9 @@
     setup
 >
 import type { TableRowData } from '@kiki-core-stack/pack/types/data';
-import type {
-    AnyRecord,
-    Nullable,
-} from '@kikiutils/shared/types';
+import type { AnyRecord } from '@kikiutils/shared/types';
 import type { ComponentRef } from '@kikiutils/shared/types/vue';
+import type { TableSortOrder } from 'element-plus/es/components/table/src/table/defaults';
 import type { Except } from 'type-fest';
 
 import type { PermissionPattern } from '@/types/permission';
@@ -172,8 +170,8 @@ type ControlActionBtnFunction = (row: TR) => boolean | undefined;
 
 interface OnSortChangeData {
     column: any;
-    order: Nullable<'ascending' | 'descending'>;
-    prop: string;
+    order: null | TableSortOrder;
+    prop: null | string;
 }
 
 interface Props {
@@ -303,7 +301,7 @@ async function loadData() {
 }
 
 async function onSortChange(data: OnSortChangeData) {
-    if (data.order === 'ascending') sortQueryParam.value = data.prop;
+    if (data.order === 'ascending') sortQueryParam.value = data.prop ?? undefined;
     else if (data.order === 'descending') sortQueryParam.value = `-${data.prop}`;
     else sortQueryParam.value = undefined;
     await loadData();
@@ -348,7 +346,7 @@ defineExpose({
 });
 
 // Init
-if (props.defaultSort?.order === 'ascending') sortQueryParam.value = props.defaultSort.prop;
+if (props.defaultSort?.order === 'ascending') sortQueryParam.value = props.defaultSort.prop ?? undefined;
 else if (props.defaultSort?.order === 'descending') sortQueryParam.value = `-${props.defaultSort.prop}`;
 </script>
 

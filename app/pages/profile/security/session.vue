@@ -22,7 +22,7 @@
         <template #table>
             <el-table-column
                 label="裝置"
-                :formatter="(row) => parseDataToDeviceColumnText(row)"
+                :formatter="(row: AdminSessionData) => parseDataToDeviceColumnText(row)"
             />
             <el-table-column
                 label="最後活動IP"
