@@ -160,7 +160,6 @@
 >
 import type { TableRowData } from '@kiki-core-stack/pack/types/data';
 import type { AnyRecord } from '@kikiutils/shared/types';
-import type { ComponentRef } from '@kikiutils/shared/types/vue';
 import type { TableSortOrder } from 'element-plus/es/components/table/src/table/defaults';
 import type { Except } from 'type-fest';
 
@@ -228,10 +227,10 @@ const timeRangeEndAt = defineModel<Date>('timeRangeEnd', { default: () => new Da
 const timeRangeStartAt = defineModel<Date>('timeRangeStart', { default: () => new Date() });
 
 // Constants/Refs/Variables
-const autoReloadDataCountdownDropdownBtnRef = ref<ComponentRef<'CountdownDropdownBtn'>>(null); // TODO: useTemplateRef
+const autoReloadDataCountdownDropdownBtnRef = useTemplateRef('autoReloadDataCountdownDropdownBtnRef');
 const defaultFormData = cloneDeep(formData.value);
-const dialogStatusOverlayRef = ref<ComponentRef<'StatusOverlay'>>(null); // TODO: useTemplateRef
-const formRef = ref<ComponentRef<'ElForm'>>(null); // TODO: useTemplateRef
+const dialogStatusOverlayRef = useTemplateRef('dialogStatusOverlayRef');
+const formRef = useTemplateRef('formRef');
 const isDialogVisible = ref(false);
 const isEditing = ref(false);
 const isLoadingData = ref(false);
