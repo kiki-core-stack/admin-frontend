@@ -45,7 +45,7 @@
             <el-form-input
                 v-model="formData.name"
                 label="名稱"
-                maxlength="32"
+                maxlength="64"
                 prop="name"
             />
             <el-form-item
