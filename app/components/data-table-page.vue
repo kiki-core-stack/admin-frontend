@@ -166,6 +166,7 @@ import type { Except } from 'type-fest';
 import type { PermissionPattern } from '@/types/permission';
 
 type ControlActionBtnFunction = (row: TR) => boolean | undefined;
+type MergeableRecord = Record<PropertyKey, any>;
 
 interface OnSortChangeData {
     column: any;
@@ -222,7 +223,7 @@ const props = withDefaults(
     },
 );
 
-const formData = defineModel<FD>('formData', { default: { id: '' } });
+const formData = defineModel<FD>('formData', { default: () => ({ id: '' } as FD) });
 const timeRangeEndAt = defineModel<Date>('timeRangeEnd', { default: () => new Date() });
 const timeRangeStartAt = defineModel<Date>('timeRangeStart', { default: () => new Date() });
 
@@ -242,7 +243,7 @@ const paginationParams = ref({
 
 const pageTitle = pageHeadTabsController.registerCurrentPageHeadTab(props.title);
 const sortQueryParam = ref<string | undefined>(undefined);
-const tableData = ref<TableRowData[]>([]);
+const tableData = ref<TR[]>([]);
 const totalTableDataCount = ref(0);
 
 // Computed properties
@@ -299,6 +300,10 @@ async function loadData() {
     autoReloadDataCountdownDropdownBtnRef.value?.start();
 }
 
+function mergeFormData<FD extends TableRowData, TR extends TableRowData>(defaultData: FD, row?: TR) {
+    return merge(cloneDeep(defaultData) as MergeableRecord, (row ?? {}) as MergeableRecord) as FD;
+}
+
 async function onSortChange(data: OnSortChangeData) {
     if (data.order === 'ascending') sortQueryParam.value = data.prop ?? undefined;
     else if (data.order === 'descending') sortQueryParam.value = `-${data.prop}`;
@@ -310,7 +315,7 @@ function openDialog(row?: TR) {
     dialogStatusOverlayRef.value?.hide();
     formRef.value?.resetFields();
     isEditing.value = row !== undefined;
-    formData.value = merge(cloneDeep(defaultFormData), row || {});
+    formData.value = mergeFormData(defaultFormData, row);
     props.beforeDialogOpen?.(row);
     isDialogVisible.value = true;
 }
