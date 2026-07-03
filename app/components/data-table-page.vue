@@ -56,6 +56,7 @@
                         field="updatedAt"
                         label="更新時間"
                     />
+                    <!-- @vue-generic {TR} -->
                     <el-table-column
                         v-if="!hideActionsColumn"
                         align="center"
