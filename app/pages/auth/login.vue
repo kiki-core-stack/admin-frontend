@@ -85,7 +85,6 @@
 
 <script lang="ts" setup>
 import type { AdminLoginFormData } from '@kiki-core-stack/pack/types/data/admin';
-import type { Nullable } from '@kikiutils/shared/types';
 import { useQRCode } from '@vueuse/integrations/useQRCode';
 import { CanceledError } from 'axios';
 
@@ -130,7 +129,7 @@ const qrCodeLoginImageSrc = useQRCode(
     },
 );
 
-let startQrCodeLoginPollingTimeout: Nullable<NodeJS.Timeout> = null;
+let startQrCodeLoginPollingTimeout: NodeJS.Timeout | null = null;
 const statusOverlayRef = useTemplateRef('statusOverlayRef');
 const verCodeInputRef = useTemplateRef('verCodeInputRef');
 const verCodeSrc = ref('/api/ver-code');

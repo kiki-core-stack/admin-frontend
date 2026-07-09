@@ -1,7 +1,4 @@
-import type {
-    AnyRecord,
-    Nullable,
-} from '@kikiutils/shared/types';
+import type { AnyRecord } from '@kikiutils/shared/types';
 import type { FormRules } from 'element-plus';
 
 declare global {
@@ -9,7 +6,7 @@ declare global {
 
     interface ElTreeNode {
         children?: ElTreeNode[];
-        label: Nullable<string>;
+        label: null | string;
         value: string;
     }
 }

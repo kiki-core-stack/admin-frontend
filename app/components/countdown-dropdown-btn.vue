@@ -23,11 +23,9 @@
 </template>
 
 <script lang="ts" setup>
-import type { Nullable } from '@kikiutils/shared/types';
-
 interface Props {
     autostart?: boolean;
-    defaultSeconds?: Nullable<number>;
+    defaultSeconds?: null | number;
     options?: number[];
     text: string;
 }

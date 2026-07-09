@@ -34,9 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { Nullable } from '@kikiutils/shared/types';
-
-type Status = Nullable<'error' | 'loading' | 'success'>;
+type Status = 'error' | 'loading' | 'success' | null;
 
 interface Props {
     absolute?: boolean;

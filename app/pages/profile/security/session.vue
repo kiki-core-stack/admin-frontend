@@ -94,7 +94,6 @@ import type {
     AdminQrCodeLoginData,
     AdminSessionData,
 } from '@kiki-core-stack/pack/types/data/admin';
-import type { Nullable } from '@kikiutils/shared/types';
 import { Html5Qrcode } from 'html5-qrcode';
 import type { CameraDevice } from 'html5-qrcode';
 import { UAParser } from 'ua-parser-js';
@@ -104,7 +103,7 @@ const dataTablePageRef = useTemplateRef('dataTablePageRef');
 let html5QrCode: Html5Qrcode | undefined;
 const isScanLoginQrCodeDialogVisible = ref(false);
 const loginQrCodeScannerCameras = useLocalStorage<CameraDevice[]>('loginQrCodeScannerCameras', () => []);
-const loginQrCodeScannerSelectedCameraId = useLocalStorage<Nullable<string>>(
+const loginQrCodeScannerSelectedCameraId = useLocalStorage<null | string>(
     'loginQrCodeScannerSelectedCameraId',
     null,
 );
