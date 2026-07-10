@@ -48,7 +48,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), { absolute: true });
 
 // Constants/Refs/Variables
-let hideTimeout: Nullable<NodeJS.Timeout> = null;
+let hideTimeout: NodeJS.Timeout | null = null;
 const status = ref<Status>(props.initialStatus || null);
 const statusText = ref(props.initialStatusText);
 
