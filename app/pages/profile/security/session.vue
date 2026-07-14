@@ -94,7 +94,7 @@ import type {
     AdminQrCodeLoginData,
     AdminSessionData,
 } from '@kiki-core-stack/pack/types/data/admin';
-import { getUserAgentDeviceInfo } from '@kiki-core-stack/pack/utils/user-agent';
+import Bowser from 'bowser';
 import { Html5Qrcode } from 'html5-qrcode';
 import type { CameraDevice } from 'html5-qrcode';
 
@@ -134,7 +134,7 @@ const confirmLogoutAllSessions = createElMessageBoxConfirmHandler(
 const confirmQrCodeLogin = createElMessageBoxConfirmHandler<
     Pick<AdminQrCodeLoginData, 'ip' | 'userAgent'> & { token: string }
 >(
-    (data) => `確定要允許 ${getUserAgentDeviceInfo(data.userAgent).deviceName} (${data.ip}) 的登入嗎？`,
+    (data) => `確定要允許 ${parseUserAgentToDeviceInfo(data.userAgent)} (${data.ip}) 的登入嗎？`,
     '登入中...',
     async (data) => {
         const response = await AuthApi.use().confirmQrCodeLogin(
@@ -165,6 +165,17 @@ const confirmQrCodeLogin = createElMessageBoxConfirmHandler<
     { type: 'warning' },
 );
 
+function getPlatformTypeName(platformType?: string) {
+    switch (platformType) {
+        case 'bot': return '自動化工具';
+        case 'desktop': return '電腦';
+        case 'mobile': return '手機';
+        case 'tablet': return '平板';
+        case 'tv': return '智慧電視';
+        default: return '未知裝置';
+    }
+}
+
 async function onScanLoginQrCodeSuccess(decodedText: string) {
     html5QrCode?.pause();
     const response = await AuthApi.use().getQrCodeLoginData(decodedText, undefined, { skipShowErrorMessage: true });
@@ -180,7 +191,40 @@ async function onScanLoginQrCodeSuccess(decodedText: string) {
 }
 
 function parseDataToDeviceColumnText(row: AdminSessionData) {
-    return `${row.isCurrent ? '[當前] ' : ''}${getUserAgentDeviceInfo(row.userAgent).deviceName}`;
+    return `${row.isCurrent ? '[當前] ' : ''}${parseUserAgentToDeviceInfo(row.userAgent)}`;
+}
+
+function parseUserAgentToDeviceInfo(userAgent?: string) {
+    if (!userAgent) return '未知裝置';
+    const {
+        browser,
+        os,
+        platform,
+    } = Bowser.parse(userAgent);
+
+    const browserName = [
+        browser.name,
+        browser.version,
+    ].filter((value) => value).join(' ');
+
+    const osName = [
+        os.name,
+        os.versionName || os.version,
+    ].filter((value) => value).join(' ');
+
+    const platformName = [
+        platform.vendor,
+        platform.model,
+    ].filter((value) => value).join(' ');
+
+    const platformTypeName = platformName || osName ? '' : getPlatformTypeName(platform.type);
+
+    return [
+        browserName,
+        platformName,
+        osName,
+        platformTypeName,
+    ].filter((value) => value).join(' · ') || '未知裝置';
 }
 
 async function startScanLoginQrCode() {
