@@ -13,7 +13,7 @@ importers:
         version: 1.1.5(@element-plus/icons-vue@2.3.2(vue@3.5.39(typescript@6.0.3)))(element-plus@2.14.3(vue@3.5.39(typescript@6.0.3)))(esbuild@0.28.1)(magicast@0.5.3)(rollup@4.62.2)(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(webpack@5.108.4(esbuild@0.28.1)(postcss@8.5.18))
       '@kiki-core-stack/pack':
         specifier: ^0.95.3
-        version: 0.95.3(@kikiutils/mongoose@7.0.2)(@kikiutils/shared@16.0.0(async-validator@4.2.5)(bson@7.3.1)(consola@3.4.2)(date-fns@4.4.0)(decimal.js@10.6.0)(element-plus@2.14.3(vue@3.5.39(typescript@6.0.3)))(lru-cache@11.5.2)(vue-router@5.1.0(@vue/compiler-sfc@3.5.39)(esbuild@0.28.1)(rollup@4.62.2)(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))(webpack@5.108.4(esbuild@0.28.1)(postcss@8.5.18)))(vue@3.5.39(typescript@6.0.3)))(consola@3.4.2)(es-toolkit@1.49.0)(lru-cache@11.5.2)(mongoose@9.7.4)(nanoid@6.0.0)(type-fest@5.8.0)(zod@4.4.3)
+        version: 0.95.3(@kikiutils/mongoose@7.0.2)(@kikiutils/shared@16.0.0(async-validator@4.2.5)(bson@7.3.1)(consola@3.4.2)(date-fns@4.4.0)(decimal.js@10.6.0)(element-plus@2.14.3(vue@3.5.39(typescript@6.0.3)))(lru-cache@11.5.2)(vue-router@5.1.0(@vue/compiler-sfc@3.5.39)(esbuild@0.28.1)(rollup@4.62.2)(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))(webpack@5.108.4(esbuild@0.28.1)(postcss@8.5.18)))(vue@3.5.39(typescript@6.0.3)))(bowser@2.14.1)(consola@3.4.2)(es-toolkit@1.49.0)(lru-cache@11.5.2)(mongoose@9.7.4)(nanoid@6.0.0)(type-fest@5.8.0)(zod@4.4.3)
       '@kikiutils/micromatch':
         specifier: ^4.0.9
         version: 4.0.9
@@ -41,6 +41,9 @@ importers:
       axios:
         specifier: ^1.18.1
         version: 1.18.1
+      bowser:
+        specifier: ^2.14.1
+        version: 2.14.1
       date-fns:
         specifier: ^4.4.0
         version: 4.4.0
@@ -3583,6 +3586,9 @@ packages:
 
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
+
+  bowser@2.14.1:
+    resolution: {integrity: sha512-tzPjzCxygAKWFOJP011oxFHs57HzIhOEracIgAePE4pqB3LikALKnSzUyU4MGs9/iCEUuHlAJTjTc5M+u7YEGg==}
 
   brace-expansion@2.1.2:
     resolution: {integrity: sha512-w5JZcKgdhDOgOwm8H+KgbosopHMuGcl6qbulwjtz3SM7I7P3yW1eAjzMPLrIE+NQ9vjgANKHWeMHnrT0OXW1oA==}
@@ -7998,10 +8004,11 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@kiki-core-stack/pack@0.95.3(@kikiutils/mongoose@7.0.2)(@kikiutils/shared@16.0.0(async-validator@4.2.5)(bson@7.3.1)(consola@3.4.2)(date-fns@4.4.0)(decimal.js@10.6.0)(element-plus@2.14.3(vue@3.5.39(typescript@6.0.3)))(lru-cache@11.5.2)(vue-router@5.1.0(@vue/compiler-sfc@3.5.39)(esbuild@0.28.1)(rollup@4.62.2)(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))(webpack@5.108.4(esbuild@0.28.1)(postcss@8.5.18)))(vue@3.5.39(typescript@6.0.3)))(consola@3.4.2)(es-toolkit@1.49.0)(lru-cache@11.5.2)(mongoose@9.7.4)(nanoid@6.0.0)(type-fest@5.8.0)(zod@4.4.3)':
+  '@kiki-core-stack/pack@0.95.3(@kikiutils/mongoose@7.0.2)(@kikiutils/shared@16.0.0(async-validator@4.2.5)(bson@7.3.1)(consola@3.4.2)(date-fns@4.4.0)(decimal.js@10.6.0)(element-plus@2.14.3(vue@3.5.39(typescript@6.0.3)))(lru-cache@11.5.2)(vue-router@5.1.0(@vue/compiler-sfc@3.5.39)(esbuild@0.28.1)(rollup@4.62.2)(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))(webpack@5.108.4(esbuild@0.28.1)(postcss@8.5.18)))(vue@3.5.39(typescript@6.0.3)))(bowser@2.14.1)(consola@3.4.2)(es-toolkit@1.49.0)(lru-cache@11.5.2)(mongoose@9.7.4)(nanoid@6.0.0)(type-fest@5.8.0)(zod@4.4.3)':
     optionalDependencies:
       '@kikiutils/mongoose': 7.0.2
       '@kikiutils/shared': 16.0.0(async-validator@4.2.5)(bson@7.3.1)(consola@3.4.2)(date-fns@4.4.0)(decimal.js@10.6.0)(element-plus@2.14.3(vue@3.5.39(typescript@6.0.3)))(lru-cache@11.5.2)(vue-router@5.1.0(@vue/compiler-sfc@3.5.39)(esbuild@0.28.1)(rollup@4.62.2)(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))(webpack@5.108.4(esbuild@0.28.1)(postcss@8.5.18)))(vue@3.5.39(typescript@6.0.3))
+      bowser: 2.14.1
       consola: 3.4.2
       es-toolkit: 1.49.0
       lru-cache: 11.5.2
@@ -10275,6 +10282,8 @@ snapshots:
   birpc@4.0.0: {}
 
   boolbase@1.0.0: {}
+
+  bowser@2.14.1: {}
 
   brace-expansion@2.1.2:
     dependencies:

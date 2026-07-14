@@ -26,6 +26,7 @@
     "@vueuse/integrations": "^14.3.0",
     "@vueuse/nuxt": "^14.3.0",
     "axios": "^1.18.1",
+    "bowser": "^2.14.1",
     "date-fns": "^4.4.0",
     "element-plus": "^2.14.3",
     "es-toolkit": "^1.49.0",
