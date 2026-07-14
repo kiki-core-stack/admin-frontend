@@ -94,9 +94,9 @@ import type {
     AdminQrCodeLoginData,
     AdminSessionData,
 } from '@kiki-core-stack/pack/types/data/admin';
+import { getUserAgentDeviceInfo } from '@kiki-core-stack/pack/utils/user-agent';
 import { Html5Qrcode } from 'html5-qrcode';
 import type { CameraDevice } from 'html5-qrcode';
-import { UAParser } from 'ua-parser-js';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
@@ -134,7 +134,7 @@ const confirmLogoutAllSessions = createElMessageBoxConfirmHandler(
 const confirmQrCodeLogin = createElMessageBoxConfirmHandler<
     Pick<AdminQrCodeLoginData, 'ip' | 'userAgent'> & { token: string }
 >(
-    (data) => `確定要允許 ${parseUserAgentToDeviceInfo(data.userAgent)} (${data.ip}) 的登入嗎？`,
+    (data) => `確定要允許 ${getUserAgentDeviceInfo(data.userAgent).deviceName} (${data.ip}) 的登入嗎？`,
     '登入中...',
     async (data) => {
         const response = await AuthApi.use().confirmQrCodeLogin(
@@ -180,17 +180,7 @@ async function onScanLoginQrCodeSuccess(decodedText: string) {
 }
 
 function parseDataToDeviceColumnText(row: AdminSessionData) {
-    return `${row.isCurrent ? '[當前] ' : ''}${parseUserAgentToDeviceInfo(row.userAgent)}`;
-}
-
-function parseUserAgentToDeviceInfo(userAgent?: string) {
-    if (!userAgent) return '未知裝置';
-    const parseResult = UAParser(userAgent);
-    const browserName = parseResult.browser.name || '未知瀏覽器';
-    const browserVersion = parseResult.browser.version || '未知瀏覽器版本';
-    const osName = parseResult.os.name || '未知系統';
-    const osVersion = parseResult.os.version || '未知系統版本';
-    return `${browserName} ${browserVersion} on ${osName} ${osVersion}`.trim();
+    return `${row.isCurrent ? '[當前] ' : ''}${getUserAgentDeviceInfo(row.userAgent).deviceName}`;
 }
 
 async function startScanLoginQrCode() {
