@@ -7,7 +7,7 @@ export default defineNuxtConfig({
         },
         keepalive: true,
     },
-    compatibilityDate: '2100-01-01',
+    compatibilityDate: 'latest',
     css: ['@/assets/scss/index.scss'],
     devServer: {
         host: process.env.DEV_SERVER_HOST,
