@@ -12,8 +12,8 @@ importers:
         specifier: ^1.1.5
         version: 1.1.5(@element-plus/icons-vue@2.3.2(vue@3.5.39(typescript@6.0.3)))(element-plus@2.14.3(vue@3.5.39(typescript@6.0.3)))(esbuild@0.28.1)(magicast@0.5.3)(rollup@4.62.2)(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(webpack@5.108.4(esbuild@0.28.1)(postcss@8.5.19))
       '@kiki-core-stack/pack':
-        specifier: ^0.95.4
-        version: 0.95.4(@kikiutils/mongoose@7.0.2)(@kikiutils/shared@16.0.0(async-validator@4.2.5)(bson@7.3.1)(consola@3.4.2)(date-fns@4.4.0)(decimal.js@10.6.0)(element-plus@2.14.3(vue@3.5.39(typescript@6.0.3)))(lru-cache@11.5.2)(vue-router@5.1.0(@vue/compiler-sfc@3.5.39)(esbuild@0.28.1)(rollup@4.62.2)(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))(webpack@5.108.4(esbuild@0.28.1)(postcss@8.5.19)))(vue@3.5.39(typescript@6.0.3)))(consola@3.4.2)(es-toolkit@1.49.0)(lru-cache@11.5.2)(mongoose@9.7.4)(nanoid@6.0.0)(type-fest@5.8.0)(zod@4.4.3)
+        specifier: github:kiki-core-stack/pack#db924fd625ee673beeb6a0b1e93c2b37f4f188f4
+        version: https://codeload.github.com/kiki-core-stack/pack/tar.gz/db924fd625ee673beeb6a0b1e93c2b37f4f188f4(@kikiutils/mongoose@7.0.2)(@kikiutils/shared@16.0.0(async-validator@4.2.5)(bson@7.3.1)(consola@3.4.2)(date-fns@4.4.0)(decimal.js@10.6.0)(element-plus@2.14.3(vue@3.5.39(typescript@6.0.3)))(lru-cache@11.5.2)(vue-router@5.1.0(@vue/compiler-sfc@3.5.39)(esbuild@0.28.1)(rollup@4.62.2)(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))(webpack@5.108.4(esbuild@0.28.1)(postcss@8.5.19)))(vue@3.5.39(typescript@6.0.3)))(consola@3.4.2)(es-toolkit@1.49.0)(lru-cache@11.5.2)(mongoose@9.7.4)(nanoid@6.0.0)(type-fest@5.8.0)(zod@4.4.3)
       '@kikiutils/micromatch':
         specifier: ^4.0.9
         version: 4.0.9
@@ -1077,11 +1077,12 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
-  '@kiki-core-stack/pack@0.95.4':
-    resolution: {integrity: sha512-fMwCae8RBIRFpZdsvAh4Bu/GMCDJvTAajGhBuwy2JeoDgxOVAuQmeTbTC79GC/2RGjOtx61hNFvJ5/Y5lLRnzw==}
+  '@kiki-core-stack/pack@https://codeload.github.com/kiki-core-stack/pack/tar.gz/db924fd625ee673beeb6a0b1e93c2b37f4f188f4':
+    resolution: {gitHosted: true, integrity: sha512-dZoVxK8Z3YtkKj/SLlRF69zFOLQUt/bbZB4A/554wuYcDhiETLnDYeKP4iQ7nAbLivxEUIp6YLp2R1/lyR5Mmw==, tarball: https://codeload.github.com/kiki-core-stack/pack/tar.gz/db924fd625ee673beeb6a0b1e93c2b37f4f188f4}
+    version: 0.95.8
     engines: {node: '>=24.0.0'}
     peerDependencies:
-      '@hono/zod-validator': ^0.8.0
+      '@hono/zod-validator': ^0.9.0
       '@kikiutils/mongoose': ^7.0.2
       '@kikiutils/shared': ^16.0.0
       consola: ^3.4.2
@@ -3487,8 +3488,8 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  autoprefixer@10.5.2:
-    resolution: {integrity: sha512-rD5t5DwOjJdmSORcTq64j8MawTC+tbQ+HHqjR4NDumamy/ambn1UJrlKL+KdwujWxMkFjPM3pPHOEA9tl4767Q==}
+  autoprefixer@10.5.3:
+    resolution: {integrity: sha512-bJRzflk8GgE4JX+iZNEwz9f9p460NCHnU7bd+CZ9vIjIlZuTkt6F3WSl2oNO8StZBFx17nLEsiQ6H2wcZiY7nA==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
     peerDependencies:
@@ -4020,8 +4021,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  electron-to-chromium@1.5.389:
-    resolution: {integrity: sha512-cEto7aeOqBfU1D+c5py5pE+ooscKE75JifxLBdFUZsqAxRS6y7kebtxAZvICszSl05gPjYHDTjY+lXpyGvpJbg==}
+  electron-to-chromium@1.5.391:
+    resolution: {integrity: sha512-YmCu4856jkgKT1Nh6fwRdeVrM6Ydf/fBnq51tpmSfX+jOcUMTxh31yH6hjKScRenhB2oDSvA9oooxcpjogPeig==}
 
   element-plus@2.14.3:
     resolution: {integrity: sha512-pJcvxcpZjYruNzuJhAeVwnbYjfNgzBKnWHwSVEhwzM2/kcLI3brzmtIBxtPqd4hQWJfD1PRnjoc1WipLw2eBGg==}
@@ -6560,8 +6561,8 @@ packages:
   ultrahtml@1.7.0:
     resolution: {integrity: sha512-2xRd0VHoAQE4M+vF/DvFFB7pUV0ZxTW1TLi7lHQWnF/Sb5TPeEUV/l+hxcNnGO00ZXGnR0voCMmYRKQf+rvJ2g==}
 
-  unbash@4.0.2:
-    resolution: {integrity: sha512-8gwNZ29+0/3zmXw7ToIHZtg6wK37xnniRUdBt7B27xZxaxfgR5tGMaGHT0t0dLtBV9fXE7zurh0s6Z1DHVjfWg==}
+  unbash@4.0.3:
+    resolution: {integrity: sha512-3cudTErfToSc4Ggv8XGXVNVli/xHKUtUZvaY5UVwhOcUPbQGz7PeaEnT/SAVgNziZtX67KEN9swMUYkLghxA1w==}
     engines: {node: '>=14'}
 
   unconfig-core@7.5.0:
@@ -7031,8 +7032,8 @@ packages:
     resolution: {integrity: sha512-OTIk8iR8/aCRWBqvxrzxR0hgxWpnYBblY1S5hDWBQfk/VFmJwzmJgQFN3WsoUKHISv2eAwe+PpbUzyL1CKTLXg==}
     engines: {node: ^20.17.0 || >=22.9.0}
 
-  ws@8.21.0:
-    resolution: {integrity: sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g==}
+  ws@8.21.1:
+    resolution: {integrity: sha512-+0NTnW77fFN/DjQi6k/Sq/Yvk4Sgajw7urW8V+asjXnRgDs9gyGkdb7EzgfhA4goXsRIZKE28fzIXBHEzhuiWw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -7969,7 +7970,7 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@kiki-core-stack/pack@0.95.4(@kikiutils/mongoose@7.0.2)(@kikiutils/shared@16.0.0(async-validator@4.2.5)(bson@7.3.1)(consola@3.4.2)(date-fns@4.4.0)(decimal.js@10.6.0)(element-plus@2.14.3(vue@3.5.39(typescript@6.0.3)))(lru-cache@11.5.2)(vue-router@5.1.0(@vue/compiler-sfc@3.5.39)(esbuild@0.28.1)(rollup@4.62.2)(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))(webpack@5.108.4(esbuild@0.28.1)(postcss@8.5.19)))(vue@3.5.39(typescript@6.0.3)))(consola@3.4.2)(es-toolkit@1.49.0)(lru-cache@11.5.2)(mongoose@9.7.4)(nanoid@6.0.0)(type-fest@5.8.0)(zod@4.4.3)':
+  '@kiki-core-stack/pack@https://codeload.github.com/kiki-core-stack/pack/tar.gz/db924fd625ee673beeb6a0b1e93c2b37f4f188f4(@kikiutils/mongoose@7.0.2)(@kikiutils/shared@16.0.0(async-validator@4.2.5)(bson@7.3.1)(consola@3.4.2)(date-fns@4.4.0)(decimal.js@10.6.0)(element-plus@2.14.3(vue@3.5.39(typescript@6.0.3)))(lru-cache@11.5.2)(vue-router@5.1.0(@vue/compiler-sfc@3.5.39)(esbuild@0.28.1)(rollup@4.62.2)(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))(webpack@5.108.4(esbuild@0.28.1)(postcss@8.5.19)))(vue@3.5.39(typescript@6.0.3)))(consola@3.4.2)(es-toolkit@1.49.0)(lru-cache@11.5.2)(mongoose@9.7.4)(nanoid@6.0.0)(type-fest@5.8.0)(zod@4.4.3)':
     optionalDependencies:
       '@kikiutils/mongoose': 7.0.2
       '@kikiutils/shared': 16.0.0(async-validator@4.2.5)(bson@7.3.1)(consola@3.4.2)(date-fns@4.4.0)(decimal.js@10.6.0)(element-plus@2.14.3(vue@3.5.39(typescript@6.0.3)))(lru-cache@11.5.2)(vue-router@5.1.0(@vue/compiler-sfc@3.5.39)(esbuild@0.28.1)(rollup@4.62.2)(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))(webpack@5.108.4(esbuild@0.28.1)(postcss@8.5.19)))(vue@3.5.39(typescript@6.0.3))
@@ -8248,7 +8249,7 @@ snapshots:
       vite-plugin-inspect: 11.4.1(@nuxt/kit@4.4.8(magicast@0.5.3))(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))
       vite-plugin-vue-tracer: 1.4.0(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))
       which: 6.0.1
-      ws: 8.21.0
+      ws: 8.21.1
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -8402,7 +8403,7 @@ snapshots:
       '@rollup/plugin-replace': 6.0.3(rollup@4.62.2)
       '@vitejs/plugin-vue': 6.0.8(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))
       '@vitejs/plugin-vue-jsx': 5.1.6(vite@7.3.6(@types/node@26.1.1)(jiti@2.7.0)(sass@1.101.0)(terser@5.49.0)(yaml@2.9.0))(vue@3.5.39(typescript@6.0.3))
-      autoprefixer: 10.5.2(postcss@8.5.19)
+      autoprefixer: 10.5.3(postcss@8.5.19)
       consola: 3.4.2
       cssnano: 8.0.2(postcss@8.5.19)
       defu: 6.1.7
@@ -10161,7 +10162,7 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  autoprefixer@10.5.2(postcss@8.5.19):
+  autoprefixer@10.5.3(postcss@8.5.19):
     dependencies:
       browserslist: 4.28.6
       caniuse-lite: 1.0.30001805
@@ -10251,7 +10252,7 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.10.43
       caniuse-lite: 1.0.30001805
-      electron-to-chromium: 1.5.389
+      electron-to-chromium: 1.5.391
       node-releases: 2.0.51
       update-browserslist-db: 1.2.3(browserslist@4.28.6)
 
@@ -10629,7 +10630,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  electron-to-chromium@1.5.389: {}
+  electron-to-chromium@1.5.391: {}
 
   element-plus@2.14.3(vue@3.5.39(typescript@6.0.3)):
     dependencies:
@@ -11652,7 +11653,7 @@ snapshots:
       smol-toml: 1.7.0
       strip-json-comments: 5.0.3
       tinyglobby: 0.2.17
-      unbash: 4.0.2
+      unbash: 4.0.3
       yaml: 2.9.0
       zod: 4.4.3
 
@@ -13876,7 +13877,7 @@ snapshots:
 
   ultrahtml@1.7.0: {}
 
-  unbash@4.0.2: {}
+  unbash@4.0.3: {}
 
   unconfig-core@7.5.0:
     dependencies:
@@ -14388,7 +14389,7 @@ snapshots:
     dependencies:
       signal-exit: 4.1.0
 
-  ws@8.21.0: {}
+  ws@8.21.1: {}
 
   wsl-utils@0.3.1:
     dependencies:

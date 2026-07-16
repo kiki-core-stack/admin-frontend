@@ -3,9 +3,6 @@ allowBuilds:
   esbuild: true
   vue-demi: true
 
-minimumReleaseAgeExclude:
-  - '@kiki-core-stack/pack@0.95.4'
-
 shamefullyHoist: true
 shellEmulator: true
 trustPolicy: no-downgrade

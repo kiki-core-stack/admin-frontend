@@ -22,7 +22,7 @@
         <template #table>
             <el-table-column
                 label="裝置"
-                :formatter="(row: AdminSessionData) => parseDataToDeviceColumnText(row)"
+                :formatter="(row: AuthenticationSessionListItemData) => parseDataToDeviceColumnText(row)"
             />
             <el-table-column
                 label="最後活動IP"
@@ -90,10 +90,8 @@
 </template>
 
 <script lang="ts" setup>
-import type {
-    AdminQrCodeLoginData,
-    AdminSessionData,
-} from '@kiki-core-stack/pack/types/data/admin';
+import type { AdminQrCodeLoginData } from '@kiki-core-stack/pack/types/data/admin';
+import type { AuthenticationSessionListItemData } from '@kiki-core-stack/pack/types/data/authentication-session';
 import Bowser from 'bowser';
 import { Html5Qrcode } from 'html5-qrcode';
 import type { CameraDevice } from 'html5-qrcode';
@@ -190,7 +188,7 @@ async function onScanLoginQrCodeSuccess(decodedText: string) {
     }
 }
 
-function parseDataToDeviceColumnText(row: AdminSessionData) {
+function parseDataToDeviceColumnText(row: AuthenticationSessionListItemData) {
     return `${row.isCurrent ? '[當前] ' : ''}${parseUserAgentToDeviceInfo(row.userAgent)}`;
 }
 

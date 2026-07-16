@@ -1,6 +1,6 @@
-import type { AdminSessionData } from '@kiki-core-stack/pack/types/data/admin';
+import type { AuthenticationSessionListItemData } from '@kiki-core-stack/pack/types/data/authentication-session';
 
-export class ProfileSecuritySessionApi extends BaseCrudApi<AdminSessionData> {
+export class ProfileSecuritySessionApi extends BaseCrudApi<AuthenticationSessionListItemData> {
     constructor() {
         super('/api/admin/profile/security/session');
     }
