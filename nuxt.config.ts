@@ -15,12 +15,10 @@ export default defineNuxtConfig({
     },
     experimental: {
         asyncContext: true,
-        browserDevtoolsTiming: true,
         extractAsyncDataHandlers: true,
-        navigationRepaint: true,
         typescriptPlugin: true,
         viewTransition: true,
-        watcher: 'parcel',
+        watcher: 'builder',
     },
     kikiutilsNuxt: { enabledModules: { security: true } },
     modules: ['@kikiutils/nuxt'],
@@ -47,5 +45,17 @@ export default defineNuxtConfig({
         },
         inlineFontFace: false,
     },
-    vite: { server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') } },
+    vite: {
+        plugins: [
+            {
+                enforce: 'post',
+                name: 'fix-vite-plugin-checker-runtime-path',
+                transform(code, id) {
+                    if (id !== 'virtual:@vite-plugin-checker-runtime-entry') return;
+                    return code.replace('"/_nuxt/@vite-plugin-checker-runtime"', '"/@vite-plugin-checker-runtime"');
+                },
+            },
+        ],
+        server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') },
+    },
 });
