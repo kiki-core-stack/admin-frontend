@@ -8,6 +8,7 @@ export default defineNuxtConfig({
         },
         keepalive: true,
     },
+    build: { transpile: ['@kiki-core-stack/pack'] },
     compatibilityDate: 'latest',
     css: ['@/assets/scss/index.scss'],
     devServer: {
