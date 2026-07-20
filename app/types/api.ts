@@ -1,2 +1,1 @@
-export type ApiResponseErrorCode =
-  | 'invalidVerificationCode';
+export type ApiResponseErrorCode = never;

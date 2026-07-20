@@ -1,7 +1,8 @@
+import type { AdminLoginFormData } from '@kiki-core-stack/pack/types/data/admin';
 import type {
-    AdminLoginFormData,
-    AdminQrCodeLoginData,
-} from '@kiki-core-stack/pack/types/data/admin';
+    AuthenticationSessionQrCodeLoginApprovalRequestData,
+    AuthenticationSessionQrCodeLoginCreationData,
+} from '@kiki-core-stack/pack/types/data/authentication-session';
 import type { AxiosRequestConfig } from 'axios';
 
 export class AuthApi extends BaseApi {
@@ -9,35 +10,32 @@ export class AuthApi extends BaseApi {
         super('/api/admin/auth');
     }
 
-    checkQrCodeLoginStatus(token: string, params?: any, config?: AxiosRequestConfig) {
-        return this.postRequest<{ status: 'pending' | 'success' }>(
-            '/login/qr-code/consume',
-            {
-                ...params,
-                token,
-            },
+    approveQrCodeLogin(approvalToken: string, config?: AxiosRequestConfig) {
+        return this.postRequest('/login/qr-code/approve', { approvalToken }, config);
+    }
+
+    completeQrCodeLogin(completionToken: string, config?: AxiosRequestConfig) {
+        return this.postRequest<{ state: 'completed' | 'pending' }>(
+            '/login/qr-code/complete',
+            { completionToken },
             config,
         );
     }
 
-    confirmQrCodeLogin(token: string, data?: any, config?: AxiosRequestConfig) {
-        return this.postRequest(`/login/qr-code/${token}/confirm`, data, config);
+    createQrCodeLogin(config?: AxiosRequestConfig) {
+        return this.postRequest<AuthenticationSessionQrCodeLoginCreationData>('/login/qr-code', undefined, config);
     }
 
-    getQrCodeLoginData(token: string, params?: any, config?: AxiosRequestConfig) {
-        return this.getRequest<Pick<AdminQrCodeLoginData, 'ip' | 'userAgent'>>(
-            `/login/qr-code/${token}/info`,
-            params,
+    getQrCodeLoginApprovalRequest(approvalToken: string, config?: AxiosRequestConfig) {
+        return this.postRequest<AuthenticationSessionQrCodeLoginApprovalRequestData>(
+            '/login/qr-code/info',
+            { approvalToken },
             config,
         );
-    }
-
-    getQrCodeLoginToken(oldToken?: string) {
-        return this.getRequest<{ token: string }>('/login/qr-code/token', { oldToken });
     }
 
     login(data: AdminLoginFormData) {
-        return this.postRequest<undefined, 'invalidVerificationCode'>('/login', data);
+        return this.postRequest('/login', data);
     }
 
     logout() {

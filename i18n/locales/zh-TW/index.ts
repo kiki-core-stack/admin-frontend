@@ -9,7 +9,6 @@ export default defineI18nLocale<AppLocaleMessages>(() => ({
         logout: '登出',
         password: '密碼',
         search: '搜尋',
-        verCode: '驗證碼',
     },
     errors: {
         apiResponse: {
@@ -20,7 +19,6 @@ export default defineI18nLocale<AppLocaleMessages>(() => ({
                 gatewayTimeout: '超時',
                 gone: '資料已過期或被刪除',
                 internalServerError: '系統錯誤',
-                invalidVerificationCode: '驗證碼錯誤',
                 notFound: '找不到資料',
                 payloadTooLarge: '檔案大小超出限制',
                 serviceUnavailable: '系統維護中',

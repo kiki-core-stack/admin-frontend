@@ -29,25 +29,6 @@
                     type="password"
                     :label="$t('common.password')"
                 />
-                <div class="flex items-center">
-                    <el-form-input
-                        ref="verCodeInputRef"
-                        v-model="formData.verCode"
-                        class="mb-0!"
-                        autocomplete="off"
-                        maxlength="4"
-                        name="ver-code"
-                        prop="verCode"
-                        :label="$t('common.verCode')"
-                    />
-                    <img
-                        class="ml-2 cursor-pointer"
-                        height="50"
-                        width="150"
-                        :src="verCodeSrc"
-                        @click="reloadVerCode"
-                    >
-                </div>
                 <div class="gap-btns mt-4 flex justify-center">
                     <el-button
                         class="md:hidden!"
@@ -86,7 +67,6 @@
 <script lang="ts" setup>
 import type { AdminLoginFormData } from '@kiki-core-stack/pack/types/data/admin';
 import { useQRCode } from '@vueuse/integrations/useQRCode';
-import { CanceledError } from 'axios';
 
 import { initializeAuthenticatedSession } from '@/libs/session';
 
@@ -97,31 +77,23 @@ definePageMeta({
 
 // Constants/Refs/Variables
 const accountInputRef = useTemplateRef('accountInputRef');
-let currentQrCodeLoginPollingAbortController: AbortController | undefined;
 const formData = ref<AdminLoginFormData>({
     account: '',
     password: '',
-    verCode: '',
 });
 
 const formRef = useTemplateRef('formRef');
 const formRules: ElFormRules<AdminLoginFormData> = {
     account: [createElFormItemRuleWithDefaults('請輸入帳號')],
     password: [createElFormItemRuleWithDefaults('請輸入密碼')],
-    verCode: [
-        createElFormItemRuleWithDefaults('請輸入驗證碼'),
-        {
-            max: 4,
-            message: '驗證碼必須為四個字',
-            min: 4,
-        },
-    ],
 };
 
 const isLoginQrCodeDialogVisible = ref(false);
-const qrCodeLoginToken = shallowRef('');
+const qrCodeLoginApprovalToken = ref('');
+let qrCodeLoginCompletionToken: string | undefined;
+let qrCodeLoginCreationAbortController: AbortController | undefined;
 const qrCodeLoginImageSrc = useQRCode(
-    qrCodeLoginToken,
+    qrCodeLoginApprovalToken,
     {
         errorCorrectionLevel: 'L',
         margin: 0,
@@ -129,14 +101,13 @@ const qrCodeLoginImageSrc = useQRCode(
     },
 );
 
-let startQrCodeLoginPollingTimeout: NodeJS.Timeout | null = null;
+let qrCodeLoginPollingAbortController: AbortController | undefined;
+let qrCodeLoginPollingTimeout: NodeJS.Timeout | null = null;
 const statusOverlayRef = useTemplateRef('statusOverlayRef');
-const verCodeInputRef = useTemplateRef('verCodeInputRef');
-const verCodeSrc = ref('/api/ver-code');
 
 // Functions
 async function handleLoginSuccess() {
-    currentQrCodeLoginPollingAbortController?.abort();
+    stopQrCodeLoginFlow();
     await updateProfileState();
     ElNotification.success('登入成功');
     initializeAuthenticatedSession();
@@ -144,65 +115,78 @@ async function handleLoginSuccess() {
 }
 
 async function login() {
-    if (!statusOverlayRef.value || statusOverlayRef.value?.isVisible) return;
+    if (!statusOverlayRef.value || statusOverlayRef.value.isVisible) return;
     await formRef.value?.validate(async (valid) => {
         if (!valid) return;
         statusOverlayRef.value!.showLoading('登入中...');
         const response = await AuthApi.use().login(formData.value);
         if (response?.status === 404) accountInputRef.value?.focus();
-        else if (response?.data?.errorCode === 'invalidVerificationCode') verCodeInputRef.value?.focus();
         else if (response?.data?.success) return await handleLoginSuccess();
         statusOverlayRef.value!.hide();
-        reloadVerCode();
     });
 }
 
-async function reloadLoginQrCodeAndStartPolling() {
-    currentQrCodeLoginPollingAbortController?.abort();
-    const response = await AuthApi.use().getQrCodeLoginToken(qrCodeLoginToken.value || undefined);
-    if (response?.data?.success) {
-        qrCodeLoginToken.value = response.data.data!.token;
-        startQrCodeLoginPolling();
-    }
-}
+async function pollQrCodeLoginCompletion() {
+    const completionToken = qrCodeLoginCompletionToken;
+    if (!completionToken) return;
 
-function reloadVerCode() {
-    formRef.value?.resetFields(['verCode']);
-    verCodeSrc.value = `/api/ver-code?${Date.now()}`;
-}
-
-async function startQrCodeLoginPolling() {
-    if (startQrCodeLoginPollingTimeout) clearTimeout(startQrCodeLoginPollingTimeout);
-    startQrCodeLoginPollingTimeout = null;
-
-    currentQrCodeLoginPollingAbortController?.abort();
-    currentQrCodeLoginPollingAbortController = new AbortController();
-    const response = await AuthApi.use().checkQrCodeLoginStatus(
-        qrCodeLoginToken.value,
-        undefined,
+    qrCodeLoginPollingAbortController = new AbortController();
+    const response = await AuthApi.use().completeQrCodeLogin(
+        completionToken,
         {
-            signal: currentQrCodeLoginPollingAbortController.signal,
+            signal: qrCodeLoginPollingAbortController.signal,
             skipShowErrorMessage: true,
         },
     );
 
-    if (response?.error instanceof CanceledError) return;
-    if (response?.data?.data?.status === 'success') return await handleLoginSuccess();
-    else if (!response?.data?.success) {
-        if (response?.status === 410) {
-            ElNotification.error('QR Code已過期，已自動刷新');
-            await reloadLoginQrCodeAndStartPolling();
-        } else {
-            ElNotification.error(response?.data?.message || '系統錯誤');
-            if (startQrCodeLoginPollingTimeout) clearTimeout(startQrCodeLoginPollingTimeout);
-            startQrCodeLoginPollingTimeout = setTimeout(startQrCodeLoginPolling, 1000);
-            return;
-        }
+    if (completionToken !== qrCodeLoginCompletionToken) return;
+    if (response?.data?.data?.state === 'completed') return await handleLoginSuccess();
+    if (response?.status === 410) {
+        ElNotification.error('QR Code已過期，已自動刷新');
+        qrCodeLoginApprovalToken.value = '';
+        qrCodeLoginCompletionToken = undefined;
+        return await reloadLoginQrCodeAndStartPolling();
     }
 
-    startQrCodeLoginPolling();
+    scheduleQrCodeLoginPolling();
+}
+
+async function reloadLoginQrCodeAndStartPolling() {
+    qrCodeLoginCreationAbortController?.abort();
+    const abortController = new AbortController();
+    qrCodeLoginCreationAbortController = abortController;
+
+    const response = await AuthApi.use().createQrCodeLogin({ signal: abortController.signal });
+    if (qrCodeLoginCreationAbortController !== abortController) return;
+    qrCodeLoginCreationAbortController = undefined;
+    if (!response?.data?.success || !response?.data?.data) return;
+
+    stopQrCodeLoginPolling();
+    qrCodeLoginApprovalToken.value = response.data.data.approvalToken;
+    qrCodeLoginCompletionToken = response.data.data.completionToken;
+    scheduleQrCodeLoginPolling();
+}
+
+function scheduleQrCodeLoginPolling() {
+    qrCodeLoginPollingTimeout = setTimeout(pollQrCodeLoginCompletion, 1000);
+}
+
+function stopQrCodeLoginFlow() {
+    qrCodeLoginCreationAbortController?.abort();
+    qrCodeLoginCreationAbortController = undefined;
+    stopQrCodeLoginPolling();
+    qrCodeLoginApprovalToken.value = '';
+    qrCodeLoginCompletionToken = undefined;
+}
+
+function stopQrCodeLoginPolling() {
+    qrCodeLoginPollingAbortController?.abort();
+    qrCodeLoginPollingAbortController = undefined;
+    if (qrCodeLoginPollingTimeout) clearTimeout(qrCodeLoginPollingTimeout);
+    qrCodeLoginPollingTimeout = null;
 }
 
 // Hooks
+onBeforeUnmount(stopQrCodeLoginFlow);
 onMounted(reloadLoginQrCodeAndStartPolling);
 </script>

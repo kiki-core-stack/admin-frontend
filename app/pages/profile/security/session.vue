@@ -90,17 +90,25 @@
 </template>
 
 <script lang="ts" setup>
-import type { AdminQrCodeLoginData } from '@kiki-core-stack/pack/types/data/admin';
-import type { AuthenticationSessionListItemData } from '@kiki-core-stack/pack/types/data/authentication-session';
+import type {
+    AuthenticationSessionListItemData,
+    AuthenticationSessionQrCodeLoginApprovalRequestData,
+} from '@kiki-core-stack/pack/types/data/authentication-session';
 import Bowser from 'bowser';
-import { Html5Qrcode } from 'html5-qrcode';
+import {
+    Html5Qrcode,
+    Html5QrcodeScannerState,
+} from 'html5-qrcode';
 import type { CameraDevice } from 'html5-qrcode';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 let html5QrCode: Html5Qrcode | undefined;
 const isScanLoginQrCodeDialogVisible = ref(false);
+let loginQrCodeApprovalRequestAbortController: AbortController | undefined;
 const loginQrCodeScannerCameras = useLocalStorage<CameraDevice[]>('loginQrCodeScannerCameras', () => []);
+let loginQrCodeScannerGeneration = 0;
+let loginQrCodeScannerResumeTimeout: NodeJS.Timeout | undefined;
 const loginQrCodeScannerSelectedCameraId = useLocalStorage<null | string>(
     'loginQrCodeScannerSelectedCameraId',
     null,
@@ -130,17 +138,12 @@ const confirmLogoutAllSessions = createElMessageBoxConfirmHandler(
 );
 
 const confirmQrCodeLogin = createElMessageBoxConfirmHandler<
-    Pick<AdminQrCodeLoginData, 'ip' | 'userAgent'> & { token: string }
+    AuthenticationSessionQrCodeLoginApprovalRequestData & { approvalToken: string }
 >(
-    (data) => `確定要允許 ${parseUserAgentToDeviceInfo(data.userAgent)} (${data.ip}) 的登入嗎？`,
+    (data) => `確定要允許 ${parseUserAgentToDeviceInfo(data.targetUserAgent)} (${data.targetIp}) 的登入嗎？`,
     '登入中...',
     async (data) => {
-        const response = await AuthApi.use().confirmQrCodeLogin(
-            data.token,
-            undefined,
-            { skipShowErrorMessage: true },
-        );
-
+        const response = await AuthApi.use().approveQrCodeLogin(data.approvalToken, { skipShowErrorMessage: true });
         if (response?.data?.success) return true;
         if (response?.status === 410) return 'gone';
         return response?.data?.message || '系統錯誤';
@@ -153,13 +156,13 @@ const confirmQrCodeLogin = createElMessageBoxConfirmHandler<
     (_, done, reason) => {
         if (reason === 'gone') {
             done();
-            html5QrCode?.resume();
+            resumeLoginQrCodeScanner();
             return ElNotification.error('QR Code已過期');
         }
 
         if (reason) ElNotification.error(reason);
     },
-    () => html5QrCode?.resume(),
+    () => resumeLoginQrCodeScanner(),
     { type: 'warning' },
 );
 
@@ -175,16 +178,28 @@ function getPlatformTypeName(platformType?: string) {
 }
 
 async function onScanLoginQrCodeSuccess(decodedText: string) {
-    html5QrCode?.pause();
-    const response = await AuthApi.use().getQrCodeLoginData(decodedText, undefined, { skipShowErrorMessage: true });
-    if (response?.data?.success) {
+    if (html5QrCode?.getState() !== Html5QrcodeScannerState.SCANNING) return;
+    html5QrCode.pause();
+    const abortController = new AbortController();
+    loginQrCodeApprovalRequestAbortController = abortController;
+    const response = await AuthApi.use().getQrCodeLoginApprovalRequest(
+        decodedText,
+        {
+            signal: abortController.signal,
+            skipShowErrorMessage: true,
+        },
+    );
+
+    if (abortController.signal.aborted || !isScanLoginQrCodeDialogVisible.value) return;
+    loginQrCodeApprovalRequestAbortController = undefined;
+    if (response?.data?.data?.state === 'pending') {
         confirmQrCodeLogin({
-            token: decodedText,
-            ...response.data.data!,
+            approvalToken: decodedText,
+            ...response.data.data,
         });
     } else {
         loginQrCodeScannerStatusOverlayRef.value!.showError('QR Code錯誤或過期');
-        setTimeout(() => html5QrCode?.resume(), 1000);
+        loginQrCodeScannerResumeTimeout = setTimeout(resumeLoginQrCodeScanner, 1000);
     }
 }
 
@@ -225,11 +240,39 @@ function parseUserAgentToDeviceInfo(userAgent?: string) {
     ].filter((value) => value).join(' · ') || '未知裝置';
 }
 
+async function resetLoginQrCodeScanner() {
+    loginQrCodeApprovalRequestAbortController?.abort();
+    loginQrCodeApprovalRequestAbortController = undefined;
+    if (loginQrCodeScannerResumeTimeout) clearTimeout(loginQrCodeScannerResumeTimeout);
+    loginQrCodeScannerResumeTimeout = undefined;
+
+    if (!html5QrCode) return;
+    const scannerState = html5QrCode.getState();
+    if (
+        scannerState === Html5QrcodeScannerState.SCANNING
+        || scannerState === Html5QrcodeScannerState.PAUSED
+    ) {
+        try {
+            await html5QrCode.stop();
+        } catch {
+            return;
+        }
+    }
+
+    html5QrCode.clear();
+}
+
+function resumeLoginQrCodeScanner() {
+    if (html5QrCode?.getState() === Html5QrcodeScannerState.PAUSED) html5QrCode.resume();
+}
+
 async function startScanLoginQrCode() {
+    const scannerGeneration = ++loginQrCodeScannerGeneration;
     loginQrCodeScannerStatusOverlayRef.value!.showLoading('相機啟動中...');
     if (!html5QrCode) html5QrCode = new Html5Qrcode('login-qr-code-scanner');
     try {
         loginQrCodeScannerCameras.value = await Html5Qrcode.getCameras();
+        if (scannerGeneration !== loginQrCodeScannerGeneration || !isScanLoginQrCodeDialogVisible.value) return;
         if (loginQrCodeScannerSelectedCameraId.value) {
             const cameraIds = loginQrCodeScannerCameras.value.map((camera) => camera.id);
             if (!cameraIds.includes(loginQrCodeScannerSelectedCameraId.value)) {
@@ -243,16 +286,19 @@ async function startScanLoginQrCode() {
 
         await startScanLoginQrCodeScanner();
     } catch (error) {
+        if (scannerGeneration !== loginQrCodeScannerGeneration || !isScanLoginQrCodeDialogVisible.value) return;
         if ((error instanceof Error) && error.message.toLowerCase().includes('denied')) {
             loginQrCodeScannerStatusOverlayRef.value!.showError('相機權限已被封鎖', false);
-        }
+        } else loginQrCodeScannerStatusOverlayRef.value!.showError('相機啟動失敗', false);
     }
 }
 
 async function startScanLoginQrCodeScanner() {
+    const scannerGeneration = ++loginQrCodeScannerGeneration;
     loginQrCodeScannerStatusOverlayRef.value!.showLoading('相機啟動中...');
     if (!html5QrCode || !loginQrCodeScannerSelectedCameraId.value) return;
-    await stopScanLoginQrCode();
+    await resetLoginQrCodeScanner();
+    if (scannerGeneration !== loginQrCodeScannerGeneration || !isScanLoginQrCodeDialogVisible.value) return;
     try {
         await html5QrCode.start(
             loginQrCodeScannerSelectedCameraId.value,
@@ -264,17 +310,23 @@ async function startScanLoginQrCodeScanner() {
             undefined,
         );
 
+        if (scannerGeneration !== loginQrCodeScannerGeneration) {
+            await resetLoginQrCodeScanner();
+            return;
+        }
+
         loginQrCodeScannerStatusOverlayRef.value!.hide();
     } catch {
+        if (scannerGeneration !== loginQrCodeScannerGeneration || !isScanLoginQrCodeDialogVisible.value) return;
         loginQrCodeScannerStatusOverlayRef.value!.showError('相機啟動失敗', false);
     }
 }
 
 async function stopScanLoginQrCode() {
-    try {
-        await html5QrCode?.stop();
-    } catch {}
-
-    html5QrCode?.clear();
+    ++loginQrCodeScannerGeneration;
+    await resetLoginQrCodeScanner();
 }
+
+// Hooks
+onBeforeUnmount(stopScanLoginQrCode);
 </script>

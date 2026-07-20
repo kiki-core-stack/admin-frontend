@@ -17,7 +17,6 @@ export interface AppLocaleMessages {
         logout: string;
         password: string;
         search: string;
-        verCode: string;
     };
 
     errors: { apiResponse: { code: Record<ApiResponseErrorCode | CommonApiResponseErrorCode, string> } };
