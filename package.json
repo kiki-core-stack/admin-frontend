@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@element-plus/nuxt": "^1.1.5",
-    "@kiki-core-stack/pack": "github:kiki-core-stack/pack#db924fd625ee673beeb6a0b1e93c2b37f4f188f4",
+    "@kiki-core-stack/pack": "github:kiki-core-stack/pack#e869180f8d19d537757b06a2e2fc4f92288cbe29",
     "@kikiutils/micromatch": "^4.0.9",
-    "@kikiutils/nuxt": "^12.0.0",
+    "@kikiutils/nuxt": "^12.0.1",
     "@kikiutils/shared": "^16.0.0",
     "@nuxtjs/color-mode": "^4.0.1",
     "@nuxtjs/robots": "^6.1.2",
@@ -32,12 +32,12 @@
     "es-toolkit": "^1.49.0",
     "html5-qrcode": "^2.3.8",
     "nanoid": "^6.0.0",
-    "nuxt": "^4.4.8",
+    "nuxt": "^4.5.0",
     "nuxt-security": "^2.6.0",
     "qrcode": "^1.5.4",
     "query-string": "^9.4.1",
     "sweetalert2": "^11.26.25",
-    "vue": "^3.5.39"
+    "vue": "^3.5.40"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.1.0",
@@ -58,9 +58,9 @@
     "dotenv-cli": "^11.0.0",
     "eslint-plugin-better-tailwindcss": "^4.6.1",
     "eslint-plugin-format": "^2.0.1",
-    "knip": "^6.26.0",
+    "knip": "^6.27.0",
     "tailwind-csstree": "^0.3.3",
-    "tailwindcss": "^4.3.2",
+    "tailwindcss": "^4.3.3",
     "type-fest": "^5.8.0",
     "unocss": "^66.7.5",
     "unplugin-fonts": "^2.0.0",
