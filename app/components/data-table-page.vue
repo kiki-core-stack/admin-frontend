@@ -162,7 +162,10 @@
 import type { TableRowData } from '@kiki-core-stack/pack/types/data';
 import type { AnyRecord } from '@kikiutils/shared/types';
 import type { TableSortOrder } from 'element-plus/es/components/table/src/table/defaults';
-import type { Except } from 'type-fest';
+import type {
+    Except,
+    Promisable,
+} from 'type-fest';
 
 import type { PermissionPattern } from '@/types/permission';
 
@@ -177,7 +180,7 @@ interface OnSortChangeData {
 
 interface Props {
     addDataBtnText?: string;
-    beforeDialogOpen?: (row?: TR) => void;
+    beforeDialogOpen?: (row?: TR) => Promisable<void>;
     confirmDeleteMessage?: ((row: TR) => string) | string;
     crudApi: CA;
     defaultSort?: Except<OnSortChangeData, 'column'>;
@@ -312,12 +315,12 @@ async function onSortChange(data: OnSortChangeData) {
     await loadData();
 }
 
-function openDialog(row?: TR) {
+async function openDialog(row?: TR) {
     dialogStatusOverlayRef.value?.hide();
     formRef.value?.resetFields();
     isEditing.value = row !== undefined;
     formData.value = mergeFormData(defaultFormData, row);
-    props.beforeDialogOpen?.(row);
+    await props.beforeDialogOpen?.(row);
     isDialogVisible.value = true;
 }
 
