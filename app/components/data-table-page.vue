@@ -170,7 +170,7 @@ import type {
 import type { PermissionPattern } from '@/types/permission';
 
 type ControlActionBtnFunction = (row: TR) => boolean | undefined;
-type MergeableRecord = Record<PropertyKey, any>;
+type CreateDialogInitialData = Omit<Partial<FD>, 'id'>;
 
 interface OnSortChangeData {
     column: any;
@@ -285,6 +285,8 @@ const confirmDelete = createElMessageBoxConfirmHandler<TR>(
     { type: 'warning' },
 );
 
+const openCreateDialog = async (initialData?: CreateDialogInitialData) => await openDialog(undefined, initialData);
+
 async function loadData() {
     if (isLoadingData.value || !capabilities.value.list) return;
     isLoadingData.value = true;
@@ -304,10 +306,6 @@ async function loadData() {
     autoReloadDataCountdownDropdownBtnRef.value?.start();
 }
 
-function mergeFormData<FD extends TableRowData, TR extends TableRowData>(defaultData: FD, row?: TR) {
-    return merge(cloneDeep(defaultData) as MergeableRecord, (row ?? {}) as MergeableRecord) as FD;
-}
-
 async function onSortChange(data: OnSortChangeData) {
     if (data.order === 'ascending') sortQueryParam.value = data.prop ?? undefined;
     else if (data.order === 'descending') sortQueryParam.value = `-${data.prop}`;
@@ -315,11 +313,12 @@ async function onSortChange(data: OnSortChangeData) {
     await loadData();
 }
 
-async function openDialog(row?: TR) {
+async function openDialog(row?: TR, initialData?: CreateDialogInitialData) {
     dialogStatusOverlayRef.value?.hide();
     formRef.value?.resetFields();
     isEditing.value = row !== undefined;
-    formData.value = mergeFormData(defaultFormData, row);
+    formData.value = merge(cloneDeep(defaultFormData), row ?? initialData ?? {});
+    if (!row) formData.value.id = defaultFormData.id;
     await props.beforeDialogOpen?.(row);
     isDialogVisible.value = true;
 }
@@ -351,6 +350,7 @@ watch(() => props.title, (nv) => pageTitle.value = nv);
 defineExpose({
     capabilities: readonly(capabilities),
     loadData,
+    openCreateDialog,
 });
 
 // Init
