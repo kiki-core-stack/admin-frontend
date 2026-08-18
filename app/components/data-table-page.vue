@@ -37,6 +37,7 @@
                 </div>
                 <el-table
                     v-if="capabilities.list"
+                    ref="tableRef"
                     table-layout="auto"
                     :data="tableData"
                     :row-key="rowKey"
@@ -44,8 +45,17 @@
                     flexible
                     highlight-current-row
                     stripe
+                    @selection-change="(selected) => selectedRows = selected"
                     @sort-change="onSortChange"
                 >
+                    <el-table-column
+                        v-if="enableSelection"
+                        align="center"
+                        type="selection"
+                        :reserve-selection="true"
+                        :selectable="selectable"
+                        :width="selectionColumnWidth"
+                    />
                     <slot name="table" />
                     <el-table-datetime-column
                         v-if="!hideTimestampColumns && !hideCreatedAtColumn"
@@ -189,6 +199,7 @@ interface Props {
     disablePagination?: boolean;
     disableRowDeleteBtnRule?: ControlActionBtnFunction;
     disableRowEditBtnRule?: ControlActionBtnFunction;
+    enableSelection?: boolean;
     filter?: AnyRecord;
     formRules?: ElFormRules<AnyRecord>;
     hideActionsColumn?: boolean;
@@ -213,6 +224,8 @@ interface Props {
       };
 
     rowKey?: string;
+    selectable?: (row: TR, index: number) => boolean;
+    selectionColumnWidth?: number;
     showTimeRangeQuickSelector?: boolean;
     title: string;
 }
@@ -224,6 +237,7 @@ const props = withDefaults(
         addDataBtnText: '新增',
         formRules: () => ({}),
         rowKey: 'id',
+        selectionColumnWidth: 39,
     },
 );
 
@@ -246,8 +260,10 @@ const paginationParams = ref({
 });
 
 const pageTitle = pageHeadTabsController.registerCurrentPageHeadTab(props.title);
+const selectedRows = ref<TR[]>([]);
 const sortQueryParam = ref<string | undefined>(undefined);
 const tableData = ref<TR[]>([]);
+const tableRef = useTemplateRef('tableRef');
 const totalTableDataCount = ref(0);
 
 // Computed properties
@@ -272,6 +288,7 @@ const capabilities = computed(() => {
 });
 
 // Functions
+const clearSelection = () => tableRef.value?.clearSelection();
 const confirmDelete = createElMessageBoxConfirmHandler<TR>(
     props.confirmDeleteMessage || ((data) => `確定要刪除 ${(data as any).name} 嗎？`),
     '刪除中...',
@@ -349,8 +366,10 @@ watch(() => props.title, (nv) => pageTitle.value = nv);
 // Exposes
 defineExpose({
     capabilities: readonly(capabilities),
+    clearSelection,
     loadData,
     openCreateDialog,
+    selectedRows: readonly(selectedRows),
 });
 
 // Init
