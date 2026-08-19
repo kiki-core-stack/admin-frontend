@@ -21,6 +21,12 @@ export default defineNuxtConfig({
         typescriptPlugin: true,
         watcher: 'builder',
     },
+    hooks: {
+        'prepare:types': function ({ tsConfig }) {
+            delete tsConfig.compilerOptions?.paths?.['~'];
+            delete tsConfig.compilerOptions?.paths?.['~/*'];
+        },
+    },
     i18n: {
         defaultLocale: 'zh-TW',
         locales: [
@@ -136,16 +142,6 @@ export default defineNuxtConfig({
                 'sweetalert2',
             ],
         },
-        plugins: [
-            {
-                enforce: 'post',
-                name: 'fix-vite-plugin-checker-runtime-path',
-                transform(code, id) {
-                    if (id !== 'virtual:@vite-plugin-checker-runtime-entry') return;
-                    return code.replace('"/_nuxt/@vite-plugin-checker-runtime"', '"/@vite-plugin-checker-runtime"');
-                },
-            },
-        ],
         server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') },
     },
 });
