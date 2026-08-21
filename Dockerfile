@@ -33,9 +33,9 @@ FROM busybox:latest
 ## Set workdir
 WORKDIR /app
 
-## Copy files and libraries
-COPY --from=build-stage /app/.output ./
-
 ## Copy and set the entrypoint script
 COPY --chmod=700 ./docker-entrypoint.sh ./
 CMD ["./docker-entrypoint.sh"]
+
+## Copy files and libraries
+COPY --from=build-stage /app/.output ./
