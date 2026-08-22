@@ -4,10 +4,10 @@ set -euo pipefail
 
 # Copy static files and set permissions
 STATIC_DIR_PATH='/static'
-rm -rf "${STATIC_DIR_PATH}"/*
-cp -r /app/public/* "${STATIC_DIR_PATH}"/
-find "${STATIC_DIR_PATH}" -type d -exec chmod 755 {} +
-find "${STATIC_DIR_PATH}" -type f -exec chmod 644 {} +
+find "${STATIC_DIR_PATH}" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +
+cp -r /app/public/. "${STATIC_DIR_PATH}"/
+find "${STATIC_DIR_PATH}" -mindepth 1 -type d -exec chmod 755 {} +
+find "${STATIC_DIR_PATH}" -mindepth 1 -type f -exec chmod 644 {} +
 
 # Load secrets to environment
 if [ -d /run/secrets ]; then

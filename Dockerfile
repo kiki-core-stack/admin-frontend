@@ -4,8 +4,11 @@
 FROM node:26-slim AS build-stage
 
 ## Set args, envs and workdir
-ARG PNPM_CONFIG_REGISTRY
+ARG NPM_CONFIG_REGISTRY \
+    PNPM_CONFIG_REGISTRY
+
 ENV NODE_ENV='production' \
+    NPM_CONFIG_REGISTRY="${NPM_CONFIG_REGISTRY}" \
     PNPM_CONFIG_REGISTRY="${PNPM_CONFIG_REGISTRY}"
 
 WORKDIR /app
@@ -49,8 +52,9 @@ RUN \
     apt-get autoremove -y --purge && \
     apt-get clean && \
     rm -rf /var/cache/apt/* /var/lib/apt/lists/* && \
-    ### Add user
-    useradd -mr -g nogroup -s /usr/sbin/nologin -u 10001 user
+    ### Add user and set /app owner
+    useradd -mr -g nogroup -s /usr/sbin/nologin -u 10001 user && \
+    chown 10001:nogroup /app -R
 
 ## Copy and set the entrypoint script
 COPY --chmod=700 --chown=10001:nogroup ./docker-entrypoint.sh ./
