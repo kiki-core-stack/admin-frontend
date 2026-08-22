@@ -3,7 +3,12 @@
 # Build stage
 FROM node:26-slim AS build-stage
 
-## Set args, envs and workdir
+## Upgrade system packages and install pnpm
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    npm i -g pnpm@latest
+
+## Configure build-time options and the environment
 ARG NPM_CONFIG_REGISTRY \
     PNPM_CONFIG_REGISTRY
 
@@ -13,18 +18,17 @@ ENV NODE_ENV='production' \
 
 WORKDIR /app
 
-## Upgrade packages and install pnpm
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    npm i -g pnpm@latest
-
-## Copy package-related files and install dependencies
+## Copy dependency manifests and install dependencies
 COPY ./package.json ./pnpm-lock.yaml ./pnpm-workspace.yaml ./
 RUN --mount=id=pnpm-cache,target=/root/.cache/pnpm,type=cache \
     --mount=id=pnpm-store,target=/root/.local/share/pnpm/store,type=cache \
     pnpm i --frozen-lockfile --prod=false
 
-## Copy source files and build-related files, then build the app
+## Configure options used by the application build
+ARG NITRO_PRESET
+ENV NITRO_PRESET="${NITRO_PRESET}"
+
+## Copy application sources and build the application
 COPY --exclude=./docker-entrypoint.sh ./ ./
 RUN pnpm run lint && \
     pnpm run typecheck && \
@@ -33,34 +37,35 @@ RUN pnpm run lint && \
 # Runtime stage
 FROM node:26-slim
 
-## Set envs and workdir
-ENV NODE_ENV='production' \
-    TZ='UTC'
-
+## Configure the runtime environment and working directory
+ENV TZ='UTC'
 WORKDIR /app
 
-## Setups
+## Install runtime packages and configure the runtime user
 RUN \
-    ### Upgrade and install packages
+    ### Upgrade system packages and install runtime dependencies
     apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends tini tzdata && \
-    ### Set timezone
+    ### Configure the timezone
     ln -snf "/usr/share/zoneinfo/${TZ}" /etc/localtime && \
     echo "${TZ}" >/etc/timezone && \
-    ### Cleanup
+    ### Clean package manager metadata
     apt-get autoremove -y --purge && \
     apt-get clean && \
     rm -rf /var/cache/apt/* /var/lib/apt/lists/* && \
-    ### Add user and set /app owner
+    ### Create the runtime user and set application ownership
     useradd -mr -g nogroup -s /usr/sbin/nologin -u 10001 user && \
     chown 10001:nogroup /app -R
 
-## Copy and set the entrypoint script
+## Copy and configure the entrypoint
 COPY --chmod=700 --chown=10001:nogroup ./docker-entrypoint.sh ./
 USER 10001
 ENTRYPOINT ["tini", "--"]
 CMD ["./docker-entrypoint.sh"]
 
-## Copy files and libraries
+## Configure remaining runtime defaults
+ENV NODE_ENV='production'
+
+## Copy the application output
 COPY --chown=10001:nogroup --from=build-stage /app/.output ./

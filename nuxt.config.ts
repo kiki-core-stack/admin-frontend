@@ -53,6 +53,5 @@ export default defineNuxtConfig({
     vite: {
         optimizeDeps: { include: [] },
         server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') },
-
     },
 });
