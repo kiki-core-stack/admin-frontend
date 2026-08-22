@@ -14,7 +14,6 @@ DOCKER_IMAGE_REF="${DOCKER_IMAGE_NAME:?must be set}:${DOCKER_IMAGE_TAG:-latest}"
 docker build \
     -t "${DOCKER_IMAGE_REF}" \
     --build-arg "NITRO_PRESET=${NITRO_PRESET:?must be set}" \
-    --build-arg "NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY:?must be set}" \
     --build-arg "PNPM_CONFIG_REGISTRY=${PNPM_CONFIG_REGISTRY:?must be set}" \
     --pull \
     .

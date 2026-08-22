@@ -9,11 +9,8 @@ RUN apt-get update && \
     npm i -g pnpm@latest
 
 ## Configure build-time options and the environment
-ARG NPM_CONFIG_REGISTRY \
-    PNPM_CONFIG_REGISTRY
-
+ARG PNPM_CONFIG_REGISTRY
 ENV NODE_ENV='production' \
-    NPM_CONFIG_REGISTRY="${NPM_CONFIG_REGISTRY}" \
     PNPM_CONFIG_REGISTRY="${PNPM_CONFIG_REGISTRY}"
 
 WORKDIR /app
