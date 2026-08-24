@@ -3,25 +3,28 @@
 # Build stage
 FROM node:26-alpine AS build-stage
 
-## Set args, envs and workdir
+## Upgrade system packages and install pnpm
+RUN apk update && \
+    apk upgrade && \
+    npm i -g pnpm@latest
+
+## Configure build-time options and the environment
 ARG PNPM_CONFIG_REGISTRY
 ENV NODE_ENV='production' \
     PNPM_CONFIG_REGISTRY="${PNPM_CONFIG_REGISTRY}"
 
 WORKDIR /app
 
-## Upgrade packages and install pnpm
-RUN apk update && \
-    apk upgrade && \
-    npm i -g pnpm@latest
-
-## Copy package-related files and install dependencies
+## Copy dependency manifests and install dependencies
 COPY ./package.json ./pnpm-lock.yaml ./pnpm-workspace.yaml ./
 RUN --mount=id=pnpm-cache,target=/root/.cache/pnpm,type=cache \
     --mount=id=pnpm-store,target=/root/.local/share/pnpm/store,type=cache \
     pnpm i --frozen-lockfile --prod=false
 
-## Copy source files and build-related files, then build the app
+## Configure options used by the application build
+## PLACEHOLDER
+
+## Copy application sources and build the application
 COPY --exclude=./docker-entrypoint.sh ./ ./
 RUN pnpm run lint && \
     pnpm run typecheck && \
@@ -30,12 +33,12 @@ RUN pnpm run lint && \
 # Runtime stage
 FROM busybox:latest
 
-## Set workdir
+## Configure working directory
 WORKDIR /app
 
-## Copy and set the entrypoint script
+## Copy and configure the entrypoint
 COPY --chmod=700 ./docker-entrypoint.sh ./
 CMD ["./docker-entrypoint.sh"]
 
-## Copy files and libraries
+## Copy the application output
 COPY --from=build-stage /app/.output ./
