@@ -22,7 +22,8 @@ RUN --mount=id=pnpm-cache,target=/root/.cache/pnpm,type=cache \
     pnpm i --frozen-lockfile --prod=false
 
 ## Configure options used by the application build
-## PLACEHOLDER
+# ARG
+# ENV
 
 ## Copy application sources and build the application
 COPY --exclude=./docker-entrypoint.sh ./ ./
