@@ -334,7 +334,9 @@ async function openDialog(row?: TR, initialData?: CreateDialogInitialData) {
     dialogStatusOverlayRef.value?.hide();
     formRef.value?.resetFields();
     isEditing.value = row !== undefined;
-    formData.value = merge(cloneDeep(defaultFormData), row ?? initialData ?? {});
+    const mergedFormData = cloneDeep(defaultFormData);
+    merge(mergedFormData, row ?? initialData ?? {});
+    formData.value = mergedFormData;
     if (!row) formData.value.id = defaultFormData.id;
     await props.beforeDialogOpen?.(row);
     isDialogVisible.value = true;
