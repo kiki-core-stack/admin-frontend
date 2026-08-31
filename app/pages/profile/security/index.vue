@@ -1,5 +1,5 @@
 <template>
-    <div class="h-full overflow-auto p-4">
+    <div class="lt-md:p-3 h-full overflow-auto p-4">
         <profile-security-change-password-form />
     </div>
 </template>

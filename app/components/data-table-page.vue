@@ -5,9 +5,9 @@
     >
         <div
             ref="mainContainerRef"
-            class="h-full overflow-auto p-4"
+            class="lt-md:p-3 h-full overflow-auto p-4"
         >
-            <div class="dark:bg-dark relative rounded-[10px] bg-white p-4">
+            <div class="dark:bg-dark lt-md:p-2 relative rounded-[10px] bg-white p-4">
                 <slot name="before-toolbar" />
                 <div class="b b-b-0 el-bg-and-border rounded-t-1 p-1">
                     <slot name="toolbar-prepend" />

@@ -8,17 +8,17 @@
         </Head>
         <div
             v-if="!hasViewDashboardPermission"
-            class="grid h-full place-items-center overflow-auto p-4"
+            class="lt-md:p-3 grid h-full place-items-center overflow-auto p-4"
         >
             <el-empty description="您沒有權限查看儀表板" />
         </div>
         <div
             v-else
-            class="h-full overflow-auto p-4"
+            class="lt-md:p-3 h-full overflow-auto p-4"
         >
             <filter-form
                 v-model="filter"
-                class="dark:bg-dark rounded-[10px] bg-white p-4"
+                class="dark:bg-dark lt-md:p-3 rounded-[10px] bg-white p-4"
                 @submit.prevent="loadData"
             >
                 <filter-time-range-fields
@@ -43,7 +43,7 @@
                     animated
                 >
                     <template #template>
-                        <el-card body-class="p-4!">
+                        <el-card body-class="p-4! lt-md:p-3!">
                             <el-skeleton-item
                                 class="w-50%"
                                 variant="p"
@@ -57,7 +57,7 @@
                 v-else-if="loadError"
                 class="mt-4"
             >
-                <el-card body-class="p-4!">
+                <el-card body-class="p-4! lt-md:p-3!">
                     <el-result
                         icon="error"
                         sub-title="請檢查網路連線或稍後再試"
@@ -136,7 +136,7 @@ onMounted(loadData);
 :deep(.cards-container) {
     /* stylelint-disable-next-line selector-class-pattern */
     .el-card__body {
-        @apply p-4!;
+        @apply p-4! lt-md:p-3!;
     }
 
     h4 {

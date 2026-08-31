@@ -1,7 +1,7 @@
 <template>
     <el-form
         ref="formRef"
-        class="dark:bg-dark relative w-full rounded-[10px] bg-white p-4"
+        class="dark:bg-dark lt-md:p-3 relative w-full rounded-[10px] bg-white p-4"
         label-width="auto"
         :model="formData"
         :rules="formRules"
