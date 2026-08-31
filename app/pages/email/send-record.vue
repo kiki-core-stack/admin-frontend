@@ -47,8 +47,8 @@
                 prop="failureReason"
             />
             <el-table-column
-                label="平台"
-                prop="platform.name"
+                label="服務商"
+                prop="provider.name"
             />
             <el-table-column
                 label="寄件者"
@@ -56,7 +56,7 @@
             />
             <el-table-column
                 label="外部交易ID"
-                prop="serviceProviderTransactionId"
+                prop="providerTransactionId"
             />
         </template>
     </data-table-page>

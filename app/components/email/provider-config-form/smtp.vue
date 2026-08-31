@@ -48,15 +48,15 @@
 </template>
 
 <script lang="ts" setup>
-import type { EmailPlatformConfigs } from '@kiki-core-stack/pack/types/email';
+import type { EmailProviderConfigs } from '@kiki-core-stack/pack/types/email';
 import type { AnyRecord } from '@kikiutils/shared/types';
 
 // Define props, models and emits
 const props = defineProps<{ modelValue: AnyRecord }>();
-const emit = defineEmits<{ (e: 'update:modelValue', config: EmailPlatformConfigs.Smtp): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', config: EmailProviderConfigs.Smtp): void }>();
 
 // Constants/Refs/Variables
-const config = ref<EmailPlatformConfigs.Smtp>({
+const config = ref<EmailProviderConfigs.Smtp>({
     host: '',
     password: '',
     port: 25,

@@ -12,9 +12,9 @@ export const sidebarMenuItems: ReadonlyDeep<SidebarMenuItem[]> = [
         basePath: '/email/',
         children: [
             {
-                path: '/email/platform/',
-                requiredPermissions: ['email.platform.*'],
-                title: '平台管理',
+                path: '/email/provider/',
+                requiredPermissions: ['email.provider.*'],
+                title: '服務商管理',
             },
             {
                 path: '/email/sender-identity/',
