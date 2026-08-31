@@ -50,6 +50,7 @@ import { logout } from '@/libs/auth';
 
 // Constants/Refs/Variables
 const colorMode = useColorMode();
+let latestTransitionId = 0;
 const sidebarState = useSidebarState();
 
 // Computed properties
@@ -70,25 +71,27 @@ function toggleTheme(event: MouseEvent) {
     const x = rect.left + rect.width / 2;
     const y = rect.top + rect.height / 2;
     const endRadius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    const ratioX = (100 * x) / innerWidth;
+    const ratioY = (100 * y) / innerHeight;
+    const referR = Math.hypot(innerWidth, innerHeight) / Math.SQRT2;
+    const ratioR = (100 * endRadius) / referR;
     if (!document.startViewTransition) return void toggleDark();
-    const transition = document.startViewTransition(() => toggleDark());
-    transition.ready.then(() => {
-        const clipPath = [
-            `circle(0px at ${x}px ${y}px)`,
-            `circle(${endRadius}px at ${x}px ${y}px)`,
-        ];
 
-        document.documentElement.animate(
-            { clipPath: isDark.value ? clipPath.reverse() : clipPath },
-            {
-                duration: 400,
-                easing: 'ease-in-out',
-                fill: 'both',
-                pseudoElement: isDark.value
-                    ? '::view-transition-old(root)'
-                    : '::view-transition-new(root)',
-            },
-        );
+    const transitionId = ++latestTransitionId;
+    const root = document.documentElement;
+    root.dataset.themeTransition = isDark.value ? 'to-light' : 'to-dark';
+    root.style.setProperty('--theme-transition-x', `${ratioX}%`);
+    root.style.setProperty('--theme-transition-y', `${ratioY}%`);
+    root.style.setProperty('--theme-transition-radius', `${ratioR}%`);
+
+    const transition = document.startViewTransition(() => toggleDark());
+    transition.finished.finally(() => {
+        if (transitionId !== latestTransitionId) return;
+
+        delete root.dataset.themeTransition;
+        root.style.removeProperty('--theme-transition-x');
+        root.style.removeProperty('--theme-transition-y');
+        root.style.removeProperty('--theme-transition-radius');
     });
 }
 </script>
