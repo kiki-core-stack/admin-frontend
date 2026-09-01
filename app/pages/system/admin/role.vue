@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { AdminRoleData } from '@kiki-core-stack/pack/types/data/admin';
+import type { AdminRoleData } from '@kcs-project/pack/types/data/admin';
 
 // Constants/Refs/Variables
 const { locale } = useI18n();

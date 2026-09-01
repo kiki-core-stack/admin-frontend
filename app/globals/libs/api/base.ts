@@ -1,4 +1,4 @@
-import type { ApiResponseData } from '@kiki-core-stack/pack/types/data';
+import type { ApiResponseData } from '@kcs-project/pack/types/data';
 import type { AnyRecord } from '@kikiutils/shared/types';
 import type {
     AxiosInstance,

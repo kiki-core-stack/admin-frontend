@@ -1,4 +1,4 @@
-import type { AdminChangePasswordData } from '@kiki-core-stack/pack/types/data/admin';
+import type { AdminChangePasswordData } from '@kcs-project/pack/types/data/admin';
 
 export interface ProfileSecurityChangePasswordFormData extends AdminChangePasswordData {
     confirmPassword: string;

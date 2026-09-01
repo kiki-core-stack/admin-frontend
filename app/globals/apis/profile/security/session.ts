@@ -1,4 +1,4 @@
-import type { AuthenticationSessionListItemData } from '@kiki-core-stack/pack/types/data/authentication-session';
+import type { AuthenticationSessionListItemData } from '@kcs-project/pack/types/data/authentication-session';
 
 export class ProfileSecuritySessionApi extends BaseCrudApi<AuthenticationSessionListItemData> {
     constructor() {

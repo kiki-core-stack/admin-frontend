@@ -1,5 +1,5 @@
-import { EmailProviderCode } from '@kiki-core-stack/pack/constants/email';
-import type { EmailProviderData } from '@kiki-core-stack/pack/types/data/email';
+import { EmailProviderCode } from '@kcs-project/pack/constants/email';
+import type { EmailProviderData } from '@kcs-project/pack/types/data/email';
 
 export class EmailProviderApi extends BaseCrudApi<EmailProviderData> {
     constructor() {

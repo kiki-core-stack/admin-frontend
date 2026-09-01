@@ -1,4 +1,4 @@
-import type { CommonApiResponseErrorCode } from '@kiki-core-stack/pack/hono-backend/types/api';
+import type { CommonApiResponseErrorCode } from '@kcs-project/pack/hono-backend/types/api';
 
 import type {
     AdminPermission,

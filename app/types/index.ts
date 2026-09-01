@@ -1,4 +1,4 @@
-import type { WithAdminAuditData } from '@kiki-core-stack/pack/types/data';
+import type { WithAdminAuditData } from '@kcs-project/pack/types/data';
 import type { AnyRecord } from '@kikiutils/shared/types';
 
 declare global {

@@ -1,8 +1,8 @@
-import type { AdminLoginFormData } from '@kiki-core-stack/pack/types/data/admin';
+import type { AdminLoginFormData } from '@kcs-project/pack/types/data/admin';
 import type {
     AuthenticationSessionQrCodeLoginApprovalRequestData,
     AuthenticationSessionQrCodeLoginCreationData,
-} from '@kiki-core-stack/pack/types/data/authentication-session';
+} from '@kcs-project/pack/types/data/authentication-session';
 import type { AxiosRequestConfig } from 'axios';
 
 export class AuthApi extends BaseApi {

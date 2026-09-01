@@ -1,4 +1,4 @@
-import type { AdminLogType } from '@kiki-core-stack/pack/constants/admin';
+import type { AdminLogType } from '@kcs-project/pack/constants/admin';
 
 export interface GetAdminLogListFilter {
     adminObjectId: { $in: string[] };

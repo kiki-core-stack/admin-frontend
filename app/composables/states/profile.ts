@@ -1,4 +1,4 @@
-import type { CachedAdminPermission } from '@kiki-core-stack/pack/types/admin';
+import type { CachedAdminPermission } from '@kcs-project/pack/types/admin';
 
 interface ProfileState {
     id: string;

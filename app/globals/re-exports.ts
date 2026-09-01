@@ -1,1 +1,1 @@
-export { commonStatusToTextMap } from '@kiki-core-stack/pack/constants';
+export { commonStatusToTextMap } from '@kcs-project/pack/constants';

@@ -63,8 +63,8 @@
 import {
     EmailSenderIdentityKey,
     emailSenderIdentityKeyToTextMap,
-} from '@kiki-core-stack/pack/constants/email';
-import type { EmailSenderIdentityData } from '@kiki-core-stack/pack/types/data/email';
+} from '@kcs-project/pack/constants/email';
+import type { EmailSenderIdentityData } from '@kcs-project/pack/types/data/email';
 import { isValid } from '@sylke/email-validation';
 
 // Constants/Refs/Variables

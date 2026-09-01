@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 
-import { writeManagementPermissionTypesFile } from '@kiki-core-stack/pack/libs/management/permission-types-file';
-import type { ManagementType } from '@kiki-core-stack/pack/types';
+import { writeManagementPermissionTypesFile } from '@kcs-project/pack/libs/management/permission-types-file';
+import type { ManagementType } from '@kcs-project/pack/types';
 import { checkAndGetEnvValue } from '@kikiutils/shared/env';
 import { generateWithNestedRandomLength } from '@kikiutils/shared/random';
 import { nanoid } from 'nanoid';

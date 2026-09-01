@@ -1,4 +1,4 @@
-import type { TableRowData } from '@kiki-core-stack/pack/types/data';
+import type { TableRowData } from '@kcs-project/pack/types/data';
 import type { AxiosRequestConfig } from 'axios';
 import type { Promisable } from 'type-fest';
 

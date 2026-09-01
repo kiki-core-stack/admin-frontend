@@ -8,7 +8,7 @@ export default defineNuxtConfig({
         },
         keepalive: true,
     },
-    build: { transpile: ['@kiki-core-stack/pack'] },
+    build: { transpile: ['@kcs-project/pack'] },
     compatibilityDate: 'latest',
     css: ['@/assets/scss/index.scss'],
     devServer: {
@@ -116,9 +116,9 @@ export default defineNuxtConfig({
     vite: {
         optimizeDeps: {
             include: [
-                '@kiki-core-stack/pack/constants',
-                '@kiki-core-stack/pack/constants/admin',
-                '@kiki-core-stack/pack/constants/email',
+                '@kcs-project/pack/constants',
+                '@kcs-project/pack/constants/admin',
+                '@kcs-project/pack/constants/email',
                 '@kikiutils/micromatch',
                 '@kikiutils/shared/datetime',
                 '@kikiutils/shared/element-plus',

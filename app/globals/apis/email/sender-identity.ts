@@ -1,4 +1,4 @@
-import type { EmailSenderIdentityData } from '@kiki-core-stack/pack/types/data/email';
+import type { EmailSenderIdentityData } from '@kcs-project/pack/types/data/email';
 
 export class EmailSenderIdentityApi extends BaseCrudApi<EmailSenderIdentityData> {
     constructor() {

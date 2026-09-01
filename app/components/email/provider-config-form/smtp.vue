@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { EmailProviderConfigs } from '@kiki-core-stack/pack/types/email';
+import type { EmailProviderConfigs } from '@kcs-project/pack/types/email';
 import type { AnyRecord } from '@kikiutils/shared/types';
 
 // Define props, models and emits

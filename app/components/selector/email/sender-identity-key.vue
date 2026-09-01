@@ -16,5 +16,5 @@
 import {
     EmailSenderIdentityKey,
     emailSenderIdentityKeyToTextMap,
-} from '@kiki-core-stack/pack/constants/email';
+} from '@kcs-project/pack/constants/email';
 </script>

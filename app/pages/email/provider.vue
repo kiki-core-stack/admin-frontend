@@ -93,8 +93,8 @@
 import {
     EmailProviderCode,
     emailProviderCodeToTextMap,
-} from '@kiki-core-stack/pack/constants/email';
-import type { EmailProviderData } from '@kiki-core-stack/pack/types/data/email';
+} from '@kcs-project/pack/constants/email';
+import type { EmailProviderData } from '@kcs-project/pack/types/data/email';
 import type { SetOptional } from 'type-fest';
 
 // Constants/Refs/Variables

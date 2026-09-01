@@ -16,5 +16,5 @@
 import {
     AdminLogType,
     adminLogTypeToTextMap,
-} from '@kiki-core-stack/pack/constants/admin';
+} from '@kcs-project/pack/constants/admin';
 </script>

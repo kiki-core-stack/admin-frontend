@@ -1,4 +1,4 @@
-import type { AdminLogData } from '@kiki-core-stack/pack/types/data/admin';
+import type { AdminLogData } from '@kcs-project/pack/types/data/admin';
 
 export class AdminLogApi extends BaseCrudApi<AdminLogData> {
     constructor() {

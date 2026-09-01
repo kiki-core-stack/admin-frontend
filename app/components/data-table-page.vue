@@ -169,7 +169,7 @@
     "
     setup
 >
-import type { TableRowData } from '@kiki-core-stack/pack/types/data';
+import type { TableRowData } from '@kcs-project/pack/types/data';
 import type { AnyRecord } from '@kikiutils/shared/types';
 import type { TableSortOrder } from 'element-plus/es/components/table/src/table/defaults';
 import type {

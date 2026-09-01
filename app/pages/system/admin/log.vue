@@ -63,8 +63,8 @@
 </template>
 
 <script lang="ts" setup>
-import { adminLogTypeToTextMap } from '@kiki-core-stack/pack/constants/admin';
-import type { AdminLogData } from '@kiki-core-stack/pack/types/data/admin';
+import { adminLogTypeToTextMap } from '@kcs-project/pack/constants/admin';
+import type { AdminLogData } from '@kcs-project/pack/types/data/admin';
 
 import type { GetAdminLogListFilter } from '@/types/admin';
 

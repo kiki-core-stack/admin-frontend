@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { AdminLoginFormData } from '@kiki-core-stack/pack/types/data/admin';
+import type { AdminLoginFormData } from '@kcs-project/pack/types/data/admin';
 import { useQRCode } from '@vueuse/integrations/useQRCode';
 
 import { initializeAuthenticatedSession } from '@/libs/session';

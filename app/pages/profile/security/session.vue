@@ -93,7 +93,7 @@
 import type {
     AuthenticationSessionListItemData,
     AuthenticationSessionQrCodeLoginApprovalRequestData,
-} from '@kiki-core-stack/pack/types/data/authentication-session';
+} from '@kcs-project/pack/types/data/authentication-session';
 import Bowser from 'bowser';
 import {
     Html5Qrcode,
