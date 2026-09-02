@@ -1,6 +1,5 @@
 import axios, { AxiosError } from 'axios';
 import type { CreateAxiosDefaults } from 'axios';
-import { nanoid } from 'nanoid';
 
 export function createApiAxiosInstance(config?: CreateAxiosDefaults) {
     const instance = axios.create(config);
