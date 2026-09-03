@@ -1,10 +1,13 @@
-allowBuilds:
-  '@parcel/watcher': true
-  esbuild: true
+minimumReleaseAgeExcludePrune: true
 
-shamefullyHoist: true
-shellEmulator: true
 trustPolicy: no-downgrade
 trustPolicyExclude:
   - fastq@1.20.2
   - semver@6.3.1
+
+shamefullyHoist: true
+shellEmulator: true
+
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
