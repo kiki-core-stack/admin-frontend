@@ -2,7 +2,6 @@ minimumReleaseAgeExcludePrune: true
 
 trustPolicy: no-downgrade
 trustPolicyExclude:
-  - fastq@1.20.2
   - semver@6.3.1
 
 shamefullyHoist: true
