@@ -193,6 +193,7 @@ interface Props {
     beforeDialogOpen?: (row?: TR) => Promisable<void>;
     confirmDeleteMessage?: ((row: TR) => string) | string;
     crudApi: CA;
+    defaultPaginationLimit?: number;
     defaultSort?: Except<OnSortChangeData, 'column'>;
     deleteBtnText?: string;
     dialogTitleSuffix?: string;
@@ -235,6 +236,7 @@ const props = withDefaults(
     defineProps<Props>(),
     {
         addDataBtnText: '新增',
+        defaultPaginationLimit: 10,
         formRules: () => ({}),
         rowKey: 'id',
         selectionColumnWidth: 39,
@@ -255,7 +257,7 @@ const isEditing = ref(false);
 const isLoadingData = ref(false);
 const mainContainerRef = useTemplateRef('mainContainerRef');
 const paginationParams = ref({
-    limit: 10,
+    limit: props.defaultPaginationLimit,
     page: 1,
 });
 
