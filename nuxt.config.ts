@@ -1,10 +1,13 @@
+// Constants/Variables
+const siteName = '總後台';
+const siteTitle = '總後台';
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     app: {
         head: {
-            htmlAttrs: { lang: 'zh-Hant-TW' },
-            title: '總後台',
-            titleTemplate: '%s｜總後台',
+            title: siteTitle,
+            titleTemplate: `%s｜${siteName}`,
         },
         keepalive: true,
     },
@@ -42,7 +45,11 @@ export default defineNuxtConfig({
         strategy: 'no_prefix',
     },
     icon: {
-        clientBundle: { scan: true },
+        clientBundle: {
+            icons: [],
+            includeCustomCollections: true,
+            scan: true,
+        },
         componentName: 'NuxtIcon',
         customCollections: [
             {
@@ -84,22 +91,78 @@ export default defineNuxtConfig({
     security: {
         headers: {
             contentSecurityPolicy: {
+                'connect-src': [
+                    `'self'`,
+                    'https://*.analytics.google.com',
+                    'https://*.google-analytics.com',
+                    'https://*.googletagmanager.com',
+                    'https://fonts.googleapis.com',
+                    'https://fonts.gstatic.com',
+                    'https://i.ytimg.com',
+                    'https://s.ytimg.com',
+                    'https://www.youtube.com',
+                    'https://www.youtube-nocookie.com',
+                ],
+                'default-src': [`'none'`],
+                'font-src': [
+                    `'self'`,
+                    'data:',
+                    'https://fonts.gstatic.com',
+                ],
+                'frame-src': [
+                    `'self'`,
+                    'https://www.youtube.com',
+                    'https://www.youtube-nocookie.com',
+                ],
                 'img-src': [
                     `'self'`,
                     'blob:',
                     'data:',
+                    'https://*.google-analytics.com',
+                    'https://*.googletagmanager.com',
+                    'https://i.ytimg.com',
                 ],
-                'media-src': [
+                'manifest-src': [`'self'`],
+                'media-src': [`'self'`],
+                'script-src': [
                     `'self'`,
-                    'blob:',
+                    'https:',
+                    `'unsafe-inline'`,
+                    `'strict-dynamic'`,
+                    `'nonce-{{nonce}}'`,
                 ],
                 'script-src-attr': [
                     `'unsafe-hashes'`,
                     `'sha256-F1noxsLOnJhyRSgc0zu5JgzoLjG2BBMaXaSG24k2mRM='`,
+                    `'sha256-bwK6T5wZVTANitXbrTsel7kl/PyCjCd/Dq5Qoz3imjM='`,
+                ],
+                'style-src': [
+                    `'self'`,
+                    `'unsafe-inline'`,
+                    'https://fonts.googleapis.com',
+                ],
+                'worker-src': [`'self'`],
+            },
+            crossOriginEmbedderPolicy: false,
+            permissionsPolicy: {
+                'encrypted-media': [
+                    'self',
+                    '"https://www.youtube.com"',
+                    '"https://www.youtube-nocookie.com"',
+                ],
+                'fullscreen': [
+                    'self',
+                    '"https://www.youtube.com"',
+                    '"https://www.youtube-nocookie.com"',
                 ],
             },
-            permissionsPolicy: { camera: ['self'] },
+            referrerPolicy: 'strict-origin-when-cross-origin',
         },
+    },
+    site: {
+        defaultLocale: 'zh-TW',
+        indexable: false,
+        name: siteName,
     },
     ssr: false,
     unfonts: {
