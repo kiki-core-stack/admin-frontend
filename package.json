@@ -9,34 +9,37 @@
     "knip:exports": "knip --exports",
     "lint": "eslint --max-warnings 0 && stylelint './app/**/*.{css,scss,vue}' -i ./.gitignore --mw 0",
     "lint:fix": "eslint --fix --max-warnings 0 && stylelint './app/**/*.{css,scss,vue}' -i ./.gitignore --fix --mw 0",
-    "postinstall": "nuxt prepare",
+    "postinstall": "dotenv -v SKIP_ENV_VALIDATION=true -- nuxt prepare",
     "preview": "nuxt preview",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "dotenv -v SKIP_ENV_VALIDATION=true -- nuxt typecheck"
   },
   "dependencies": {
-    "@kikiutils/nuxt": "^11.0.0",
-    "@kikiutils/shared": "^15.0.2",
-    "@nuxtjs/robots": "^6.0.8",
-    "@vueuse/nuxt": "^14.3.0",
-    "nuxt": "^4.4.4",
-    "nuxt-security": "^2.5.1"
+    "@kikiutils/nuxt": "^13.0.0",
+    "@kikiutils/shared": "^18.0.1",
+    "@nuxt/icon": "2.5.1",
+    "@nuxt/image": "^2.1.0",
+    "@nuxtjs/seo": "^5.3.14",
+    "@vite-pwa/nuxt": "1.1.1",
+    "@vueuse/nuxt": "^14.4.0",
+    "nuxt": "^4.5.2",
+    "nuxt-security": "^2.6.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^8.2.0",
-    "@eslint/css": "^1.2.0",
-    "@html-eslint/parser": "^0.60.0",
-    "@kikiutils/eslint-config": "^9.1.0",
-    "@kikiutils/eslint-plugin-vue": "^10.9.0",
-    "@kikiutils/stylelint-config": "^0.4.1",
-    "@unocss/nuxt": "^66.6.8",
+    "@antfu/eslint-config": "^9.5.1",
+    "@eslint/css": "^2.0.0",
+    "@html-eslint/parser": "^0.65.0",
+    "@kikiutils/eslint-config": "^9.2.1",
+    "@kikiutils/eslint-plugin-vue": "^10.10.0",
+    "@kikiutils/stylelint-config": "^0.6.0",
+    "@unocss/nuxt": "^66.10.2",
     "dotenv-cli": "^11.0.0",
-    "eslint-plugin-better-tailwindcss": "^4.5.0",
+    "eslint-plugin-better-tailwindcss": "^4.7.0",
     "eslint-plugin-format": "^2.0.1",
-    "knip": "^6.9.0",
-    "tailwind-csstree": "^0.3.1",
-    "tailwindcss": "^4.2.4",
-    "unocss": "^66.6.8",
+    "knip": "^6.35.1",
+    "tailwind-csstree": "^0.4.0",
+    "tailwindcss": "^4.3.3",
+    "unocss": "^66.10.2",
     "unplugin-fonts": "^2.0.0",
-    "vue-eslint-parser": "^10.4.0"
+    "vue-eslint-parser": "^10.4.1"
   }
 }
