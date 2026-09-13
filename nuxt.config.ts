@@ -145,6 +145,7 @@ export default defineNuxtConfig({
             },
             crossOriginEmbedderPolicy: false,
             permissionsPolicy: {
+                'camera': ['self'],
                 'encrypted-media': [
                     'self',
                     '"https://www.youtube.com"',
