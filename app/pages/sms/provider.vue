@@ -2,12 +2,12 @@
     <data-table-page
         ref="dataTablePageRef"
         v-model:form-data="formData"
-        dialog-title-suffix="電子郵件服務商"
-        title="電子郵件服務商管理"
+        dialog-title-suffix="簡訊服務商"
+        title="簡訊服務商管理"
         :before-dialog-open="(row) => void (formData.config = row?.config || {})"
-        :crud-api="EmailProviderApi.use()"
+        :crud-api="SmsProviderApi.use()"
         :form-rules="formRules"
-        :permissions="{ base: 'email.provider' }"
+        :permissions="{ base: 'sms.provider' }"
     >
         <template #table>
             <el-table-column
@@ -17,13 +17,13 @@
             <el-table-column
                 align="center"
                 label="服務商"
-                :formatter="(row: EmailProviderData) => emailProviderCodeToTextMap[row.providerCode]"
+                :formatter="(row: SmsProviderData) => smsProviderCodeToTextMap[row.providerCode]"
             />
             <el-table-confirmable-status-switch-column
                 field="enabled"
                 label="啟用"
-                :confirm-message="(row) => `是否切換電子郵件服務商 ${row.name} 的啟用狀態？`"
-                :crud-api="EmailProviderApi.use()"
+                :confirm-message="(row) => `是否切換簡訊服務商 ${row.name} 的啟用狀態？`"
+                :crud-api="SmsProviderApi.use()"
                 :disabled-condition="!dataTablePageRef?.capabilities.toggle"
                 @status-change="dataTablePageRef?.loadData()"
             />
@@ -75,15 +75,19 @@
                     :teleported="false"
                 >
                     <el-option
-                        v-for="provider in getEnumNumberValues(EmailProviderCode)"
+                        v-for="provider in getEnumNumberValues(SmsProviderCode)"
                         :key="provider"
-                        :label="emailProviderCodeToTextMap[provider]"
+                        :label="smsProviderCodeToTextMap[provider]"
                         :value="provider"
                     />
                 </el-select>
             </el-form-item>
-            <email-provider-config-form-smtp
-                v-if="formData.providerCode === EmailProviderCode.Smtp"
+            <sms-provider-config-form-tw-sms
+                v-if="formData.providerCode === SmsProviderCode.TwSms"
+                v-model="formData.config"
+            />
+            <sms-provider-config-form-mitake
+                v-else-if="formData.providerCode === SmsProviderCode.Mitake"
                 v-model="formData.config"
             />
         </template>
@@ -92,15 +96,15 @@
 
 <script lang="ts" setup>
 import {
-    EmailProviderCode,
-    emailProviderCodeToTextMap,
-} from '@kcs-project/pack/constants/email';
-import type { EmailProviderData } from '@kcs-project/pack/types/data/email';
+    SmsProviderCode,
+    smsProviderCodeToTextMap,
+} from '@kcs-project/pack/constants/sms';
+import type { SmsProviderData } from '@kcs-project/pack/types/data/sms';
 import type { SetOptional } from 'type-fest';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
-const formData = ref<SetOptional<TablePageFormData<EmailProviderData, 'configHash'>, 'providerCode'>>({
+const formData = ref<SetOptional<TablePageFormData<SmsProviderData, 'configHash'>, 'providerCode'>>({
     apiProxyUrl: '',
     config: {},
     enabled: false,
@@ -110,7 +114,7 @@ const formData = ref<SetOptional<TablePageFormData<EmailProviderData, 'configHas
     providerCode: undefined,
 });
 
-const formRules: TablePageElFormRules<EmailProviderData> = {
+const formRules: TablePageElFormRules<SmsProviderData> = {
     apiProxyUrl: [
         createElFormItemRuleWithDefaults(
             '請輸入正確的網址',

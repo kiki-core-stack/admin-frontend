@@ -31,6 +31,23 @@ export const sidebarMenuItems: ReadonlyDeep<SidebarMenuItem[]> = [
         title: '電子郵件',
     },
     {
+        basePath: '/sms/',
+        children: [
+            {
+                path: '/sms/provider/',
+                requiredPermissions: 'sms.provider.*',
+                title: '服務商管理',
+            },
+            {
+                path: '/sms/send-record/',
+                requiredPermissions: 'sms.sendRecord.*',
+                title: '發送紀錄',
+            },
+        ],
+        requiredPermissions: 'sms.*',
+        title: '簡訊',
+    },
+    {
         basePath: '/system/',
         children: [
             {

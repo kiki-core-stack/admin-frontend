@@ -37,6 +37,15 @@ const permissionLabels: Record<AdminPermission | AdminPermissionGroup, string> =
     'home': '首頁',
     'home.dashboard': '首頁儀錶板',
     'home.dashboard.view': '獲取首頁儀表板資料',
+    'sms': '簡訊',
+    'sms.provider': '簡訊服務商',
+    'sms.provider.create': '建立簡訊服務商',
+    'sms.provider.delete': '刪除簡訊服務商',
+    'sms.provider.list': '獲取簡訊服務商列表',
+    'sms.provider.toggle': '切換簡訊服務商狀態',
+    'sms.provider.update': '更新簡訊服務商',
+    'sms.sendRecord': '簡訊發送紀錄',
+    'sms.sendRecord.list': '獲取簡訊發送紀錄列表',
 };
 
 export default defineI18nLocale<PermissionsLocaleMessages>(

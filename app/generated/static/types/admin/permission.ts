@@ -23,7 +23,13 @@ export type AdminPermission =
   | 'email.senderIdentity.list'
   | 'email.senderIdentity.toggle'
   | 'email.senderIdentity.update'
-  | 'home.dashboard.view';
+  | 'home.dashboard.view'
+  | 'sms.provider.create'
+  | 'sms.provider.delete'
+  | 'sms.provider.list'
+  | 'sms.provider.toggle'
+  | 'sms.provider.update'
+  | 'sms.sendRecord.list';
 
 export type AdminPermissionGroup =
   | 'admin'
@@ -34,4 +40,7 @@ export type AdminPermissionGroup =
   | 'email.sendRecord'
   | 'email.senderIdentity'
   | 'home'
-  | 'home.dashboard';
+  | 'home.dashboard'
+  | 'sms'
+  | 'sms.provider'
+  | 'sms.sendRecord';
