@@ -9,12 +9,6 @@
         ]"
     />
     <el-form-input
-        v-model="config.sendPath"
-        label="發送路徑"
-        prop="config.sendPath"
-        :rules="[createElFormItemRuleWithDefaults('請輸入發送路徑')]"
-    />
-    <el-form-input
         v-model="config.encoding"
         label="編碼"
         prop="config.encoding"
@@ -47,7 +41,6 @@ const config = ref<SmsProviderConfigs.Mitake>({
     apiUrl: '',
     encoding: 'UTF8',
     password: '',
-    sendPath: '',
     username: '',
 });
 
