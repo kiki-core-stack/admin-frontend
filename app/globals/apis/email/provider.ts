@@ -8,7 +8,7 @@ export class EmailProviderApi extends BaseCrudApi<EmailProviderData> {
 
     override processCreateOrUpdateData(data: TablePageFormData<EmailProviderData>) {
         data = cloneDeep(data);
-        switch (data.providerCode) {
+        switch (data.code) {
             case EmailProviderCode.Smtp:
                 data.config = {
                     ...data.config,

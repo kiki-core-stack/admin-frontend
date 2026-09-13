@@ -17,7 +17,7 @@
             <el-table-column
                 align="center"
                 label="服務商"
-                :formatter="(row: EmailProviderData) => emailProviderCodeToTextMap[row.providerCode]"
+                :formatter="(row: EmailProviderData) => emailProviderCodeToTextMap[row.code]"
             />
             <el-table-confirmable-status-switch-column
                 field="enabled"
@@ -67,10 +67,10 @@
             />
             <el-form-item
                 label="服務商"
-                prop="providerCode"
+                prop="code"
             >
                 <el-select
-                    v-model="formData.providerCode"
+                    v-model="formData.code"
                     :disabled="!!formData.id"
                     :teleported="false"
                 >
@@ -83,7 +83,7 @@
                 </el-select>
             </el-form-item>
             <email-provider-config-form-smtp
-                v-if="formData.providerCode === EmailProviderCode.Smtp"
+                v-if="formData.code === EmailProviderCode.Smtp"
                 v-model="formData.config"
             />
         </template>
@@ -100,14 +100,14 @@ import type { SetOptional } from 'type-fest';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
-const formData = ref<SetOptional<TablePageFormData<EmailProviderData, 'configHash'>, 'providerCode'>>({
+const formData = ref<SetOptional<TablePageFormData<EmailProviderData, 'configHash'>, 'code'>>({
     apiProxyUrl: '',
+    code: undefined,
     config: {},
     enabled: false,
     id: '',
     name: '',
     priority: 0,
-    providerCode: undefined,
 });
 
 const formRules: TablePageElFormRules<EmailProviderData> = {
@@ -120,9 +120,7 @@ const formRules: TablePageElFormRules<EmailProviderData> = {
             },
         ),
     ],
-    name: [createElFormItemRuleWithDefaults('請輸入名稱')],
-    priority: [createElFormItemRuleWithDefaults('請輸入優先度', { type: 'integer' })],
-    providerCode: [
+    code: [
         createElFormItemRuleWithDefaults(
             '請選擇服務商',
             {
@@ -131,5 +129,7 @@ const formRules: TablePageElFormRules<EmailProviderData> = {
             },
         ),
     ],
+    name: [createElFormItemRuleWithDefaults('請輸入名稱')],
+    priority: [createElFormItemRuleWithDefaults('請輸入優先度', { type: 'integer' })],
 };
 </script>

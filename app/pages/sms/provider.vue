@@ -17,7 +17,7 @@
             <el-table-column
                 align="center"
                 label="服務商"
-                :formatter="(row: SmsProviderData) => smsProviderCodeToTextMap[row.providerCode]"
+                :formatter="(row: SmsProviderData) => smsProviderCodeToTextMap[row.code]"
             />
             <el-table-confirmable-status-switch-column
                 field="enabled"
@@ -67,10 +67,10 @@
             />
             <el-form-item
                 label="服務商"
-                prop="providerCode"
+                prop="code"
             >
                 <el-select
-                    v-model="formData.providerCode"
+                    v-model="formData.code"
                     :disabled="!!formData.id"
                     :teleported="false"
                 >
@@ -83,11 +83,11 @@
                 </el-select>
             </el-form-item>
             <sms-provider-config-form-tw-sms
-                v-if="formData.providerCode === SmsProviderCode.TwSms"
+                v-if="formData.code === SmsProviderCode.TwSms"
                 v-model="formData.config"
             />
             <sms-provider-config-form-mitake
-                v-else-if="formData.providerCode === SmsProviderCode.Mitake"
+                v-else-if="formData.code === SmsProviderCode.Mitake"
                 v-model="formData.config"
             />
         </template>
@@ -104,14 +104,14 @@ import type { SetOptional } from 'type-fest';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
-const formData = ref<SetOptional<TablePageFormData<SmsProviderData, 'configHash'>, 'providerCode'>>({
+const formData = ref<SetOptional<TablePageFormData<SmsProviderData, 'configHash'>, 'code'>>({
     apiProxyUrl: '',
+    code: undefined,
     config: {},
     enabled: false,
     id: '',
     name: '',
     priority: 0,
-    providerCode: undefined,
 });
 
 const formRules: TablePageElFormRules<SmsProviderData> = {
@@ -124,9 +124,7 @@ const formRules: TablePageElFormRules<SmsProviderData> = {
             },
         ),
     ],
-    name: [createElFormItemRuleWithDefaults('請輸入名稱')],
-    priority: [createElFormItemRuleWithDefaults('請輸入優先度', { type: 'integer' })],
-    providerCode: [
+    code: [
         createElFormItemRuleWithDefaults(
             '請選擇服務商',
             {
@@ -135,5 +133,7 @@ const formRules: TablePageElFormRules<SmsProviderData> = {
             },
         ),
     ],
+    name: [createElFormItemRuleWithDefaults('請輸入名稱')],
+    priority: [createElFormItemRuleWithDefaults('請輸入優先度', { type: 'integer' })],
 };
 </script>
