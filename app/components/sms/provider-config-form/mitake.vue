@@ -9,12 +9,6 @@
         ]"
     />
     <el-form-input
-        v-model="config.encoding"
-        label="編碼"
-        prop="config.encoding"
-        disabled
-    />
-    <el-form-input
         v-model="config.username"
         label="帳號"
         prop="config.username"
@@ -39,7 +33,6 @@ const emit = defineEmits<{ (e: 'update:modelValue', config: SmsProviderConfigs.M
 // Constants/Refs/Variables
 const config = ref<SmsProviderConfigs.Mitake>({
     apiUrl: '',
-    encoding: 'UTF8',
     password: '',
     username: '',
 });
