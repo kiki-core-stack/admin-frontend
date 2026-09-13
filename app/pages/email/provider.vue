@@ -100,7 +100,7 @@ import type { SetOptional } from 'type-fest';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
-const formData = ref<SetOptional<TablePageFormData<EmailProviderData, 'configHash'>, 'code'>>({
+const formData = ref<SetOptional<TablePageFormData<EmailProviderData, 'cacheKey'>, 'code'>>({
     apiProxyUrl: '',
     code: undefined,
     config: {},
