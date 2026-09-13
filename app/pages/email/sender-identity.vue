@@ -80,17 +80,15 @@ const formRules: TablePageElFormRules<EmailSenderIdentityData> = {
     from: [
         createElFormItemRuleWithDefaults('請輸入寄件地址'),
         {
-            validator(_, value, callback) {
-                if (!isValid(
-                    value,
-                    {
-                        allowDisplayText: true,
-                        allowDomainLiteral: false,
-                        minimumSubDomains: 2,
-                    },
-                )) return callback(new Error('請輸入正確格式的寄件地址'));
-                callback();
-            },
+            message: '請輸入正確格式的寄件地址',
+            validator: (_, value) => isValid(
+                value,
+                {
+                    allowDisplayText: true,
+                    allowDomainLiteral: false,
+                    minimumSubDomains: 2,
+                },
+            ),
         },
     ],
 };
