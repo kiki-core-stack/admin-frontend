@@ -3,6 +3,7 @@
         align="center"
         width="156"
         :formatter="formatDateCell"
+        :prop="prop"
     />
 </template>
 
@@ -12,7 +13,7 @@ import { get } from 'es-toolkit/compat';
 
 interface Props {
     emptyText?: string;
-    field?: string;
+    prop?: string;
 }
 
 // Define props, models and emits
@@ -20,13 +21,13 @@ const props = withDefaults(
     defineProps<Props>(),
     {
         emptyText: '',
-        field: 'createdAt',
+        prop: 'createdAt',
     },
 );
 
 // Functions
 function formatDateCell(row: AnyRecord) {
-    const value = get(row, props.field);
+    const value = get(row, props.prop);
     if (value === null || value === undefined) return props.emptyText;
     return formatDate(value);
 }

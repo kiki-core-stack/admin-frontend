@@ -29,16 +29,16 @@
                 prop="lastActiveIp"
             />
             <el-table-datetime-column
-                field="lastActiveAt"
                 label="最後活動時間"
+                prop="lastActiveAt"
             />
             <el-table-column
                 label="登入IP"
                 prop="loginIp"
             />
             <el-table-datetime-column
-                field="loggedAt"
                 label="登入時間"
+                prop="loggedAt"
             />
         </template>
         <el-dialog
