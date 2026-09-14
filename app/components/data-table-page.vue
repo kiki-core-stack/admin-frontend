@@ -63,8 +63,8 @@
                     />
                     <el-table-datetime-column
                         v-if="!hideTimestampColumns && !hideUpdatedAtColumn"
-                        field="updatedAt"
                         label="更新時間"
+                        prop="updatedAt"
                     />
                     <!-- @vue-generic {TR} -->
                     <el-table-column
