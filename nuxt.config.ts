@@ -138,6 +138,7 @@ export default defineNuxtConfig({
                     'https://*.googletagmanager.com',
                     'https://fonts.googleapis.com',
                     'https://fonts.gstatic.com',
+                    'https://stats.g.doubleclick.net',
                     'https://i.ytimg.com',
                     'https://s.ytimg.com',
                     'https://www.youtube.com',
@@ -173,8 +174,15 @@ export default defineNuxtConfig({
                 ],
                 'script-src-attr': [
                     `'unsafe-hashes'`,
-                    `'sha256-F1noxsLOnJhyRSgc0zu5JgzoLjG2BBMaXaSG24k2mRM='`,
+                    // @nuxt/image image error marker onerror handler: this.setAttribute('data-error', 1)
                     `'sha256-bwK6T5wZVTANitXbrTsel7kl/PyCjCd/Dq5Qoz3imjM='`,
+                    // unplugin-fonts Google Fonts preload 的 onload handler: this.rel='stylesheet'
+                    `'sha256-F1noxsLOnJhyRSgc0zu5JgzoLjG2BBMaXaSG24k2mRM='`,
+                ],
+                'script-src-elem': [
+                    `'self'`,
+                    `'nonce-{{nonce}}'`,
+                    'https://static.cloudflareinsights.com',
                 ],
                 'style-src': [
                     `'self'`,
