@@ -131,6 +131,7 @@ export default defineNuxtConfig({
     security: {
         headers: {
             contentSecurityPolicy: {
+                'base-uri': [`'self'`],
                 'connect-src': [
                     `'self'`,
                     'https://*.analytics.google.com',
