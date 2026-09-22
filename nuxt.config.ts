@@ -2,7 +2,7 @@ import { checkAndGetEnvValue } from '@kikiutils/shared/env';
 
 // Constants/Variables
 const envValidationSkipped = process.env.SKIP_ENV_VALIDATION === 'true';
-const seoIndexingEnabled = process.env.SEO_INDEXING_ENABLED?.trim() !== 'false';
+const seoIndexingEnabled = process.env.SEO_INDEXING_ENABLED?.trim() === 'true';
 
 const siteDescription = 'nuxt template';
 const siteName = 'nuxt template';
