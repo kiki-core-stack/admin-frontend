@@ -180,11 +180,6 @@ export default defineNuxtConfig({
                     // unplugin-fonts Google Fonts preload 的 onload handler: this.rel='stylesheet'
                     `'sha256-F1noxsLOnJhyRSgc0zu5JgzoLjG2BBMaXaSG24k2mRM='`,
                 ],
-                'script-src-elem': [
-                    `'self'`,
-                    `'nonce-{{nonce}}'`,
-                    'https://static.cloudflareinsights.com',
-                ],
                 'style-src': [
                     `'self'`,
                     `'unsafe-inline'`,
