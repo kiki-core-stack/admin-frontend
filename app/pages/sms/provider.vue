@@ -115,7 +115,7 @@ const formData = ref<SmsProviderFormData>({
     priority: 0,
 });
 
-const formRules: TablePageElFormRules<SmsProviderData> = {
+const formRules: ElFormRules<SmsProviderFormData> = {
     apiProxyUrl: [
         createElFormItemRuleWithDefaults(
             '請輸入正確的網址',
