@@ -29,7 +29,7 @@ const startAt = defineModel<Date>('start', { required: true });
 
 // Functions
 function onSelect(type: DateRangeType) {
-    const { endDate, startDate } = getDateRangeFromDate(new Date(), type, { setEndDateToNextDayStart: true });
+    const { endDate, startDate } = getDateRangeFromDate(new EnhancedDate(), type, { setEndDateToNextDayStart: true });
     endAt.value = endDate;
     startAt.value = startDate;
     emit('select');

@@ -244,8 +244,8 @@ const props = withDefaults(
 );
 
 const formData = defineModel<FD>('formData', { default: () => ({ id: '' } as FD) });
-const timeRangeEndAt = defineModel<Date>('timeRangeEnd', { default: () => new Date() });
-const timeRangeStartAt = defineModel<Date>('timeRangeStart', { default: () => new Date() });
+const timeRangeEndAt = defineModel<Date>('timeRangeEnd', { default: () => new EnhancedDate() });
+const timeRangeStartAt = defineModel<Date>('timeRangeStart', { default: () => new EnhancedDate() });
 
 // Constants/Refs/Variables
 const autoReloadDataCountdownDropdownBtnRef = useTemplateRef('autoReloadDataCountdownDropdownBtnRef');
