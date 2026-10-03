@@ -9,7 +9,9 @@ shamefullyHoist: true
 shellEmulator: true
 
 overrides:
+  '@vue/language-core': 3.3.11
   typescript: ^6.0.3
+  vue-tsc: 3.3.11
 
 allowBuilds:
   '@parcel/watcher': true
