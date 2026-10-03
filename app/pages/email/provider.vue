@@ -96,11 +96,12 @@ import {
     emailProviderCodeToTextMap,
 } from '@kcs-project/pack/constants/email';
 import type { EmailProviderData } from '@kcs-project/pack/types/data/email';
-import type { SetOptional } from 'type-fest';
+
+import type { EmailProviderFormData } from '@/types/data/email';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
-const formData = ref<SetOptional<TablePageFormData<EmailProviderData, 'cacheKey'>, 'code'>>({
+const formData = ref<EmailProviderFormData>({
     apiProxyUrl: '',
     code: undefined,
     config: {},

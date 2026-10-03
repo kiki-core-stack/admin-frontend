@@ -1,12 +1,14 @@
 import { EmailProviderCode } from '@kcs-project/pack/constants/email';
 import type { EmailProviderData } from '@kcs-project/pack/types/data/email';
 
-export class EmailProviderApi extends BaseCrudApi<EmailProviderData> {
+import type { EmailProviderFormData } from '@/types/data/email';
+
+export class EmailProviderApi extends BaseCrudApi<EmailProviderData, EmailProviderFormData> {
     constructor() {
         super('/api/admin/email/provider');
     }
 
-    override processCreateOrUpdateData(data: TablePageFormData<EmailProviderData>) {
+    override processCreateOrUpdateData(data: EmailProviderFormData) {
         data = cloneDeep(data);
         switch (data.code) {
             case EmailProviderCode.Smtp:

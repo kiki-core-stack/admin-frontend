@@ -100,11 +100,12 @@ import {
     smsProviderCodeToTextMap,
 } from '@kcs-project/pack/constants/sms';
 import type { SmsProviderData } from '@kcs-project/pack/types/data/sms';
-import type { SetOptional } from 'type-fest';
+
+import type { SmsProviderFormData } from '@/types/data/sms';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
-const formData = ref<SetOptional<TablePageFormData<SmsProviderData, 'cacheKey'>, 'code'>>({
+const formData = ref<SmsProviderFormData>({
     apiProxyUrl: '',
     code: undefined,
     config: {},
