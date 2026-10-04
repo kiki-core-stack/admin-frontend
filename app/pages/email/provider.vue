@@ -53,7 +53,11 @@
                 label="優先度"
                 prop="priority"
             >
-                <el-filtered-input-number v-model="formData.priority" />
+                <el-filtered-input-number
+                    v-model="formData.priority"
+                    :max="2147483647"
+                    :min="-2147483648"
+                />
             </el-form-item>
             <el-form-input
                 v-model="formData.apiProxyUrl"
@@ -131,6 +135,15 @@ const formRules: ElFormRules<EmailProviderFormData> = {
         ),
     ],
     name: [createElFormItemRuleWithDefaults('請輸入名稱')],
-    priority: [createElFormItemRuleWithDefaults('請輸入優先度', { type: 'integer' })],
+    priority: [
+        createElFormItemRuleWithDefaults(
+            '請輸入 -2147483648 至 2147483647 之間的整數優先度',
+            {
+                max: 2147483647,
+                min: -2147483648,
+                type: 'integer',
+            },
+        ),
+    ],
 };
 </script>
