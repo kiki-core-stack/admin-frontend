@@ -20,6 +20,7 @@
             v-model="config.port"
             :max="65535"
             :min="1"
+            :precision="0"
         />
     </el-form-item>
     <el-form-input

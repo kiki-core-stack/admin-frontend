@@ -56,6 +56,7 @@
                     v-model="formData.priority"
                     :max="2147483647"
                     :min="-2147483648"
+                    :precision="0"
                 />
             </el-form-item>
             <el-form-input
