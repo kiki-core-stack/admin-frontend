@@ -1,4 +1,7 @@
 minimumReleaseAgeExcludePrune: true
+minimumReleaseAgeExclude:
+  - '@kikiutils/mongoose' # TODO: remove it
+  - '@kikiutils/shared' # TODO: remove it
 
 trustPolicy: no-downgrade
 trustPolicyExclude:
