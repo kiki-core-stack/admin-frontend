@@ -25,7 +25,6 @@
             <el-form-input
                 v-model="formData.name"
                 label="名稱"
-                maxlength="64"
                 prop="name"
             />
             <el-form-item label="權限">
@@ -56,7 +55,19 @@ const formData = ref<TablePageFormData<AdminRoleData>>({
     permissions: [],
 });
 
-const formRules: TablePageElFormRules<AdminRoleData> = { name: [createElFormItemRuleWithDefaults('請輸入名稱')] };
+const formRules: TablePageElFormRules<AdminRoleData> = {
+    name: [
+        createElFormItemRuleWithDefaults('請輸入名稱'),
+        {
+            max: 64,
+            message: '名稱最多 64 個字元',
+            trigger: [
+                'blur',
+                'change',
+            ],
+        },
+    ],
+};
 const permissionTreeNodes = ref<ElTreeNode[]>([]);
 
 // Functions

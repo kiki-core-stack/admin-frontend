@@ -46,7 +46,6 @@
             <el-form-input
                 v-model="formData.name"
                 label="名稱"
-                maxlength="64"
                 prop="name"
             />
             <el-form-item
@@ -138,7 +137,17 @@ const formRules: ElFormRules<SmsProviderFormData> = {
             },
         ),
     ],
-    name: [createElFormItemRuleWithDefaults('請輸入名稱')],
+    name: [
+        createElFormItemRuleWithDefaults('請輸入名稱'),
+        {
+            max: 64,
+            message: '名稱最多 64 個字元',
+            trigger: [
+                'blur',
+                'change',
+            ],
+        },
+    ],
     priority: [
         createElFormItemRuleWithDefaults(
             '請輸入 -2147483648 至 2147483647 之間的整數優先度',

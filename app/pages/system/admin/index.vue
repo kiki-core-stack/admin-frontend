@@ -32,7 +32,6 @@
             <el-form-input
                 v-model="formData.account"
                 label="帳號"
-                maxlength="64"
                 name="account"
                 prop="account"
             />
@@ -102,7 +101,17 @@ const formData = ref<AdminFormData>({
 });
 
 const formRules: ElFormRules<AdminFormData> = {
-    account: [createElFormItemRuleWithDefaults('請輸入帳號')],
+    account: [
+        createElFormItemRuleWithDefaults('請輸入帳號'),
+        {
+            max: 64,
+            message: '帳號最多 64 個字元',
+            trigger: [
+                'blur',
+                'change',
+            ],
+        },
+    ],
     email: [
         createElFormItemRuleWithDefaults(
             '請輸入正確的電子郵件',
