@@ -33,6 +33,7 @@ export interface AppLocaleMessages {
         };
     };
 }
+
 declare module 'vue-i18n' {
     export interface DefineLocaleMessage extends AppLocaleMessages, PermissionsLocaleMessages {}
 }

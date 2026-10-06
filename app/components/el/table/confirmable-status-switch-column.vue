@@ -36,9 +36,8 @@ const emit = defineEmits<{ (e: 'statusChange'): void }>();
 const confirmChange = createElMessageBoxConfirmHandler<TR>(
     (data) => typeof props.confirmMessage === 'string' ? props.confirmMessage : props.confirmMessage(data),
     '切換中...',
-    async (data) => {
-        return !!(await props.crudApi.updateBooleanField(data.id, props.field, !get(data, props.field)))?.data?.success;
-    },
+    async (data) =>
+        !!(await props.crudApi.updateBooleanField(data.id, props.field, !get(data, props.field)))?.data?.success,
     () => {
         ElNotification.success('切換成功');
         emit('statusChange');

@@ -29,9 +29,9 @@ const elMenuRef = useTemplateRef('elMenuRef');
 const route = useRoute();
 
 // Computed properties
-const processedMenuItems = computed(() => {
-    return processAccessibleMenuItems(cloneDeep(sidebarMenuItems) as WritableDeep<SidebarMenuItem[]>);
-});
+const processedMenuItems = computed(
+    () => processAccessibleMenuItems(cloneDeep(sidebarMenuItems) as WritableDeep<SidebarMenuItem[]>),
+);
 
 // Functions
 function onMenuOpen(_: string, paths: string[]) {

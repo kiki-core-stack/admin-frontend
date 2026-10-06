@@ -68,6 +68,7 @@ const formRules: TablePageElFormRules<AdminRoleData> = {
         },
     ],
 };
+
 const permissionTreeNodes = ref<ElTreeNode[]>([]);
 
 // Functions
