@@ -20,7 +20,8 @@ export default defineNuxtConfig({
     },
     experimental: {
         asyncContext: true,
-        extractAsyncDataHandlers: true,
+        extractSerializablePageMeta: true,
+        typedPages: true,
         typescriptPlugin: true,
         watcher: 'builder',
     },
