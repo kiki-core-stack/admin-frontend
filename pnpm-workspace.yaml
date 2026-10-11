@@ -4,8 +4,8 @@ trustPolicy: no-downgrade
 trustPolicyExclude:
   # cssnano and postcss related
   # TODO: remove
-  - cssnano@9.4.0
-  - cssnano-preset-default@9.4.0
+  - cssnano@9.5.0
+  - cssnano-preset-default@9.5.0
   - cssnano-utils@8.2.1
   - postcss-colormin@9.0.7
   - postcss-convert-values@9.0.8
@@ -25,9 +25,9 @@ trustPolicyExclude:
   - postcss-normalize-repeat-style@9.0.6
   - postcss-normalize-string@9.0.6
   - postcss-normalize-timing-functions@9.0.6
-  - postcss-normalize-unicode@9.0.6
+  - postcss-normalize-unicode@9.1.0
   - postcss-normalize-url@9.0.6
-  - postcss-normalize-whitespace@9.0.6
+  - postcss-normalize-whitespace@9.0.7
   - postcss-ordered-values@9.0.8
   - postcss-reduce-initial@9.0.7
   - postcss-reduce-transforms@9.0.5
