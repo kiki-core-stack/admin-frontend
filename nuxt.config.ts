@@ -11,7 +11,7 @@ const siteUrl = (envValidationSkipped ? process.env.NUXT_SITE_URL : checkAndGetE
     ?.trim()
     .replace(/\/+$/, '');
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// Nuxt configuration reference: https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     app: {
         head: {
@@ -114,6 +114,8 @@ export default defineNuxtConfig({
             theme_color: 'to be fill',
         },
         registerType: 'prompt',
+        // Option 1: Use injectManifest with a custom app/service-worker/sw.ts that includes self.__WB_MANIFEST.
+        // Option 2: Use generateSW to generate a service worker automatically, and remove srcDir and filename.
         srcDir: 'service-worker',
         strategies: 'injectManifest',
     },
@@ -176,9 +178,11 @@ export default defineNuxtConfig({
                 ],
                 'script-src-attr': [
                     `'unsafe-hashes'`,
-                    // @nuxt/image image error marker onerror handler: this.setAttribute('data-error', 1)
+                    // Allow the @nuxt/image onerror handler to mark failed images.
+                    // Handler: this.setAttribute('data-error', 1)
                     `'sha256-bwK6T5wZVTANitXbrTsel7kl/PyCjCd/Dq5Qoz3imjM='`,
-                    // unplugin-fonts Google Fonts preload 的 onload handler: this.rel='stylesheet'
+                    // Allow the unplugin-fonts onload handler to activate the preloaded Google Fonts stylesheet.
+                    // Handler: this.rel='stylesheet'
                     `'sha256-F1noxsLOnJhyRSgc0zu5JgzoLjG2BBMaXaSG24k2mRM='`,
                 ],
                 'style-src': [
