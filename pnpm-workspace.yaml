@@ -13,7 +13,9 @@ updateNotifier: false
 
 overrides:
   '@typescript-eslint/eslint-plugin': 8.71.0
+  '@vue/language-core': 3.3.11
   typescript: ^6.0.3
+  vue-tsc: 3.3.11
 
 allowBuilds:
   '@parcel/watcher': true
