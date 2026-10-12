@@ -59,15 +59,9 @@ function show(event: MouseEvent) {
 }
 
 // Hooks
-onBeforeMount(() => {
-    window.removeEventListener('click', close);
-    window.removeEventListener('resize', close);
-});
-
-onMounted(() => {
-    window.addEventListener('click', close);
-    window.addEventListener('resize', close);
-});
+onBeforeMount(close);
+useEventListener('click', close);
+useEventListener('resize', close);
 
 // Exposes
 defineExpose({

@@ -48,28 +48,29 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), { absolute: true });
 
 // Constants/Refs/Variables
-let hideTimeout: NodeJS.Timeout | null = null;
+let hideTimeoutDuration = 1000;
 const status = ref<Status>(props.initialStatus || null);
 const statusText = ref(props.initialStatusText);
+const hideTimeout = useTimeoutFn(() => status.value = null, () => hideTimeoutDuration, { immediate: false });
 
 // Functions
+function hide() {
+    hideTimeout.stop();
+    status.value = null;
+}
+
 function show(stateType: Status, text: string, duration: false | number) {
+    hideTimeout.stop();
     status.value = stateType;
     statusText.value = text;
     if (duration === false) return;
-    if (hideTimeout) {
-        clearTimeout(hideTimeout);
-        hideTimeout = null;
-    }
-
-    hideTimeout = setTimeout(() => status.value = null, duration);
+    hideTimeoutDuration = duration;
+    hideTimeout.start();
 }
 
 // Exposes
 defineExpose({
-    hide() {
-        status.value = null;
-    },
+    hide,
     get isVisible() {
         return status.value !== null;
     },

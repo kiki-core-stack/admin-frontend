@@ -128,7 +128,7 @@ async function loadData() {
     isLoadingData.value = false;
 }
 
-// Load data
+// Hooks
 onMounted(loadData);
 </script>
 

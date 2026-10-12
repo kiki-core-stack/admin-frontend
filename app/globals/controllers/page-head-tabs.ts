@@ -80,6 +80,7 @@ export const pageHeadTabsController = new class {
                 }
             });
 
+            onScopeDispose(() => this.#registeredPaths.delete(path));
             watch(() => titleRef.value, () => this.save());
         }
 

@@ -51,8 +51,5 @@ function processSelectedData() {
 }
 
 // Watchers
-watch(() => props.selectedData, processSelectedData);
-
-// Hooks
-onMounted(processSelectedData);
+watch(() => props.selectedData, processSelectedData, { immediate: true });
 </script>

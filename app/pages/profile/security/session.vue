@@ -329,4 +329,8 @@ async function stopScanLoginQrCode() {
 
 // Hooks
 onBeforeUnmount(stopScanLoginQrCode);
+onDeactivated(() => {
+    isScanLoginQrCodeDialogVisible.value = false;
+    return stopScanLoginQrCode();
+});
 </script>

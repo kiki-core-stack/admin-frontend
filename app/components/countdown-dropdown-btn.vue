@@ -95,6 +95,8 @@ onMounted(() => {
     if (props.autostart) start();
 });
 
+onScopeDispose(stop);
+
 // Exposes
 defineExpose({
     start,
