@@ -20,8 +20,8 @@
         />
         <nuxt-icon
             v-else
-            class="fs-3rem text-red"
-            name="line-md:loading-loop"
+            class="fs-3rem text-red animate-spin"
+            name="mdi:loading"
         />
         <p
             v-if="!hideText"

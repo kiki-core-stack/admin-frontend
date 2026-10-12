@@ -47,7 +47,6 @@
     "@eslint/css": "^2.0.0",
     "@html-eslint/parser": "^0.66.1",
     "@iconify-json/fa6-solid": "^1.2.4",
-    "@iconify-json/line-md": "^1.2.16",
     "@iconify-json/mdi": "^1.2.3",
     "@kikiutils/eslint-config": "^9.3.0",
     "@kikiutils/eslint-plugin-vue": "^10.10.0",
