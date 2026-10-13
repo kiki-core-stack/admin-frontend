@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@element-plus/nuxt": "^1.1.5",
-    "@kcs-project/pack": "github:kiki-core-stack/pack#c9cbc79dc802f8bcb54a04500451ba4b9a437c5e",
+    "@kcs-project/pack": "github:kiki-core-stack/pack#c09c68a1a3781b69dcf7a19fd472a210912e9fd0",
     "@kikiutils/micromatch": "^4.0.9",
     "@kikiutils/nuxt": "^13.0.0",
     "@kikiutils/shared": "^18.2.0",
@@ -40,7 +40,8 @@
     "query-string": "^9.5.1",
     "sweetalert2": "^11.26.25",
     "vue": "^3.5.43",
-    "vue-i18n": "^11.4.14"
+    "vue-i18n": "^11.4.14",
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.5.1",
@@ -54,7 +55,7 @@
     "@kikiutils/stylelint-config": "^0.6.1",
     "@types/micromatch": "^4.0.10",
     "@types/qrcode": "^1.5.6",
-    "@unocss/nuxt": "^66.10.5",
+    "@unocss/nuxt": "^66.11.0",
     "dotenv-cli": "^11.0.0",
     "eslint": "^10.12.0",
     "eslint-plugin-better-tailwindcss": "^4.9.0",
@@ -64,7 +65,7 @@
     "tailwind-csstree": "^0.4.1",
     "tailwindcss": "^4.3.3",
     "type-fest": "^5.10.0",
-    "unocss": "^66.10.5",
+    "unocss": "^66.11.0",
     "unplugin-fonts": "^2.0.0",
     "vue-eslint-parser": "^10.4.1",
     "vue-tsc": "^3.3.13"

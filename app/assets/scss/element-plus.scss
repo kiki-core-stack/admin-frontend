@@ -1,3 +1,11 @@
+.el-overlay-dialog {
+    @apply box-border p-4 lt-md:p-3;
+
+    .el-dialog {
+        @apply max-w-full;
+    }
+}
+
 .el-message-box-confirm-btn {
     @apply ml-1!;
 }

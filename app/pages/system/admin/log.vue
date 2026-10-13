@@ -26,6 +26,8 @@
                 <el-form-item label="管理員">
                     <selector-admin
                         v-model="filter.adminObjectId.$in"
+                        value-key="id"
+                        :selected-data="filter.adminObjectId.$in"
                         multiple
                     />
                 </el-form-item>

@@ -1,8 +1,16 @@
 <template>
-    <el-empty description="目前尚無可調整的全系統設定項目" />
+    <el-form-switch
+        v-model="config.ipAccessPolicy.enabled"
+        label="IP存取規則總開關"
+        prop="config.ipAccessPolicy.enabled"
+    />
 </template>
 
 <script lang="ts" setup>
+import {
+    defaultPlatformConfigs,
+    PlatformConfigScope,
+} from '@kcs-project/pack/constants/platform';
 import type { PlatformConfigs } from '@kcs-project/pack/types/platform';
 import type { AnyRecord } from '@kikiutils/shared/types';
 
@@ -11,8 +19,9 @@ const props = defineProps<{ modelValue: AnyRecord }>();
 const emit = defineEmits<{ (e: 'update:modelValue', config: PlatformConfigs.System): void }>();
 
 // Constants/Refs/Variables
-
-// @ts-expect-error Reserved for future config form fields.
-// eslint-disable-next-line unused-imports/no-unused-vars
-const config = useConfigFormModel<PlatformConfigs.System>(props, emit, {});
+const config = useConfigFormModel<PlatformConfigs.System>(
+    props,
+    emit,
+    defaultPlatformConfigs[PlatformConfigScope.System],
+);
 </script>

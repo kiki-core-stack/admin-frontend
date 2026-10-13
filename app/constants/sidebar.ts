@@ -55,6 +55,11 @@ export const sidebarMenuItems: ReadonlyDeep<SidebarMenuItem[]> = [
                 requiredPermissions: 'platform.config.*',
                 title: '平台設定',
             },
+            {
+                path: '/platform/ip-access-policy/',
+                requiredPermissions: 'platform.ipAccessPolicy.*',
+                title: 'IP存取規則',
+            },
         ],
         requiredPermissions: 'platform.*',
         title: '平台',
