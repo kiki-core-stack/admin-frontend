@@ -95,17 +95,18 @@
                 v-if="target.principalType !== null"
                 class="mb-2!"
                 label="項目範圍"
-                label-position="top"
+                label-position="left"
+                label-width="auto"
             >
                 <el-radio-group
                     :model-value="target.principalIds !== null"
                     @change="(value) => target.principalIds = value ? [] : null"
                 >
                     <el-radio :value="false">
-                        全部項目
+                        全部
                     </el-radio>
                     <el-radio :value="true">
-                        指定項目
+                        指定
                     </el-radio>
                 </el-radio-group>
             </el-form-item>
