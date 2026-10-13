@@ -27,7 +27,6 @@
                     <selector-admin
                         v-model="filter.adminObjectId.$in"
                         value-key="id"
-                        :selected-data="filter.adminObjectId.$in"
                         multiple
                     />
                 </el-form-item>
