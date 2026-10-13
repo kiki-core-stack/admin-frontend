@@ -31,34 +31,13 @@ const props = defineProps<{ modelValue: AnyRecord }>();
 const emit = defineEmits<{ (e: 'update:modelValue', config: SmsProviderConfigs.Mitake): void }>();
 
 // Constants/Refs/Variables
-const config = ref<SmsProviderConfigs.Mitake>({
-    apiUrl: '',
-    password: '',
-    username: '',
-});
-
-// Watchers
-watch(
-    () => config,
-    (nv) => emit('update:modelValue', nv.value),
-    { deep: true },
-);
-
-watch(
-    () => props.modelValue,
-    (nv) => {
-        let needToEmit = false;
-        for (const key in config.value) {
-            if (nv[key] === undefined) needToEmit = true;
-            // @ts-expect-error Ignore this error.
-            else config.value[key] = nv[key];
-        }
-
-        if (needToEmit) emit('update:modelValue', config.value);
-    },
+const config = useConfigFormModel<SmsProviderConfigs.Mitake>(
+    props,
+    emit,
     {
-        deep: true,
-        immediate: true,
+        apiUrl: '',
+        password: '',
+        username: '',
     },
 );
 </script>

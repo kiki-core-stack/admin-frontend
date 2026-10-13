@@ -4,7 +4,7 @@
         v-model:form-data="formData"
         dialog-title-suffix="電子郵件服務商"
         title="電子郵件服務商管理"
-        :before-dialog-open="(row) => void (formData.config = row?.config || {})"
+        :before-dialog-open="(row) => void (formData.config = cloneDeep(row?.config || {}))"
         :crud-api="EmailProviderApi.use()"
         :form-rules="formRules"
         :permissions="{ base: 'email.provider' }"
