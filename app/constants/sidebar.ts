@@ -48,6 +48,18 @@ export const sidebarMenuItems: ReadonlyDeep<SidebarMenuItem[]> = [
         title: '簡訊',
     },
     {
+        basePath: '/platform/',
+        children: [
+            {
+                path: '/platform/config/',
+                requiredPermissions: 'platform.config.*',
+                title: '平台設定',
+            },
+        ],
+        requiredPermissions: 'platform.*',
+        title: '平台',
+    },
+    {
         basePath: '/system/',
         children: [
             {

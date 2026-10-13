@@ -24,6 +24,8 @@ export type AdminPermission =
   | 'email.senderIdentity.toggle'
   | 'email.senderIdentity.update'
   | 'home.dashboard.view'
+  | 'platform.config.list'
+  | 'platform.config.update'
   | 'sms.provider.create'
   | 'sms.provider.delete'
   | 'sms.provider.list'
@@ -41,6 +43,8 @@ export type AdminPermissionGroup =
   | 'email.senderIdentity'
   | 'home'
   | 'home.dashboard'
+  | 'platform'
+  | 'platform.config'
   | 'sms'
   | 'sms.provider'
   | 'sms.sendRecord';
