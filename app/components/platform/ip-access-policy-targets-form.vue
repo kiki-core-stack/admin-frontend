@@ -19,7 +19,7 @@
             </span>
         </el-tooltip>
     </div>
-    <div class="flex flex-col gap-1">
+    <div class="mb-4 flex flex-col gap-1">
         <el-card
             v-for="(target, index) in targets"
             :key="getTargetKey(target)"
