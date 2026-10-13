@@ -99,8 +99,8 @@ import {
     platformIpAccessPolicyModeToTextMap,
     platformIpAccessPolicyScopeToTextMap,
 } from '@kcs-project/pack/constants/platform';
+import { ipAddressOrCidrSchema } from '@kcs-project/pack/schemas/ip';
 import { getEnumNumberValues } from '@kikiutils/shared/enum';
-import * as z from 'zod';
 
 import { authenticationSessionPrincipalTypeToTextMap } from '@/constants/authentication-session';
 import type {
@@ -126,15 +126,6 @@ const formData = ref<PlatformIpAccessPolicyFormData>({
     ],
 });
 
-const ipEntrySchema = z.string().trim().pipe(
-    z.union([
-        z.ipv4(),
-        z.ipv6(),
-        z.cidrv4(),
-        z.cidrv6(),
-    ]),
-);
-
 const formRules: ElFormRules<PlatformIpAccessPolicyFormData> = {
     ipEntries: [
         createElFormItemRuleWithDefaults(
@@ -150,7 +141,7 @@ const formRules: ElFormRules<PlatformIpAccessPolicyFormData> = {
                 'change',
             ],
             validator(_rule, value: string[], callback) {
-                const invalidEntry = value.find((entry) => !ipEntrySchema.safeParse(entry).success);
+                const invalidEntry = value.find((entry) => !ipAddressOrCidrSchema.safeParse(entry).success);
                 callback(invalidEntry !== undefined ? new Error(`IP或CIDR格式錯誤：${invalidEntry}`) : undefined);
             },
         },
