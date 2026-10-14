@@ -13,6 +13,8 @@ const siteUrl = (envValidationSkipped ? process.env.NUXT_SITE_URL : checkAndGetE
 
 // Nuxt configuration reference: https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+    // Disable AI-readable Markdown pages and discovery endpoints.
+    aiReady: false,
     app: {
         head: {
             title: siteTitle,
@@ -224,6 +226,8 @@ export default defineNuxtConfig({
         sitemaps: {},
         sortEntries: true,
     },
+    // Disable old build asset retention and deployment update detection.
+    skewProtection: false,
     ssr: true,
     unfonts: {
         google: {
