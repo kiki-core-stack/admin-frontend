@@ -173,6 +173,7 @@ export default defineNuxtConfig({
         name: siteName,
     },
     ssr: false,
+    typescript: { nodeTsConfig: { include: ['../scripts/**/*.ts'] } },
     unfonts: {
         google: {
             families: [

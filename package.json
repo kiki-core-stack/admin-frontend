@@ -4,7 +4,7 @@
   "scripts": {
     "build": "dotenv -e ./.env.production.local -v NODE_ENV=production -- nuxt build",
     "dev": "dotenv -e ./.env.development.local -v NODE_ENV=development -- pnpm run dev:internal",
-    "dev:internal": "bun generate-permission-files.ts && nuxt dev",
+    "dev:internal": "bun run ./scripts/generate-permission-files.ts && nuxt dev",
     "generate": "dotenv -e ./.env.production.local -v NODE_ENV=production -- nuxt generate",
     "knip:deps": "knip --dependencies",
     "knip:exports": "knip --exports",
