@@ -3,12 +3,6 @@ import type { CreateAxiosDefaults } from 'axios';
 
 export function createApiAxiosInstance(config?: CreateAxiosDefaults) {
     const instance = axios.create(config);
-    instance.interceptors.request.use((config) => {
-        config.headers['x-nonce'] = generateWithNestedRandomLength(nanoid, 21, 24, 29, 32);
-        config.headers['x-timestamp'] = EnhancedDate.now();
-        return config;
-    });
-
     instance.interceptors.response.use(
         (response) => response,
         (error) => {
