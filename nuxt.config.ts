@@ -73,7 +73,7 @@ export default defineNuxtConfig({
         enabledModules: {
             colorMode: true,
             elementPlus: true,
-            robots: true,
+            robots: false,
             security: true,
         },
     },
@@ -81,6 +81,7 @@ export default defineNuxtConfig({
         '@kikiutils/nuxt',
         '@nuxt/icon',
         '@nuxtjs/i18n',
+        '@nuxtjs/robots',
     ],
     plugins: [
         '@/plugins/load-profile',
