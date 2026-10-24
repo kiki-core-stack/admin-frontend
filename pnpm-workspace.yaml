@@ -1,7 +1,7 @@
 minimumReleaseAge: 1440
 minimumReleaseAgeExcludePrune: true
 minimumReleaseAgeExclude:
-  - '@kikiutils/stylelint-config' # TODO: remove it
+  - '@kikiutils/eslint-config' # TODO: remove it
 
 resolutionMode: highest
 # eslint-disable-next-line pnpm/yaml-enforce-settings
