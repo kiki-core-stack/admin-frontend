@@ -1,5 +1,4 @@
 import type { EmailProviderData } from '@kcs-project/pack/types/data/email';
-import type { AnyRecord } from '@kikiutils/shared/types';
 import type {
     SetFieldType,
     SetOptional,
@@ -7,7 +6,7 @@ import type {
 
 export type EmailProviderFormData = SetOptional<
     TablePageFormData<
-        SetFieldType<EmailProviderData, 'config', AnyRecord>,
+        SetFieldType<EmailProviderData, 'config', Record<string, any>>,
         'cacheKey'
     >,
     'code'

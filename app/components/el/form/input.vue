@@ -24,7 +24,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { Numberish } from '@kikiutils/shared/types';
 import type { InputAutoSize } from 'element-plus';
 import type { InputTypeHTMLAttribute } from 'vue';
 
@@ -34,7 +33,7 @@ interface Props {
     autosize?: InputAutoSize;
     clearable?: boolean;
     disabled?: boolean;
-    maxlength?: Numberish;
+    maxlength?: number | string;
     name?: string;
     placeholder?: string;
     readonly?: boolean;

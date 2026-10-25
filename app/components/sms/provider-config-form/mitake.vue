@@ -24,10 +24,9 @@
 
 <script lang="ts" setup>
 import type { SmsProviderConfigs } from '@kcs-project/pack/types/sms';
-import type { AnyRecord } from '@kikiutils/shared/types';
 
 // Define props, models and emits
-const props = defineProps<{ modelValue: AnyRecord }>();
+const props = defineProps<{ modelValue: Record<string, any> }>();
 const emit = defineEmits<{ (e: 'update:modelValue', config: SmsProviderConfigs.Mitake): void }>();
 
 // Constants/Refs/Variables

@@ -12,10 +12,9 @@ import {
     PlatformConfigScope,
 } from '@kcs-project/pack/constants/platform';
 import type { PlatformConfigs } from '@kcs-project/pack/types/platform';
-import type { AnyRecord } from '@kikiutils/shared/types';
 
 // Define props, models and emits
-const props = defineProps<{ modelValue: AnyRecord }>();
+const props = defineProps<{ modelValue: Record<string, any> }>();
 const emit = defineEmits<{ (e: 'update:modelValue', config: PlatformConfigs.System): void }>();
 
 // Constants/Refs/Variables

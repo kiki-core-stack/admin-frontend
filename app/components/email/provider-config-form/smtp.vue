@@ -50,10 +50,9 @@
 
 <script lang="ts" setup>
 import type { EmailProviderConfigs } from '@kcs-project/pack/types/email';
-import type { AnyRecord } from '@kikiutils/shared/types';
 
 // Define props, models and emits
-const props = defineProps<{ modelValue: AnyRecord }>();
+const props = defineProps<{ modelValue: Record<string, any> }>();
 const emit = defineEmits<{ (e: 'update:modelValue', config: EmailProviderConfigs.Smtp): void }>();
 
 // Constants/Refs/Variables

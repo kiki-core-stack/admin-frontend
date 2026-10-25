@@ -1,5 +1,4 @@
 import type { SmsProviderData } from '@kcs-project/pack/types/data/sms';
-import type { AnyRecord } from '@kikiutils/shared/types';
 import type {
     SetFieldType,
     SetOptional,
@@ -7,7 +6,7 @@ import type {
 
 export type SmsProviderFormData = SetOptional<
     TablePageFormData<
-        SetFieldType<SmsProviderData, 'config', AnyRecord>,
+        SetFieldType<SmsProviderData, 'config', Record<string, any>>,
         'cacheKey'
     >,
     'code'

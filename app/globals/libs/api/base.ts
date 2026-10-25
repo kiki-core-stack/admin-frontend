@@ -1,5 +1,4 @@
 import type { ApiResponseData } from '@kcs-project/pack/types/data';
-import type { AnyRecord } from '@kikiutils/shared/types';
 import type {
     AxiosInstance,
     AxiosRequestConfig,
@@ -46,7 +45,7 @@ export class BaseApi {
     }
 
     // Protected methods
-    protected buildQueryFilter(filter: AnyRecord) {
+    protected buildQueryFilter(filter: Record<string, any>) {
         filter = cloneDeep(filter);
         Object.entries(filter).forEach(([field, condition]) => {
             if (condition === null) return;

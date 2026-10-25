@@ -1,5 +1,4 @@
 import type { WithAdminAuditData } from '@kcs-project/pack/types/data';
-import type { AnyRecord } from '@kikiutils/shared/types';
 
 declare global {
     type TablePageElFormRules<
@@ -10,7 +9,7 @@ declare global {
     interface GetListApiParams {
         [key: string]: any;
         fields?: string[];
-        filter?: AnyRecord;
+        filter?: Record<string, any>;
         limit?: number;
         page?: number;
     }

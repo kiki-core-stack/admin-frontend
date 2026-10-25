@@ -1,10 +1,9 @@
-import type { AnyRecord } from '@kikiutils/shared/types';
 import {
     isEqual,
     isPlainObject,
 } from 'es-toolkit';
 
-function normalizeConfigFormData<T extends AnyRecord>(defaults: T, value: AnyRecord): T {
+function normalizeConfigFormData<T extends Record<string, any>>(defaults: T, value: Record<string, any>): T {
     const config = cloneDeep(defaults);
     for (const key in config) {
         const incomingValue = value[key];
@@ -17,8 +16,8 @@ function normalizeConfigFormData<T extends AnyRecord>(defaults: T, value: AnyRec
     return config;
 }
 
-export function useConfigFormModel<T extends AnyRecord>(
-    props: { modelValue: AnyRecord },
+export function useConfigFormModel<T extends Record<string, any>>(
+    props: { modelValue: Record<string, any> },
     emit: (event: 'update:modelValue', config: T) => void,
     defaultConfig: T,
 ) {

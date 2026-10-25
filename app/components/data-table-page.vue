@@ -170,7 +170,6 @@
     setup
 >
 import type { TableRowData } from '@kcs-project/pack/types/data';
-import type { AnyRecord } from '@kikiutils/shared/types';
 import type { TableSortOrder } from 'element-plus/es/components/table/src/table/defaults';
 import type {
     Except,
@@ -201,8 +200,8 @@ interface Props {
     disableRowDeleteBtnRule?: ControlActionBtnFunction;
     disableRowEditBtnRule?: ControlActionBtnFunction;
     enableSelection?: boolean;
-    filter?: AnyRecord;
-    formRules?: ElFormRules<AnyRecord>;
+    filter?: Record<string, any>;
+    formRules?: ElFormRules<Record<string, any>>;
     hideActionsColumn?: boolean;
     hideAddDataBtn?: boolean;
     hideCreatedAtColumn?: boolean;

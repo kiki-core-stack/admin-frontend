@@ -8,7 +8,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { AnyRecord } from '@kikiutils/shared/types';
 import { get } from 'es-toolkit/compat';
 
 interface Props {
@@ -26,7 +25,7 @@ const props = withDefaults(
 );
 
 // Functions
-function formatDateCell(row: AnyRecord) {
+function formatDateCell(row: Record<string, any>) {
     const value = get(row, props.prop);
     if (value === null || value === undefined) return props.emptyText;
     return formatDate(value);
