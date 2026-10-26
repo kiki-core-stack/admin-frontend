@@ -59,7 +59,10 @@ export default defineNuxtConfig({
     },
     kikiutilsNuxt: {
         autoImportUtils: { '@kikiutils/shared': {} },
-        enabledModules: { security: true },
+        enabledModules: {
+            robots: false,
+            security: true,
+        },
     },
     linkChecker: { enabled: false },
     modules: [
