@@ -1,8 +1,3 @@
-import {
-    isEqual,
-    isPlainObject,
-} from 'es-toolkit';
-
 function normalizeConfigFormData<T extends Record<string, any>>(defaults: T, value: Record<string, any>): T {
     const config = cloneDeep(defaults);
     for (const key in config) {
