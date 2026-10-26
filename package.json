@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@element-plus/nuxt": "^1.1.5",
-    "@kcs-project/pack": "github:kiki-core-stack/pack#b23dae8cb0fb9bf08dba746b28ff20446b35b98f",
+    "@kcs-project/pack": "github:kiki-core-stack/pack#47c5e3cdfe88539ae71a4455daf721ac596cee6a",
     "@kikiutils/micromatch": "^4.0.9",
     "@kikiutils/nuxt": "^14.0.0",
     "@kikiutils/shared": "^19.0.0",
@@ -28,7 +28,6 @@
     "@vueuse/integrations": "^15.0.0",
     "axios": "^1.20.0",
     "bowser": "^2.14.1",
-    "date-fns": "^4.4.0",
     "element-plus": "^2.14.7",
     "es-toolkit": "^1.53.0",
     "html5-qrcode": "^2.3.8",
@@ -39,8 +38,7 @@
     "query-string": "^10.0.0",
     "sweetalert2": "^11.26.25",
     "vue": "^3.5.44",
-    "vue-i18n": "^11.4.16",
-    "zod": "^4.6.7"
+    "vue-i18n": "^11.4.16"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^10.0.0",
