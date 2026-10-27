@@ -100,7 +100,6 @@ import {
     platformIpAccessPolicyScopeToTextMap,
 } from '@kcs-project/pack/constants/platform';
 import { ipAddressOrCidrSchema } from '@kcs-project/pack/schemas/ip';
-import { getEnumNumberValues } from '@kikiutils/shared/enum';
 
 import { authenticationSessionPrincipalTypeToTextMap } from '@/constants/authentication-session';
 import type {

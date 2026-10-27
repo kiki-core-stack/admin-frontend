@@ -135,7 +135,6 @@ import {
     platformIpAccessPolicyScopeToTextMap,
 } from '@kcs-project/pack/constants/platform';
 import type { AuthenticationSessionPrincipalType } from '@kcs-project/pack/types/authentication-session';
-import { getEnumNumberValues } from '@kikiutils/shared/enum';
 import type { ReadonlyRecord } from '@kikiutils/shared/types';
 import type { Component } from 'vue';
 
