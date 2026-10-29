@@ -58,11 +58,9 @@ const permissionLabels: Record<AdminPermission | AdminPermissionGroup, string> =
     'sms.sendRecord.list': '獲取簡訊發送紀錄列表',
 };
 
-export default defineI18nLocale<PermissionsLocaleMessages>(
-    () => Object.fromEntries(
-        Object.entries(permissionLabels).map(([key, value]) => [
-            `permissions.${key}`,
-            value,
-        ]),
-    ) as PermissionsLocaleMessages,
-);
+export default Object.fromEntries(
+    Object.entries(permissionLabels).map(([key, value]) => [
+        `permissions.${key}`,
+        value,
+    ]),
+) as PermissionsLocaleMessages;

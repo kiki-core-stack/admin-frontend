@@ -1,6 +1,6 @@
 import type { AppLocaleMessages } from '../types';
 
-export default defineI18nLocale<AppLocaleMessages>(() => ({
+export default {
     common: {
         account: '帳號',
         actions: '操作',
@@ -37,4 +37,4 @@ export default defineI18nLocale<AppLocaleMessages>(() => ({
             },
         },
     },
-}));
+} satisfies AppLocaleMessages;
