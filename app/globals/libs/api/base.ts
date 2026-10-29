@@ -1,8 +1,6 @@
-import type { ApiResponseData } from '@kcs-project/pack/types/data';
 import type {
     AxiosInstance,
     AxiosRequestConfig,
-    AxiosResponse,
     CreateAxiosDefaults,
     Method,
 } from 'axios';
@@ -10,6 +8,7 @@ import queryString from 'query-string';
 import type { Except } from 'type-fest';
 
 import { createApiAxiosInstance } from '@/libs/api/instance';
+import type { ApiRequestResult } from '@/types/api';
 
 const apiInstances = new WeakMap<new (...args: any[]) => any, Map<string, BaseApi>>();
 
@@ -145,8 +144,7 @@ export class BaseApi {
     protected request<
         T extends object | undefined = undefined,
         E extends string | undefined = undefined,
-        // eslint-disable-next-line style/max-len
-        R extends Partial<AxiosResponse<ApiResponseData<T, E>>> | undefined = Partial<AxiosResponse<ApiResponseData<T, E>>> | undefined,
+        R extends ApiRequestResult<T, E> = ApiRequestResult<T, E>,
         D = any,
     >(
         method: Method,
