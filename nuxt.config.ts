@@ -122,7 +122,6 @@ export default defineNuxtConfig({
     },
     robots: { disallow: seoIndexingEnabled ? undefined : '/' },
     routeRules: {},
-    runtimeConfig: { public: { siteUrl } },
     schemaOrg: {
         enabled: seoIndexingEnabled,
         identity: {
