@@ -1,5 +1,7 @@
+blockExoticSubdeps: true
 minimumReleaseAge: 1440
 minimumReleaseAgeIgnoreMissingTime: false
+minimumReleaseAgeStrict: true
 
 minimumReleaseAgeExcludePrune: true
 minimumReleaseAgeExclude:
@@ -16,7 +18,8 @@ strictStorePkgContentCheck: true
 verifyStoreIntegrity: true
 preferFrozenLockfile: true
 shellEmulator: true
-sideEffectsCache: false
+sideEffectsCache: true
+strictDepBuilds: true
 updateNotifier: false
 
 overrides:
