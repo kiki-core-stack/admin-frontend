@@ -1,4 +1,6 @@
 minimumReleaseAge: 1440
+minimumReleaseAgeIgnoreMissingTime: false
+
 minimumReleaseAgeExcludePrune: true
 minimumReleaseAgeExclude:
   - '@kikiutils/eslint-config' # TODO: remove it
@@ -6,11 +8,15 @@ minimumReleaseAgeExclude:
   - '@kikiutils/shared' # TODO: remove it
 
 resolutionMode: highest
+trustLockfile: false
 # eslint-disable-next-line pnpm/yaml-enforce-settings
 trustPolicy: off
 strictSsl: true
+strictStorePkgContentCheck: true
+verifyStoreIntegrity: true
 preferFrozenLockfile: true
 shellEmulator: true
+sideEffectsCache: false
 updateNotifier: false
 
 overrides:
