@@ -24,8 +24,8 @@ RUN --mount=id=pnpm-store,target=/var/cache/pnpm,type=cache \
 
 ## Copy application sources and build the application
 COPY --exclude=./docker-entrypoint.sh ./ ./
-RUN pnpm run lint && \
-    pnpm run typecheck && \
+RUN pnpm run typecheck && \
+    pnpm run lint && \
     pnpm run build
 
 # Runtime stage
