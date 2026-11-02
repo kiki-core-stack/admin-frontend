@@ -10,35 +10,35 @@ export class AuthApi extends BaseApi {
         super('/api/admin/auth');
     }
 
-    approveQrCodeLogin(approvalToken: string, config?: AxiosRequestConfig) {
-        return this.postRequest('/login/qr-code/approve', { approvalToken }, config);
+    async approveQrCodeLogin(approvalToken: string, config?: AxiosRequestConfig) {
+        return await this.postRequest('/login/qr-code/approve', { approvalToken }, config);
     }
 
-    completeQrCodeLogin(completionToken: string, config?: AxiosRequestConfig) {
-        return this.postRequest<{ state: 'completed' | 'pending' }>(
+    async completeQrCodeLogin(completionToken: string, config?: AxiosRequestConfig) {
+        return await this.postRequest<{ state: 'completed' | 'pending' }>(
             '/login/qr-code/complete',
             { completionToken },
             config,
         );
     }
 
-    createQrCodeLogin(config?: AxiosRequestConfig) {
-        return this.postRequest<AuthenticationSessionQrCodeLoginCreationData>('/login/qr-code', undefined, config);
+    async createQrCodeLogin(config?: AxiosRequestConfig) {
+        return await this.postRequest<AuthenticationSessionQrCodeLoginCreationData>('/login/qr-code', undefined, config);
     }
 
-    getQrCodeLoginApprovalRequest(approvalToken: string, config?: AxiosRequestConfig) {
-        return this.postRequest<AuthenticationSessionQrCodeLoginApprovalRequestData>(
+    async getQrCodeLoginApprovalRequest(approvalToken: string, config?: AxiosRequestConfig) {
+        return await this.postRequest<AuthenticationSessionQrCodeLoginApprovalRequestData>(
             '/login/qr-code/info',
             { approvalToken },
             config,
         );
     }
 
-    login(data: AdminLoginFormData) {
-        return this.postRequest('/login', data);
+    async login(data: AdminLoginFormData) {
+        return await this.postRequest('/login', data);
     }
 
-    logout() {
-        return this.postRequest('/logout');
+    async logout() {
+        return await this.postRequest('/logout');
     }
 }

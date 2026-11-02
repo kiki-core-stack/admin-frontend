@@ -22,11 +22,11 @@ export const pageHeadTabsController = new class {
         const tabs = this.#state.value.tabs;
         if (window.location.pathname !== '/' && !tabs.map((tab) => tab.path).includes(window.location.pathname)) {
             if (navigateToIndex !== undefined && tabs[navigateToIndex]) {
-                navigateTo(tabs[navigateToIndex].path);
+                void navigateTo(tabs[navigateToIndex].path);
                 return;
             }
 
-            navigateTo(tabs.at(-1)?.path || '/');
+            void navigateTo(tabs.at(-1)?.path || '/');
         }
     }
 

@@ -20,7 +20,7 @@
 import type { AdminData } from '@kcs-project/pack/types/data/admin';
 
 interface Props {
-    selectedData?: Partial<AdminData>[];
+    selectedData?: Array<Partial<AdminData>>;
 }
 
 // Define props, models and emits
@@ -46,7 +46,7 @@ async function loadData(query: string) {
 function processSelectedData() {
     if (!props.selectedData?.length) return;
     const existingIds = items.value.map(({ id }) => id);
-    const incomingData = props.selectedData as Required<NonNullable<Props['selectedData']>[number]>[];
+    const incomingData = props.selectedData as Array<Required<NonNullable<Props['selectedData']>[number]>>;
     items.value.push(...incomingData.filter(({ id }) => !existingIds.includes(id)));
 }
 

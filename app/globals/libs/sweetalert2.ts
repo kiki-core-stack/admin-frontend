@@ -10,7 +10,7 @@ const customSweetAlert = swal.mixin({
 export const closeAlert = customSweetAlert.close;
 
 export function showErrorAlert(title: string, options?: SweetAlertOptions) {
-    customSweetAlert.fire({
+    void customSweetAlert.fire({
         ...options,
         customClass: {
             confirmButton: 'el-button el-button--danger',
@@ -22,7 +22,7 @@ export function showErrorAlert(title: string, options?: SweetAlertOptions) {
 }
 
 export function showLoadingAlert(title: string = '載入中...', options?: SweetAlertOptions) {
-    customSweetAlert.fire({
+    void customSweetAlert.fire({
         ...options,
         allowEscapeKey: false,
         allowOutsideClick: false,
@@ -36,7 +36,7 @@ export function showLoadingAlert(title: string = '載入中...', options?: Sweet
 }
 
 export function showSuccessAlert(title: string, options?: SweetAlertOptions) {
-    customSweetAlert.fire({
+    void customSweetAlert.fire({
         ...options,
         customClass: {
             ...options?.customClass,

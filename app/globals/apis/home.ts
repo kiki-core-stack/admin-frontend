@@ -5,7 +5,7 @@ export class HomeApi extends BaseApi {
         super('/api/admin/home');
     }
 
-    getDashboardData(filter: GetHomeDashboardDataFilter) {
-        return this.getRequest<object>('/dashboard', { filter: this.buildQueryFilter(filter) });
+    async getDashboardData(filter: GetHomeDashboardDataFilter) {
+        return await this.getRequest<object>('/dashboard', { filter: this.buildQueryFilter(filter) });
     }
 }

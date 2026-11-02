@@ -25,10 +25,10 @@
 
 <script lang="ts" setup>
 interface Props {
-    items: {
+    items: Array<{
         action: () => any;
         label: string;
-    }[];
+    }>;
 }
 
 // Define props, models and emits
@@ -46,7 +46,7 @@ const close = () => isShow.value = false;
 function show(event: MouseEvent) {
     event.preventDefault();
     isShow.value = true;
-    nextTick(() => {
+    void nextTick(() => {
         if (!menuRef.value) return;
         const { offsetHeight, offsetWidth } = menuRef.value;
         let left = event.clientX;

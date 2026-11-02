@@ -111,7 +111,7 @@ async function handleLoginSuccess() {
     await updateProfileState();
     ElNotification.success('登入成功');
     initializeAuthenticatedSession();
-    navigateTo(normalizeRedirectPath(useRoute().query.redirect), { replace: true });
+    await navigateTo(normalizeRedirectPath(useRoute().query.redirect), { replace: true });
 }
 
 async function login() {
@@ -122,6 +122,7 @@ async function login() {
         const response = await AuthApi.use().login(formData.value);
         if (response?.status === 404) accountInputRef.value?.focus();
         else if (response?.data?.success) return await handleLoginSuccess();
+
         statusOverlayRef.value!.hide();
     });
 }
@@ -168,7 +169,7 @@ async function reloadLoginQrCodeAndStartPolling() {
 }
 
 function scheduleQrCodeLoginPolling() {
-    qrCodeLoginPollingTimeout = setTimeout(pollQrCodeLoginCompletion, 1000);
+    qrCodeLoginPollingTimeout = setTimeout(() => void pollQrCodeLoginCompletion(), 1000);
 }
 
 function stopQrCodeLoginFlow() {

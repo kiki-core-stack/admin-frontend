@@ -16,7 +16,7 @@ export interface PlatformIpAccessPolicyPrincipalTypeToDataMap {
 }
 
 export interface PlatformIpAccessPolicyTargetData {
-    principalIds: null | PlatformIpAccessPolicyPrincipalTypeToDataMap[AuthenticationSessionPrincipalType][];
+    principalIds: Array<PlatformIpAccessPolicyPrincipalTypeToDataMap[AuthenticationSessionPrincipalType]> | null;
     principalType: AuthenticationSessionPrincipalType | null;
     scope: null | PlatformIpAccessPolicyScope;
 }

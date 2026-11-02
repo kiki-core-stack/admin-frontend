@@ -12,16 +12,16 @@ export class BaseCrudApi<
         } catch {}
     }
 
-    delete(id: string) {
-        return this.deleteRequest(`/${id}`);
+    async delete(id: string) {
+        return await this.deleteRequest(`/${id}`);
     }
 
-    get(id: string, params?: any) {
-        return this.getRequest<T>(`/${id}`, params);
+    async get(id: string, params?: any) {
+        return await this.getRequest<T>(`/${id}`, params);
     }
 
-    getList(params?: GetListApiParams) {
-        return this.getRequest<{ count: number; list: T[]; totals?: Record<string, number | string> }>(
+    async getList(params?: GetListApiParams) {
+        return await this.getRequest<{ count: number; list: T[]; totals?: Record<string, number | string> }>(
             '/list',
             {
                 ...params,
@@ -40,8 +40,8 @@ export class BaseCrudApi<
         } catch {}
     }
 
-    updateBooleanField(id: string, field: string, value: boolean) {
-        return this.patchRequest(
+    async updateBooleanField(id: string, field: string, value: boolean) {
+        return await this.patchRequest(
             `/${id}/boolean-field`,
             {
                 field,

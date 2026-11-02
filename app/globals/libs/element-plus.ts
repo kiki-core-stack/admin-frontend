@@ -14,13 +14,13 @@ export function createElMessageBoxConfirmHandler<T = any>(
     options?: Except<ElMessageBoxOptions, 'beforeClose'>,
 ) {
     return (data: T) => {
-        ElMessageBox.confirm(
+        void ElMessageBox.confirm(
             typeof messageRender === 'function' ? messageRender(data) : messageRender,
             {
-                async beforeClose(action, instance, done) {
+                beforeClose(action, instance, done) {
                     if (instance.confirmButtonLoading) return;
                     if (action !== 'confirm') {
-                        onCancel?.(data);
+                        void onCancel?.(data);
                         return done();
                     }
 
@@ -28,16 +28,17 @@ export function createElMessageBoxConfirmHandler<T = any>(
                     instance.confirmButtonText = loadingText;
                     instance.showCancelButton = false;
 
-                    const confirmResult = await handleConfirm(data);
-                    if (typeof confirmResult === 'boolean' && confirmResult) {
-                        done();
-                        await onSuccess?.(data);
-                    } else {
-                        await onFailed?.(data, done, confirmResult);
-                        instance.confirmButtonLoading = false;
-                        instance.confirmButtonText = '確定';
-                        instance.showCancelButton = true;
-                    }
+                    void handleConfirm(data).then(async (confirmResult) => {
+                        if (typeof confirmResult === 'boolean' && confirmResult) {
+                            done();
+                            await onSuccess?.(data);
+                        } else {
+                            await onFailed?.(data, done, confirmResult);
+                            instance.confirmButtonLoading = false;
+                            instance.confirmButtonText = '確定';
+                            instance.showCancelButton = true;
+                        }
+                    });
                 },
                 confirmButtonClass: 'el-message-box-confirm-btn',
                 draggable: true,

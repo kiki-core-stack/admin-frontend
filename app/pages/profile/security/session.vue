@@ -306,7 +306,7 @@ async function startScanLoginQrCodeScanner() {
                 aspectRatio: 1,
                 fps: 30,
             },
-            onScanLoginQrCodeSuccess,
+            (decodedText) => void onScanLoginQrCodeSuccess(decodedText),
             undefined,
         );
 
@@ -329,8 +329,8 @@ async function stopScanLoginQrCode() {
 
 // Hooks
 onBeforeUnmount(stopScanLoginQrCode);
-onDeactivated(() => {
+onDeactivated(async () => {
     isScanLoginQrCodeDialogVisible.value = false;
-    return stopScanLoginQrCode();
+    return await stopScanLoginQrCode();
 });
 </script>

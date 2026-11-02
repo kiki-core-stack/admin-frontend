@@ -5,7 +5,7 @@ export class ProfileSecuritySessionApi extends BaseCrudApi<AuthenticationSession
         super('/api/admin/profile/security/session');
     }
 
-    deleteAll() {
-        return this.deleteRequest('/all');
+    async deleteAll() {
+        return await this.deleteRequest('/all');
     }
 }

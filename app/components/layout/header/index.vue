@@ -85,7 +85,7 @@ function toggleTheme(event: MouseEvent) {
     root.style.setProperty('--theme-transition-radius', `${ratioR}%`);
 
     const transition = document.startViewTransition(() => toggleDark());
-    transition.finished.finally(() => {
+    void transition.finished.finally(() => {
         if (transitionId !== latestTransitionId) return;
 
         delete root.dataset.themeTransition;

@@ -163,9 +163,8 @@
 <script
     lang="ts"
     generic="
-        CA extends BaseCrudApi<any, any>,
-        TR extends TableRowData = CA extends BaseCrudApi<infer T, any> ? T : never,
-        FD extends TableRowData = CA extends BaseCrudApi<any, infer F> ? F : never
+        TR extends TableRowData,
+        FD extends TableRowData = TableRowData
     "
     setup
 >
@@ -191,7 +190,7 @@ interface Props {
     addDataBtnText?: string;
     beforeDialogOpen?: (row?: TR) => Promisable<void>;
     confirmDeleteMessage?: ((row: TR) => string) | string;
-    crudApi: CA;
+    crudApi: BaseCrudApi<TR, NoInfer<FD>>;
     defaultPaginationLimit?: number;
     defaultSort?: Except<OnSortChangeData, 'column'>;
     deleteBtnText?: string;
@@ -242,13 +241,13 @@ const props = withDefaults(
     },
 );
 
-const formData = defineModel<FD>('formData', { default: () => ({ id: '' } as FD) });
+const formData = defineModel<FD>('formData');
 const timeRangeEndAt = defineModel<Date>('timeRangeEnd', { default: () => new EnhancedDate() });
 const timeRangeStartAt = defineModel<Date>('timeRangeStart', { default: () => new EnhancedDate() });
 
 // Constants/Refs/Variables
 const autoReloadDataCountdownDropdownBtnRef = useTemplateRef('autoReloadDataCountdownDropdownBtnRef');
-const defaultFormData = cloneDeep(formData.value);
+const defaultFormData = formData.value && cloneDeep(formData.value);
 const dialogStatusOverlayRef = useTemplateRef('dialogStatusOverlayRef');
 const formRef = useTemplateRef('formRef');
 const isDialogVisible = ref(false);
@@ -328,33 +327,37 @@ async function onSortChange(data: OnSortChangeData) {
     if (data.order === 'ascending') sortQueryParam.value = data.prop ?? undefined;
     else if (data.order === 'descending') sortQueryParam.value = `-${data.prop}`;
     else sortQueryParam.value = undefined;
+
     await loadData();
 }
 
 async function openDialog(row?: TR, initialData?: CreateDialogInitialData) {
+    if (!defaultFormData) return;
     dialogStatusOverlayRef.value?.hide();
     formRef.value?.resetFields();
     isEditing.value = row !== undefined;
     const mergedFormData = cloneDeep(defaultFormData);
     merge(mergedFormData, row ?? initialData ?? {});
+    if (!row) mergedFormData.id = defaultFormData.id;
     formData.value = mergedFormData;
-    if (!row) formData.value.id = defaultFormData.id;
     await props.beforeDialogOpen?.(row);
     isDialogVisible.value = true;
 }
 
 async function saveData() {
     if (!capabilities.value.create && !capabilities.value.update) return;
-    if (!dialogStatusOverlayRef.value || dialogStatusOverlayRef.value.isVisible) return;
+    if (!formData.value || !dialogStatusOverlayRef.value || dialogStatusOverlayRef.value.isVisible) return;
+    const data = formData.value;
     await formRef.value?.validate(async (valid) => {
         if (!valid) return;
         dialogStatusOverlayRef.value!.showLoading('儲存中...');
         let response;
-        if (formData.value.id) response = await props.crudApi.update(formData.value.id, formData.value);
-        else response = await props.crudApi.create(formData.value);
+        if (data.id) response = await props.crudApi.update(data.id, data);
+        else response = await props.crudApi.create(data);
+
         if (!response?.data?.success) return dialogStatusOverlayRef.value!.hide();
         isDialogVisible.value = false;
-        ElNotification.success(formData.value.id ? '儲存成功' : '新增成功');
+        ElNotification.success(data.id ? '儲存成功' : '新增成功');
         await loadData();
     });
 }

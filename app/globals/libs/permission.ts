@@ -2,7 +2,7 @@ import type { Arrayable } from 'type-fest';
 
 import type { PermissionPattern } from '@/types/permission';
 
-export function hasPermission(...requiredPermissions: Arrayable<PermissionPattern>[]) {
+export function hasPermission(...requiredPermissions: Array<Arrayable<PermissionPattern>>) {
     const permissions = requiredPermissions.flat();
     if (permissions.includes('ignore')) return true;
     const profileState = useProfileState();

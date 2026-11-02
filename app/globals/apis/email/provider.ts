@@ -19,6 +19,8 @@ export class EmailProviderApi extends BaseCrudApi<EmailProviderData, EmailProvid
                 };
 
                 break;
+            case undefined:
+                break;
         }
 
         return {

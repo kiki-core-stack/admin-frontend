@@ -5,7 +5,7 @@ export class ProfileSecurityApi extends BaseApi {
         super('/api/admin/profile/security');
     }
 
-    changePassword(data: AdminChangePasswordData) {
-        return this.patchRequest('/password', data);
+    async changePassword(data: AdminChangePasswordData) {
+        return await this.patchRequest('/password', data);
     }
 }

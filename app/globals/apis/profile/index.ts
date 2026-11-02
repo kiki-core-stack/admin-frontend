@@ -3,7 +3,7 @@ export class ProfileApi extends BaseApi {
         super('/api/admin/profile');
     }
 
-    get() {
-        return this.getRequest<{ id: string }>();
+    async get() {
+        return await this.getRequest<{ id: string }>();
     }
 }

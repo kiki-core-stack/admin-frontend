@@ -1,7 +1,7 @@
 import type { ShallowReactive } from 'vue';
 
 interface PageHeadTabsState {
-    tabs: ShallowReactive<{ path: string; title: Ref<string> }>[];
+    tabs: Array<ShallowReactive<{ path: string; title: Ref<string> }>>;
     titles: ShallowReactive<Record<string, Ref<string>>>;
 }
 

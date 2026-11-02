@@ -3,7 +3,7 @@ export class PublicApi extends BaseApi {
         super('/api/public');
     }
 
-    clearClientCache() {
-        return this.postRequest('/client-cache/clear');
+    async clearClientCache() {
+        return await this.postRequest('/client-cache/clear');
     }
 }
