@@ -6,6 +6,7 @@ minimumReleaseAgeStrict: true
 minimumReleaseAgeExcludePrune: true
 minimumReleaseAgeExclude:
   - '@kikiutils/eslint-config' # TODO: remove it
+  - '@kikiutils/stylelint-config' # TODO: remove it
   - '@kikiutils/nuxt' # TODO: remove it
   - '@kikiutils/shared' # TODO: remove it
 
@@ -23,6 +24,7 @@ strictDepBuilds: true
 updateNotifier: false
 
 overrides:
+  stylelint: ^17.16.0
   typescript: ^6.0.3
 
 allowBuilds:
