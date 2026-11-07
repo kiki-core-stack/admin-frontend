@@ -23,14 +23,15 @@
 </template>
 
 <script lang="ts" setup>
-import type { SmsProviderConfigs } from '@kcs-project/pack/types/sms';
+import type { SmsProviderCode } from '@kcs-project/pack/constants/sms';
+import type { SmsProviderConfigInputByCode } from '@kcs-project/pack/types/sms';
 
 // Define props, models and emits
 const props = defineProps<{ modelValue: Record<string, any> }>();
-const emit = defineEmits<{ (e: 'update:modelValue', config: SmsProviderConfigs.Mitake): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', config: SmsProviderConfigInputByCode[SmsProviderCode.Mitake]): void }>();
 
 // Constants/Refs/Variables
-const config = useConfigFormModel<SmsProviderConfigs.Mitake>(
+const config = useConfigFormModel<SmsProviderConfigInputByCode[SmsProviderCode.Mitake]>(
     props,
     emit,
     {

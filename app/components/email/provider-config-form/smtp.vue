@@ -49,14 +49,15 @@
 </template>
 
 <script lang="ts" setup>
-import type { EmailProviderConfigs } from '@kcs-project/pack/types/email';
+import type { EmailProviderCode } from '@kcs-project/pack/constants/email';
+import type { EmailProviderConfigInputByCode } from '@kcs-project/pack/types/email';
 
 // Define props, models and emits
 const props = defineProps<{ modelValue: Record<string, any> }>();
-const emit = defineEmits<{ (e: 'update:modelValue', config: EmailProviderConfigs.Smtp): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', config: EmailProviderConfigInputByCode[EmailProviderCode.Smtp]): void }>();
 
 // Constants/Refs/Variables
-const config = useConfigFormModel<EmailProviderConfigs.Smtp>(
+const config = useConfigFormModel<EmailProviderConfigInputByCode[EmailProviderCode.Smtp]>(
     props,
     emit,
     {

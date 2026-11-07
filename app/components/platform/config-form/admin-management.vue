@@ -7,17 +7,17 @@ import {
     defaultPlatformConfigs,
     PlatformConfigScope,
 } from '@kcs-project/pack/constants/platform';
-import type { PlatformConfigs } from '@kcs-project/pack/types/platform';
+import type { PlatformConfigInputByScope } from '@kcs-project/pack/types/platform';
 
 // Define props, models and emits
 const props = defineProps<{ modelValue: Record<string, any> }>();
-const emit = defineEmits<{ (e: 'update:modelValue', config: PlatformConfigs.AdminManagement): void }>();
+const emit = defineEmits<{ (e: 'update:modelValue', config: PlatformConfigInputByScope[PlatformConfigScope.AdminManagement]): void }>();
 
 // Constants/Refs/Variables
 
 // @ts-expect-error Reserved for future config form fields.
 // eslint-disable-next-line unused-imports/no-unused-vars
-const config = useConfigFormModel<PlatformConfigs.AdminManagement>(
+const config = useConfigFormModel<PlatformConfigInputByScope[PlatformConfigScope.AdminManagement]>(
     props,
     emit,
     defaultPlatformConfigs[PlatformConfigScope.AdminManagement],
