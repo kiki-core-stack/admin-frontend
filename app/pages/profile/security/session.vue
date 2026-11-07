@@ -12,7 +12,7 @@
         hide-timestamp-columns
     >
         <template #toolbar-actions-append>
-            <el-button @click="scanLoginQrCodeDialogRef?.open()">
+            <el-button @click="profileSecurityScanLoginQrCodeDialogRef?.open()">
                 掃描登入QR Code
             </el-button>
             <el-button @click="confirmLogoutAllSessions">
@@ -42,7 +42,7 @@
             />
         </template>
         <profile-security-scan-login-qr-code-dialog
-            ref="scanLoginQrCodeDialogRef"
+            ref="profileSecurityScanLoginQrCodeDialogRef"
             @approved="onQrCodeLoginApproved"
         />
     </data-table-page>
@@ -55,7 +55,7 @@ import { parseUserAgentToDeviceInfo } from '@/libs/user-agent';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
-const scanLoginQrCodeDialogRef = useTemplateRef('scanLoginQrCodeDialogRef');
+const profileSecurityScanLoginQrCodeDialogRef = useTemplateRef('profileSecurityScanLoginQrCodeDialogRef');
 
 // Functions
 const confirmLogoutAllSessions = createElMessageBoxConfirmHandler(

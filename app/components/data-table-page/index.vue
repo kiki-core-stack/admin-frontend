@@ -37,7 +37,7 @@
                 </div>
                 <el-table
                     v-if="capabilities.list"
-                    ref="tableRef"
+                    ref="elTableRef"
                     table-layout="auto"
                     :data="tableData"
                     :row-key="rowKey"
@@ -125,7 +125,7 @@
                 </div>
                 <!-- @vue-generic {TR, FD} -->
                 <data-table-page-form-dialog
-                    ref="formDialogRef"
+                    ref="dataTablePageFormDialogRef"
                     v-model:form-data="formData"
                     :before-open="beforeDialogOpen"
                     :can-save="capabilities.create || capabilities.update"
@@ -228,7 +228,8 @@ const timeRangeStartAt = defineModel<Date>('timeRangeStart', { default: () => ne
 
 // Constants/Refs/Variables
 const autoReloadDataCountdownDropdownBtnRef = useTemplateRef('autoReloadDataCountdownDropdownBtnRef');
-const formDialogRef = useTemplateRef('formDialogRef');
+const dataTablePageFormDialogRef = useTemplateRef('dataTablePageFormDialogRef');
+const elTableRef = useTemplateRef('elTableRef');
 const isLoadingData = ref(false);
 const mainContainerRef = useTemplateRef('mainContainerRef');
 const paginationParams = ref({
@@ -240,7 +241,6 @@ const pageTitle = pageHeadTabsController.registerCurrentPageHeadTab(props.title)
 const selectedRows = ref<TR[]>([]);
 const sortQueryParam = ref<string | undefined>(undefined);
 const tableData = ref<TR[]>([]);
-const tableRef = useTemplateRef('tableRef');
 const totalTableDataCount = ref(0);
 
 // Computed properties
@@ -265,7 +265,7 @@ const capabilities = computed(() => {
 });
 
 // Functions
-const clearSelection = () => tableRef.value?.clearSelection();
+const clearSelection = () => elTableRef.value?.clearSelection();
 const confirmDelete = createElMessageBoxConfirmHandler<TR>(
     props.confirmDeleteMessage || ((data) => `確定要刪除 ${(data as any).name} 嗎？`),
     '刪除中...',
@@ -280,7 +280,7 @@ const confirmDelete = createElMessageBoxConfirmHandler<TR>(
 );
 
 function closeDialog() {
-    formDialogRef.value?.close();
+    dataTablePageFormDialogRef.value?.close();
 }
 
 async function loadData() {
@@ -310,8 +310,8 @@ async function onSortChange(data: OnSortChangeData) {
     await loadData();
 }
 
-async function openDialog(payload?: Parameters<NonNullable<typeof formDialogRef.value>['open']>[0]) {
-    await formDialogRef.value?.open(payload);
+async function openDialog(payload?: Parameters<NonNullable<typeof dataTablePageFormDialogRef.value>['open']>[0]) {
+    await dataTablePageFormDialogRef.value?.open(payload);
 }
 
 // Hooks

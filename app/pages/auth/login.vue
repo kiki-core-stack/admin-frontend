@@ -32,7 +32,7 @@
                 <div class="gap-btns mt-4 flex justify-center">
                     <el-button
                         class="md:hidden!"
-                        @click="loginQrCodeDialogRef?.open()"
+                        @click="authQrCodeLoginDialogRef?.open()"
                     >
                         {{ $t('pages.auth.login.qrCodeLogin') }}
                     </el-button>
@@ -48,7 +48,7 @@
             />
         </div>
         <auth-qr-code-login-dialog
-            ref="loginQrCodeDialogRef"
+            ref="authQrCodeLoginDialogRef"
             :qr-code-image-src="qrCodeLoginImageSrc"
             @reload="reloadLoginQrCodeAndStartPolling"
         />
@@ -69,6 +69,7 @@ definePageMeta({
 
 // Constants/Refs/Variables
 const accountInputRef = useTemplateRef('accountInputRef');
+const authQrCodeLoginDialogRef = useTemplateRef('authQrCodeLoginDialogRef');
 const formData = ref<AdminLoginFormData>({
     account: '',
     password: '',
@@ -80,7 +81,6 @@ const formRules: ElFormRules<AdminLoginFormData> = {
     password: [createElFormItemRuleWithDefaults('請輸入密碼')],
 };
 
-const loginQrCodeDialogRef = useTemplateRef('loginQrCodeDialogRef');
 const qrCodeLoginApprovalToken = ref('');
 const qrCodeLoginImageSrc = useQRCode(
     qrCodeLoginApprovalToken,
