@@ -81,7 +81,7 @@
                                 <el-action-btn
                                     v-if="capabilities.update && !hideEditBtn && !hideRowEditBtnRule?.(scope.row)"
                                     :disabled="disableRowEditBtnRule?.(scope.row)"
-                                    @click="openDialog(scope.row)"
+                                    @click="openDialog({ mode: 'edit', row: scope.row })"
                                 >
                                     編輯
                                 </el-action-btn>
@@ -123,37 +123,19 @@
                         @change="loadData"
                     />
                 </div>
-                <el-dialog
-                    v-model="isDialogVisible"
-                    :close-on-click-modal="!dialogStatusOverlayRef?.isVisible"
-                    :close-on-press-escape="!dialogStatusOverlayRef?.isVisible"
-                    :title="`${isEditing ? '編輯' : '新增'}${dialogTitleSuffix}`"
-                    :width="elDialogWidthByWindowSize"
-                    align-center
-                    append-to-body
-                    center
-                    draggable
+                <!-- @vue-generic {TR, FD} -->
+                <data-table-page-form-dialog
+                    ref="formDialogRef"
+                    v-model:form-data="formData"
+                    :before-open="beforeDialogOpen"
+                    :can-save="capabilities.create || capabilities.update"
+                    :crud-api="crudApi"
+                    :rules="formRules"
+                    :title-suffix="dialogTitleSuffix"
+                    @saved="loadData"
                 >
-                    <el-form
-                        ref="formRef"
-                        label-width="auto"
-                        :model="formData"
-                        :rules="formRules"
-                        status-icon
-                        @submit.prevent="saveData"
-                    >
-                        <slot name="form" />
-                        <div class="text-center">
-                            <el-button
-                                native-type="submit"
-                                type="primary"
-                            >
-                                儲存
-                            </el-button>
-                        </div>
-                    </el-form>
-                    <status-overlay ref="dialogStatusOverlayRef" />
-                </el-dialog>
+                    <slot name="form" />
+                </data-table-page-form-dialog>
             </div>
         </div>
         <slot />
@@ -178,7 +160,6 @@ import type {
 import type { PermissionPattern } from '@/types/permission';
 
 type ControlActionBtnFunction = (row: TR) => boolean | undefined;
-type CreateDialogInitialData = Omit<Partial<FD>, 'id'>;
 
 interface OnSortChangeData {
     column: any;
@@ -247,11 +228,7 @@ const timeRangeStartAt = defineModel<Date>('timeRangeStart', { default: () => ne
 
 // Constants/Refs/Variables
 const autoReloadDataCountdownDropdownBtnRef = useTemplateRef('autoReloadDataCountdownDropdownBtnRef');
-const defaultFormData = formData.value && cloneDeep(formData.value);
-const dialogStatusOverlayRef = useTemplateRef('dialogStatusOverlayRef');
-const formRef = useTemplateRef('formRef');
-const isDialogVisible = ref(false);
-const isEditing = ref(false);
+const formDialogRef = useTemplateRef('formDialogRef');
 const isLoadingData = ref(false);
 const mainContainerRef = useTemplateRef('mainContainerRef');
 const paginationParams = ref({
@@ -302,7 +279,9 @@ const confirmDelete = createElMessageBoxConfirmHandler<TR>(
     { type: 'warning' },
 );
 
-const openCreateDialog = async (initialData?: CreateDialogInitialData) => await openDialog(undefined, initialData);
+function closeDialog() {
+    formDialogRef.value?.close();
+}
 
 async function loadData() {
     if (isLoadingData.value || !capabilities.value.list) return;
@@ -331,35 +310,8 @@ async function onSortChange(data: OnSortChangeData) {
     await loadData();
 }
 
-async function openDialog(row?: TR, initialData?: CreateDialogInitialData) {
-    if (!defaultFormData) return;
-    dialogStatusOverlayRef.value?.hide();
-    formRef.value?.resetFields();
-    isEditing.value = row !== undefined;
-    const mergedFormData = cloneDeep(defaultFormData);
-    merge(mergedFormData, row ?? initialData ?? {});
-    if (!row) mergedFormData.id = defaultFormData.id;
-    formData.value = mergedFormData;
-    await props.beforeDialogOpen?.(row);
-    isDialogVisible.value = true;
-}
-
-async function saveData() {
-    if (!capabilities.value.create && !capabilities.value.update) return;
-    if (!formData.value || !dialogStatusOverlayRef.value || dialogStatusOverlayRef.value.isVisible) return;
-    const data = formData.value;
-    await formRef.value?.validate(async (valid) => {
-        if (!valid) return;
-        dialogStatusOverlayRef.value!.showLoading('儲存中...');
-        let response;
-        if (data.id) response = await props.crudApi.update(data.id, data);
-        else response = await props.crudApi.create(data);
-
-        if (!response?.data?.success) return dialogStatusOverlayRef.value!.hide();
-        isDialogVisible.value = false;
-        ElNotification.success(data.id ? '儲存成功' : '新增成功');
-        await loadData();
-    });
+async function openDialog(payload?: Parameters<NonNullable<typeof formDialogRef.value>['open']>[0]) {
+    await formDialogRef.value?.open(payload);
 }
 
 // Hooks
@@ -373,8 +325,9 @@ watch(() => props.title, (nv) => pageTitle.value = nv);
 defineExpose({
     capabilities: readonly(capabilities),
     clearSelection,
+    closeDialog,
     loadData,
-    openCreateDialog,
+    openDialog,
     selectedRows: readonly(selectedRows),
 });
 

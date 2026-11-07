@@ -32,7 +32,7 @@
                 <div class="gap-btns mt-4 flex justify-center">
                     <el-button
                         class="md:hidden!"
-                        @click="isLoginQrCodeDialogVisible = true"
+                        @click="loginQrCodeDialogRef?.open()"
                     >
                         {{ $t('pages.auth.login.qrCodeLogin') }}
                     </el-button>
@@ -47,19 +47,11 @@
                 @reload="reloadLoginQrCodeAndStartPolling"
             />
         </div>
-        <el-dialog
-            v-model="isLoginQrCodeDialogVisible"
-            :width="elDialogWidthByWindowSize"
-            align-center
-            append-to-body
-            center
-        >
-            <auth-qr-code-login-block
-                class="mt-4"
-                :qr-code-image-src="qrCodeLoginImageSrc"
-                @reload="reloadLoginQrCodeAndStartPolling"
-            />
-        </el-dialog>
+        <auth-qr-code-login-dialog
+            ref="loginQrCodeDialogRef"
+            :qr-code-image-src="qrCodeLoginImageSrc"
+            @reload="reloadLoginQrCodeAndStartPolling"
+        />
         <status-overlay ref="statusOverlayRef" />
     </div>
 </template>
@@ -88,10 +80,8 @@ const formRules: ElFormRules<AdminLoginFormData> = {
     password: [createElFormItemRuleWithDefaults('請輸入密碼')],
 };
 
-const isLoginQrCodeDialogVisible = ref(false);
+const loginQrCodeDialogRef = useTemplateRef('loginQrCodeDialogRef');
 const qrCodeLoginApprovalToken = ref('');
-let qrCodeLoginCompletionToken: string | undefined;
-let qrCodeLoginCreationAbortController: AbortController | undefined;
 const qrCodeLoginImageSrc = useQRCode(
     qrCodeLoginApprovalToken,
     {
@@ -101,9 +91,11 @@ const qrCodeLoginImageSrc = useQRCode(
     },
 );
 
+const statusOverlayRef = useTemplateRef('statusOverlayRef');
+let qrCodeLoginCompletionToken: string | undefined;
+let qrCodeLoginCreationAbortController: AbortController | undefined;
 let qrCodeLoginPollingAbortController: AbortController | undefined;
 let qrCodeLoginPollingTimeout: NodeJS.Timeout | null = null;
-const statusOverlayRef = useTemplateRef('statusOverlayRef');
 
 // Functions
 async function handleLoginSuccess() {
