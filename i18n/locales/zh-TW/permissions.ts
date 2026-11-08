@@ -1,3 +1,5 @@
+import { objectEntries } from 'ts-extras';
+
 import type {
     AdminPermission,
     AdminPermissionGroup,
@@ -59,7 +61,7 @@ const permissionLabels: Record<AdminPermission | AdminPermissionGroup, string> =
 };
 
 export default Object.fromEntries(
-    Object.entries(permissionLabels).map(([key, value]) => [
+    objectEntries(permissionLabels).map(([key, value]) => [
         `permissions.${key}`,
         value,
     ]),

@@ -5,6 +5,10 @@ import type {
     Method,
 } from 'axios';
 import queryString from 'query-string';
+import {
+    objectEntries,
+    objectKeys,
+} from 'ts-extras';
 import type { Except } from 'type-fest';
 
 import { createApiAxiosInstance } from '@/libs/api/instance';
@@ -46,7 +50,7 @@ export class BaseApi {
     // Protected methods
     protected buildQueryFilter(filter: Record<string, any>) {
         filter = cloneDeep(filter);
-        Object.entries(filter).forEach(([field, condition]) => {
+        objectEntries(filter).forEach(([field, condition]) => {
             if (condition === null) return;
             if (condition === undefined || (typeof condition === 'string' && !condition)) {
                 delete filter[field];
@@ -64,7 +68,7 @@ export class BaseApi {
             }
 
             if (typeof condition === 'object') {
-                Object.entries(condition).forEach(([operator, operand]) => {
+                objectEntries(condition).forEach(([operator, operand]) => {
                     if (this.#rangeOperators.has(operator) && operand instanceof Date) {
                         condition[operator] = operand.toISOString();
                         return;
@@ -78,7 +82,7 @@ export class BaseApi {
                     if (operator === '$regex' && (typeof operand !== 'string' || !operand)) delete condition[operator];
                 });
 
-                if (!Object.keys(condition).length) delete filter[field];
+                if (!objectKeys(condition).length) delete filter[field];
             }
         });
 
