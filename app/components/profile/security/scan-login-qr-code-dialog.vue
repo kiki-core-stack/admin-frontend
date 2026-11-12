@@ -88,10 +88,10 @@ const confirmLogin = createElMessageBoxConfirmHandler<
     (data) => `確定要允許 ${parseUserAgentToDeviceInfo(data.targetUserAgent)} (${data.targetIp}) 的登入嗎？`,
     '登入中...',
     async (data) => {
-        const response = await AuthApi.use().approveQrCodeLogin(data.approvalToken, { skipShowErrorMessage: true });
-        if (response?.data?.success) return true;
-        if (response?.status === 410) return 'gone';
-        return response?.data?.message || '系統錯誤';
+        const response = await AuthApi.use().approveQrCodeLogin(data.approvalToken, { silent: true });
+        if (response.data.success) return true;
+        if (response.status === 410) return 'gone';
+        return response.data.message || '系統錯誤';
     },
     () => {
         ElNotification.success('已允許登入');
@@ -120,13 +120,13 @@ async function onScanSuccess(decodedText: string) {
         decodedText,
         {
             signal: abortController.signal,
-            skipShowErrorMessage: true,
+            silent: true,
         },
     );
 
     if (abortController.signal.aborted || !isVisible.value) return;
     approvalAbortController = undefined;
-    if (response?.data?.data?.state === 'pending') {
+    if (response.data.data?.state === 'pending') {
         confirmLogin({
             approvalToken: decodedText,
             ...response.data.data,

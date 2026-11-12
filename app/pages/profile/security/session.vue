@@ -61,7 +61,7 @@ const profileSecurityScanLoginQrCodeDialogRef = useTemplateRef('profileSecurityS
 const confirmLogoutAllSessions = createElMessageBoxConfirmHandler(
     '確定要登出所有裝置嗎？',
     '登出中...',
-    async () => !!(await ProfileSecuritySessionApi.use().deleteAll())?.data?.success,
+    async () => !!(await ProfileSecuritySessionApi.use().deleteAll()).data.success,
     () => {
         assignUrlWithRedirectParamFromCurrentLocation('/auth/login/', 1000);
         showSuccessAlert(

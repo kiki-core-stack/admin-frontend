@@ -1,12 +1,10 @@
-import type { CommonApiResponseErrorCode } from '@kcs-project/pack/hono-backend/types/api';
-
 import type {
-    AdminPermission,
     AdminPermissionGroup,
+    AdminPermissionKey,
 } from '@/generated/static/types/admin/permission';
 import type { ApiResponseErrorCode } from '@/types/api';
 
-export type PermissionsLocaleMessages = Record<`permissions.${AdminPermission | AdminPermissionGroup}`, string>;
+export type PermissionsLocaleMessages = Record<`permissions.${AdminPermissionGroup | AdminPermissionKey}`, string>;
 
 export interface AppLocaleMessages {
     common: {
@@ -19,11 +17,7 @@ export interface AppLocaleMessages {
         search: string;
     };
 
-    errors: { apiResponse: { code: Record<ApiResponseErrorCode | CommonApiResponseErrorCode, string> } };
-    messages: {
-        pleaseCheckNetwork: string;
-    };
-
+    errors: { apiResponse: { code: Record<Exclude<ApiResponseErrorCode, 'aborted'>, string> } };
     pages: {
         auth: {
             login: {

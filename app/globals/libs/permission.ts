@@ -1,13 +1,13 @@
+import { hasPermission as hasPrincipalPermission } from '@kcs-project/pack/libs/permission';
 import type { Arrayable } from 'type-fest';
 
-import type { PermissionPattern } from '@/types/permission';
+import type { AdminPermissionRequirement } from '@/types/permission';
 
-export function hasPermission(...requiredPermissions: Array<Arrayable<PermissionPattern>>) {
-    const permissions = requiredPermissions.flat();
-    if (permissions.includes('ignore')) return true;
-    const profileState = useProfileState();
-    return (
-        profileState.value.permission.isSuperAdmin
-        || micromatch(profileState.value.permission.permissions, permissions).length > 0
-    );
+/**
+ * Whether the current admin passes the requirement (`ignore` always passes); same rules as the backend check.
+ */
+export function hasPermission(required: Arrayable<'ignore' | AdminPermissionRequirement>) {
+    const patterns = [required].flat();
+    if (patterns.includes('ignore')) return true;
+    return hasPrincipalPermission(useProfileState().value.permission, patterns);
 }

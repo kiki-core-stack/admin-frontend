@@ -69,11 +69,7 @@ export const sidebarMenuItems: ReadonlyDeep<SidebarMenuItem[]> = [
         children: [
             {
                 path: '/system/admin/',
-                requiredPermissions: [
-                    'admin.*',
-                    '!admin.log.*',
-                    '!admin.role.*',
-                ],
+                requiredPermissions: 'admin.account.*',
                 title: '管理員管理',
             },
             {

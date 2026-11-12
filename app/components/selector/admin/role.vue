@@ -39,7 +39,7 @@ async function loadData(query: string) {
         limit: 100,
     });
 
-    items.value = response?.data?.data?.list || [];
+    items.value = response.data.data?.list || [];
     isLoadingData.value = false;
 }
 

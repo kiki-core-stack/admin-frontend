@@ -7,9 +7,7 @@ export class BaseCrudApi<
     CreateOrUpdateData = T | TablePageFormData<T>,
 > extends BaseApi {
     async create(data: CreateOrUpdateData, config?: AxiosRequestConfig) {
-        try {
-            return await this.postRequest<T>(undefined, await this.processCreateOrUpdateData(data), config);
-        } catch {}
+        return await this.postRequest<T>(undefined, await this.processCreateOrUpdateData(data), config);
     }
 
     async delete(id: string) {
@@ -35,9 +33,7 @@ export class BaseCrudApi<
     }
 
     async update(id: string, data: CreateOrUpdateData, config?: AxiosRequestConfig) {
-        try {
-            return await this.putRequest(`/${id}`, await this.processCreateOrUpdateData(data), config);
-        } catch {}
+        return await this.putRequest(`/${id}`, await this.processCreateOrUpdateData(data), config);
     }
 
     async updateBooleanField(id: string, field: string, value: boolean) {

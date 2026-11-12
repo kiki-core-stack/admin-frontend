@@ -114,7 +114,7 @@ async function save() {
             ? await props.crudApi.update(data.id, data)
             : await props.crudApi.create(data);
 
-        if (!response?.data?.success) return statusOverlayRef.value!.hide();
+        if (!response.data.success) return statusOverlayRef.value!.hide();
         close();
         ElNotification.success(data.id ? '儲存成功' : '新增成功');
         emit('saved');

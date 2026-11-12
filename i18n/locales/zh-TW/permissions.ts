@@ -1,17 +1,20 @@
 import { objectEntries } from 'ts-extras';
 
 import type {
-    AdminPermission,
     AdminPermissionGroup,
+    AdminPermissionKey,
 } from '@/generated/static/types/admin/permission';
 
 import type { PermissionsLocaleMessages } from '../types';
 
-const permissionLabels: Record<AdminPermission | AdminPermissionGroup, string> = {
+const permissionLabels: Record<AdminPermissionGroup | AdminPermissionKey, string> = {
     'admin': '管理員',
-    'admin.create': '建立管理員',
-    'admin.delete': '刪除管理員',
-    'admin.list': '獲取管理員列表',
+    'admin.account': '管理員帳號',
+    'admin.account.create': '建立管理員',
+    'admin.account.delete': '刪除管理員',
+    'admin.account.list': '獲取管理員列表',
+    'admin.account.toggle': '切換管理員狀態',
+    'admin.account.update': '更新管理員',
     'admin.log': '管理員日誌',
     'admin.log.list': '獲取管理員日誌列表',
     'admin.role': '管理員身分組',
@@ -19,8 +22,6 @@ const permissionLabels: Record<AdminPermission | AdminPermissionGroup, string> =
     'admin.role.delete': '刪除管理員身分組',
     'admin.role.list': '獲取管理員身分組列表',
     'admin.role.update': '更新管理員身分組',
-    'admin.toggle': '切換管理員狀態',
-    'admin.update': '更新管理員',
     'email': '電子郵件',
     'email.provider': '電子郵件服務商',
     'email.provider.create': '建立電子郵件服務商',

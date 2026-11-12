@@ -1,12 +1,8 @@
+import type { PermissionRequirement } from '@kcs-project/pack/types/permission';
+
 import type {
-    AdminPermission,
     AdminPermissionGroup,
+    AdminPermissionKey,
 } from '@/generated/static/types/admin/permission';
 
-export type PermissionPattern =
-  | 'ignore'
-  | `!${AdminPermissionGroup}.*`
-  | `!${AdminPermission}`
-  | `${AdminPermissionGroup}.*`
-  | AdminPermission
-  | (string & {});
+export type AdminPermissionRequirement = PermissionRequirement<AdminPermissionGroup, AdminPermissionKey>;

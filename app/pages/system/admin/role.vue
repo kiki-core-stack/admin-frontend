@@ -74,7 +74,7 @@ const permissionTreeNodes = ref<ElTreeNode[]>([]);
 // Functions
 async function loadPermissionTreeNodes() {
     const response = await AdminPermissionApi.use().getTreeNodes();
-    permissionTreeNodes.value = response?.data?.data || [];
+    permissionTreeNodes.value = response.data.data || [];
     translatePermissionTreeNodes(permissionTreeNodes.value);
 }
 

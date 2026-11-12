@@ -8,7 +8,7 @@
         :crud-api="AdminApi.use()"
         :disable-row-delete-btn-rule="(row) => row.id === profileState.id"
         :form-rules="formRules"
-        :permissions="{ base: 'admin' }"
+        :permissions="{ base: 'admin.account' }"
     >
         <template #table>
             <el-table-column

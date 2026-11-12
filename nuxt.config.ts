@@ -182,7 +182,7 @@ export default defineNuxtConfig({
                 '@kcs-project/pack/constants',
                 '@kcs-project/pack/constants/admin',
                 '@kcs-project/pack/constants/email',
-                '@kikiutils/micromatch',
+                '@kcs-project/pack/libs/permission',
                 '@kikiutils/shared/datetime',
                 '@kikiutils/shared/element-plus',
                 '@kikiutils/shared/enum',

@@ -1,56 +1,62 @@
 /* eslint-disable eslint-comments/no-unlimited-disable */
 /* eslint-disable */
 
-export type AdminPermission =
-  | 'admin.create'
-  | 'admin.delete'
-  | 'admin.list'
-  | 'admin.log.list'
-  | 'admin.role.create'
-  | 'admin.role.delete'
-  | 'admin.role.list'
-  | 'admin.role.update'
-  | 'admin.toggle'
-  | 'admin.update'
-  | 'email.provider.create'
-  | 'email.provider.delete'
-  | 'email.provider.list'
-  | 'email.provider.toggle'
-  | 'email.provider.update'
-  | 'email.sendRecord.list'
-  | 'email.senderIdentity.create'
-  | 'email.senderIdentity.delete'
-  | 'email.senderIdentity.list'
-  | 'email.senderIdentity.toggle'
-  | 'email.senderIdentity.update'
-  | 'home.dashboard.view'
-  | 'platform.config.list'
-  | 'platform.config.update'
-  | 'platform.ipAccessPolicy.create'
-  | 'platform.ipAccessPolicy.delete'
-  | 'platform.ipAccessPolicy.list'
-  | 'platform.ipAccessPolicy.toggle'
-  | 'platform.ipAccessPolicy.update'
-  | 'sms.provider.create'
-  | 'sms.provider.delete'
-  | 'sms.provider.list'
-  | 'sms.provider.toggle'
-  | 'sms.provider.update'
-  | 'sms.sendRecord.list';
+export const adminPermissionGroups = [
+  'admin',
+  'admin.account',
+  'admin.log',
+  'admin.role',
+  'email',
+  'email.provider',
+  'email.sendRecord',
+  'email.senderIdentity',
+  'home',
+  'home.dashboard',
+  'platform',
+  'platform.config',
+  'platform.ipAccessPolicy',
+  'sms',
+  'sms.provider',
+  'sms.sendRecord',
+] as const;
 
-export type AdminPermissionGroup =
-  | 'admin'
-  | 'admin.log'
-  | 'admin.role'
-  | 'email'
-  | 'email.provider'
-  | 'email.sendRecord'
-  | 'email.senderIdentity'
-  | 'home'
-  | 'home.dashboard'
-  | 'platform'
-  | 'platform.config'
-  | 'platform.ipAccessPolicy'
-  | 'sms'
-  | 'sms.provider'
-  | 'sms.sendRecord';
+export const adminPermissionKeys = [
+  'admin.account.create',
+  'admin.account.delete',
+  'admin.account.list',
+  'admin.account.toggle',
+  'admin.account.update',
+  'admin.log.list',
+  'admin.role.create',
+  'admin.role.delete',
+  'admin.role.list',
+  'admin.role.update',
+  'email.provider.create',
+  'email.provider.delete',
+  'email.provider.list',
+  'email.provider.toggle',
+  'email.provider.update',
+  'email.sendRecord.list',
+  'email.senderIdentity.create',
+  'email.senderIdentity.delete',
+  'email.senderIdentity.list',
+  'email.senderIdentity.toggle',
+  'email.senderIdentity.update',
+  'home.dashboard.view',
+  'platform.config.list',
+  'platform.config.update',
+  'platform.ipAccessPolicy.create',
+  'platform.ipAccessPolicy.delete',
+  'platform.ipAccessPolicy.list',
+  'platform.ipAccessPolicy.toggle',
+  'platform.ipAccessPolicy.update',
+  'sms.provider.create',
+  'sms.provider.delete',
+  'sms.provider.list',
+  'sms.provider.toggle',
+  'sms.provider.update',
+  'sms.sendRecord.list',
+] as const;
+
+export type AdminPermissionKey = (typeof adminPermissionKeys)[number];
+export type AdminPermissionGroup = (typeof adminPermissionGroups)[number];

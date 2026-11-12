@@ -15,20 +15,22 @@ export default {
             code: {
                 badRequest: '資料格式錯誤或是非法操作',
                 conflict: '欄位值重複或是該資料使用中',
+                duplicateKey: '欄位值重複',
                 forbidden: '沒有權限',
                 gatewayTimeout: '超時',
                 gone: '資料已過期或被刪除',
                 internalServerError: '系統錯誤',
+                networkError: '請檢查網路連線',
                 notFound: '找不到資料',
                 payloadTooLarge: '檔案大小超出限制',
                 serviceUnavailable: '系統維護中',
+                sessionInvalid: '登入已失效，請重新登入',
                 tooManyRequests: '請求過於頻繁',
                 unauthorized: '尚未登入',
                 validationFailed: '資料格式錯誤',
             },
         },
     },
-    messages: { pleaseCheckNetwork: '請檢查網路連線' },
     pages: {
         auth: {
             login: {

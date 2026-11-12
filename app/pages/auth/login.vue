@@ -112,8 +112,8 @@ async function login() {
         if (!valid) return;
         statusOverlayRef.value!.showLoading('登入中...');
         const response = await AuthApi.use().login(formData.value);
-        if (response?.status === 404) accountInputRef.value?.focus();
-        else if (response?.data?.success) return await handleLoginSuccess();
+        if (response.status === 404) accountInputRef.value?.focus();
+        else if (response.data.success) return await handleLoginSuccess();
 
         statusOverlayRef.value!.hide();
     });
@@ -128,13 +128,13 @@ async function pollQrCodeLoginCompletion() {
         completionToken,
         {
             signal: qrCodeLoginPollingAbortController.signal,
-            skipShowErrorMessage: true,
+            silent: true,
         },
     );
 
     if (completionToken !== qrCodeLoginCompletionToken) return;
-    if (response?.data?.data?.state === 'completed') return await handleLoginSuccess();
-    if (response?.status === 410) {
+    if (response.data.data?.state === 'completed') return await handleLoginSuccess();
+    if (response.status === 410) {
         ElNotification.error('QR Code已過期，已自動刷新');
         qrCodeLoginApprovalToken.value = '';
         qrCodeLoginCompletionToken = undefined;
@@ -152,7 +152,7 @@ async function reloadLoginQrCodeAndStartPolling() {
     const response = await AuthApi.use().createQrCodeLogin({ signal: abortController.signal });
     if (qrCodeLoginCreationAbortController !== abortController) return;
     qrCodeLoginCreationAbortController = undefined;
-    if (!response?.data?.success || !response?.data?.data) return;
+    if (!response.data.success || !response.data.data) return;
 
     stopQrCodeLoginPolling();
     qrCodeLoginApprovalToken.value = response.data.data.approvalToken;

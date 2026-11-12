@@ -83,7 +83,7 @@ async function changePassword() {
         if (!valid) return;
         statusOverlayRef.value!.showLoading('變更中...');
         const response = await ProfileSecurityApi.use().changePassword(formData.value);
-        if (!response?.data?.success) return statusOverlayRef.value!.hide();
+        if (!response.data.success) return statusOverlayRef.value!.hide();
         statusOverlayRef.value!.showSuccess('變更成功', false);
         assignUrlWithRedirectParamFromCurrentLocation('/auth/login/', 1000);
     });

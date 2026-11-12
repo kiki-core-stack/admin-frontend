@@ -1,8 +1,8 @@
-import type { CachedAdminPermission } from '@kcs-project/pack/types/admin';
+import type { PrincipalPermissions } from '@kcs-project/pack/types/permission';
 
 interface ProfileState {
     id: string;
-    permission: CachedAdminPermission;
+    permission: PrincipalPermissions;
 }
 
 export function useProfileState() {
@@ -11,8 +11,8 @@ export function useProfileState() {
         () => ({
             id: '',
             permission: {
-                isSuperAdmin: false,
                 permissions: [],
+                unrestricted: false,
             },
         }),
     );

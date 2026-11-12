@@ -1,6 +1,6 @@
 import type { Arrayable } from 'type-fest';
 
-import type { PermissionPattern } from '@/types/permission';
+import type { AdminPermissionRequirement } from '@/types/permission';
 
 export type SidebarMenuItem =
   ({
@@ -12,4 +12,4 @@ export type SidebarMenuItem =
       path: `${string}/`;
       title: string;
   })
-  & { requiredPermissions: Arrayable<PermissionPattern> };
+  & { requiredPermissions: Arrayable<'ignore' | AdminPermissionRequirement> };

@@ -121,7 +121,7 @@ async function loadData() {
     loadError.value = false;
 
     const response = await HomeApi.use().getDashboardData(filter.value);
-    if (response?.data?.data) dashboardData.value = response.data.data;
+    if (response.data.data) dashboardData.value = response.data.data;
     else loadError.value = true;
 
     isInitialLoading.value = false;

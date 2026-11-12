@@ -1,17 +1,17 @@
-import type { ApiResponseData } from '@kcs-project/pack/types/data';
 import type {
-    AxiosError,
-    AxiosResponse,
-} from 'axios';
+    ApiResponseData,
+    ClientApiErrorCode,
+} from '@kcs-project/pack/types/data';
+import type { AxiosResponse } from 'axios';
 
-export type ApiRequestResult<T extends object | undefined = undefined, E extends string | undefined = undefined> =
-  | ApiTransportFailure
-  | AxiosResponse<ApiResponseData<T, E>>;
+import type { ApiErrorCode } from '@/generated/static/types/api-error-code';
 
-export type ApiResponseErrorCode = never;
+/**
+ * Every API call resolves to a response (never throws) whose `data` is always the API envelope, so failures carry
+ * `data.success === false` plus an `errorCode`, and `data.data` exists only on success.
+ */
+export type ApiRequestResult<T extends object | undefined = undefined> = AxiosResponse<
+    ApiResponseData<T, ApiResponseErrorCode>
+>;
 
-export interface ApiTransportFailure {
-    data?: undefined;
-    error: AxiosError;
-    status?: undefined;
-}
+export type ApiResponseErrorCode = ApiErrorCode | ClientApiErrorCode;

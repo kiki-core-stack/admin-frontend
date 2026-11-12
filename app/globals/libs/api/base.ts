@@ -89,12 +89,12 @@ export class BaseApi {
         return JSON.stringify(filter);
     }
 
-    protected async deleteRequest<T extends object | undefined = undefined, E extends string | undefined = undefined>(
+    protected async deleteRequest<T extends object | undefined = undefined>(
         url?: string,
         params?: any,
         config?: AxiosRequestConfig,
     ) {
-        return await this.request<T, E>(
+        return await this.request<T>(
             'delete',
             url,
             undefined,
@@ -105,12 +105,12 @@ export class BaseApi {
         );
     }
 
-    protected async getRequest<T extends object | undefined = undefined, E extends string | undefined = undefined>(
+    protected async getRequest<T extends object | undefined = undefined>(
         url?: string,
         params?: any,
         config?: AxiosRequestConfig,
     ) {
-        return await this.request<T, E>(
+        return await this.request<T>(
             'get',
             url,
             undefined,
@@ -121,34 +121,33 @@ export class BaseApi {
         );
     }
 
-    protected async patchRequest<T extends object | undefined = undefined, E extends string | undefined = undefined>(
+    protected async patchRequest<T extends object | undefined = undefined>(
         url?: string,
         data?: any,
         config?: AxiosRequestConfig,
     ) {
-        return await this.request<T, E>('patch', url, data, config);
+        return await this.request<T>('patch', url, data, config);
     }
 
-    protected async postRequest<T extends object | undefined = undefined, E extends string | undefined = undefined>(
+    protected async postRequest<T extends object | undefined = undefined>(
         url?: string,
         data?: any,
         config?: AxiosRequestConfig,
     ) {
-        return await this.request<T, E>('post', url, data, config);
+        return await this.request<T>('post', url, data, config);
     }
 
-    protected async putRequest<T extends object | undefined = undefined, E extends string | undefined = undefined>(
+    protected async putRequest<T extends object | undefined = undefined>(
         url?: string,
         data?: any,
         config?: AxiosRequestConfig,
     ) {
-        return await this.request<T, E>('put', url, data, config);
+        return await this.request<T>('put', url, data, config);
     }
 
     protected async request<
         T extends object | undefined = undefined,
-        E extends string | undefined = undefined,
-        R extends ApiRequestResult<T, E> = ApiRequestResult<T, E>,
+        R extends ApiRequestResult<T> = ApiRequestResult<T>,
         D = any,
     >(
         method: Method,
