@@ -7,6 +7,7 @@
         :confirm-delete-message="(row) => `確定要刪除 ${row.account} 嗎？`"
         :crud-api="AdminApi.use()"
         :disable-row-delete-btn-rule="(row) => row.id === profileState.id"
+        :form-rules="formRules"
         :permissions="{ base: 'admin.account' }"
     >
         <template #table>
@@ -33,7 +34,6 @@
                 label="帳號"
                 name="account"
                 prop="account"
-                :rules="[createElFormItemRuleWithDefaults('請輸入帳號')]"
             />
             <el-form-input
                 v-model="formData.email"
@@ -100,5 +100,6 @@ const formData = ref<AdminFormData>({
     roles: [],
 });
 
+const formRules: ElFormRules<AdminFormData> = { account: [createElFormItemRuleWithDefaults('請輸入帳號')] };
 const profileState = useProfileState();
 </script>
