@@ -11,14 +11,12 @@ export class PlatformIpAccessPolicyApi extends BaseCrudApi<
         super('/api/admin/platform/ip-access-policy');
     }
 
-    override processCreateOrUpdateData(data: PlatformIpAccessPolicyFormData) {
-        return {
-            ...data,
-            note: data.note.trim() || undefined,
-            targets: data.targets.map((target) => ({
-                ...target,
-                principalIds: target.principalIds?.map((principal) => principal.id) ?? null,
-            })),
-        };
-    }
+    protected override readonly serializeInput = (data: PlatformIpAccessPolicyFormData) => ({
+        ...data,
+        note: data.note.trim() || undefined,
+        targets: data.targets.map((target) => ({
+            ...target,
+            principalIds: target.principalIds?.map((principal) => principal.id) ?? null,
+        })),
+    });
 }

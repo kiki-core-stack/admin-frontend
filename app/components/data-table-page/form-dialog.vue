@@ -4,7 +4,7 @@
         :before-close="beforeClose"
         :close-on-click-modal="!statusOverlayRef?.isVisible"
         :close-on-press-escape="!statusOverlayRef?.isVisible"
-        :title="`${isEditing ? '編輯' : '新增'}${titleSuffix}`"
+        :title="`${editingRow ? '編輯' : '新增'}${titleSuffix}`"
         :width="elDialogWidthByWindowSize"
         align-center
         append-to-body
@@ -37,22 +37,27 @@
     lang="ts"
     generic="
         TR extends TableRowData,
-        FD extends TableRowData = TableRowData
+        FD extends TableRowData
     "
     setup
 >
 import type { TableRowData } from '@kcs-project/pack/types/data';
+import { objectKeys } from 'ts-extras';
 import type { Promisable } from 'type-fest';
 
-type InitialData = Omit<Partial<FD>, 'id'>;
+import { getApiErrorData } from '@/libs/api/error-data';
+import { translateApiValidationIssue } from '@/libs/api/validation-issue';
+import type { ApiResponseEnvelope } from '@/types/api';
+
 type OpenPayload =
-  | { initialData?: InitialData; mode: 'create' }
+  | { initialData?: Partial<Omit<FD, 'id'>>; mode: 'create' }
   | { mode: 'edit'; row: TR };
 
 interface Props {
     beforeOpen?: (row?: TR) => Promisable<void>;
-    canSave: boolean;
-    crudApi: BaseCrudApi<TR, NoInfer<FD>>;
+    canCreate: boolean;
+    canUpdate: boolean;
+    crudApi: BaseCrudApi<TR, FD>;
     rules?: ElFormRules<Record<string, any>>;
     titleSuffix?: string;
 }
@@ -60,12 +65,13 @@ interface Props {
 // Define props, models and emits
 const props = defineProps<Props>();
 const emit = defineEmits<{ (e: 'saved'): void }>();
-const formData = defineModel<FD>('formData');
+const formData = defineModel<FD>('formData', { required: true });
 
 // Constants/Refs/Variables
-const defaultFormData = formData.value && cloneDeep(formData.value);
+// Snapshot of the initial form data: every opening starts from it, and its keys define what the form contains.
+const defaultFormData = cloneDeep(formData.value);
+const editingRow = shallowRef<TR>();
 const formRef = useTemplateRef('formRef');
-const isEditing = ref(false);
 const isVisible = ref(false);
 const statusOverlayRef = useTemplateRef('statusOverlayRef');
 let openGeneration = 0;
@@ -81,21 +87,30 @@ function close() {
     isVisible.value = false;
 }
 
-async function open(payload: OpenPayload = { mode: 'create' }) {
-    if (!defaultFormData) return;
+/**
+ * Builds the form data from the defaults, taking only the form's own fields from the source (an edited row also has
+ * list-only fields such as `createdAt` or `createdByAdmin`).
+ */
+function createFormData(source?: Partial<Omit<FD, 'id'>> | TR) {
+    const data = cloneDeep(defaultFormData);
+    if (!source) return data;
+    for (const key of objectKeys(defaultFormData)) {
+        if (key !== 'id' && key in source) data[key] = cloneDeep((source as FD)[key]);
+    }
 
+    return data;
+}
+
+async function open(payload: OpenPayload = { mode: 'create' }) {
     const generation = ++openGeneration;
     const row = payload.mode === 'edit' ? payload.row : undefined;
+    const source = payload.mode === 'edit' ? payload.row : payload.initialData;
 
     statusOverlayRef.value?.hide();
     formRef.value?.resetFields();
-    isEditing.value = row !== undefined;
-
-    const source = payload.mode === 'edit' ? payload.row : payload.initialData;
-    const data = cloneDeep(defaultFormData);
-    merge(data, source ?? {});
-    if (!row) data.id = defaultFormData.id;
-    formData.value = data;
+    editingRow.value = row;
+    formData.value = createFormData(source);
+    if (row) formData.value.id = row.id;
 
     await props.beforeOpen?.(row);
     if (generation !== openGeneration) return;
@@ -104,20 +119,45 @@ async function open(payload: OpenPayload = { mode: 'create' }) {
 }
 
 async function save() {
-    if (!props.canSave) return;
-    if (!formData.value || !statusOverlayRef.value || statusOverlayRef.value.isVisible) return;
-    const data = formData.value;
-    await formRef.value?.validate(async (valid) => {
-        if (!valid) return;
-        statusOverlayRef.value!.showLoading('儲存中...');
-        const response = data.id
-            ? await props.crudApi.update(data.id, data)
-            : await props.crudApi.create(data);
+    const row = editingRow.value;
+    const canSave = row ? props.canUpdate : props.canCreate;
+    if (!canSave || !statusOverlayRef.value || statusOverlayRef.value.isVisible) return;
+    formRef.value?.clearValidate();
+    if (!await formRef.value?.validate().catch(() => false)) return;
 
-        if (!response.data.success) return statusOverlayRef.value!.hide();
-        close();
-        ElNotification.success(data.id ? '儲存成功' : '新增成功');
-        emit('saved');
+    statusOverlayRef.value.showLoading('儲存中...');
+    const response = row
+        ? await props.crudApi.update(row, formData.value)
+        : await props.crudApi.create(formData.value);
+
+    if (!response.data.success) {
+        showFieldErrors(response.data);
+        statusOverlayRef.value.hide();
+        return;
+    }
+
+    close();
+    ElNotification.success(row ? '儲存成功' : '新增成功');
+    emit('saved');
+}
+
+function setFieldError(prop: string, message: string) {
+    const field = formRef.value?.getField(prop);
+    if (!field) return;
+    field.validateState = 'error';
+    field.validateMessage = message;
+}
+
+/**
+ * Shows backend field errors on the matching form items; the default error notification still reports the failure.
+ */
+function showFieldErrors(responseData: ApiResponseEnvelope) {
+    getApiErrorData(responseData, 'validationFailed')?.issues.forEach((issue) => {
+        setFieldError(issue.path.join('.'), translateApiValidationIssue(issue));
+    });
+
+    getApiErrorData(responseData, 'duplicateKey')?.fields.forEach((field) => {
+        setFieldError(field, use$t('errors.apiResponse.code.duplicateKey'));
     });
 }
 

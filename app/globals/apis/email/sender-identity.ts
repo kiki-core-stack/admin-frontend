@@ -1,6 +1,9 @@
 import type { EmailSenderIdentityData } from '@kcs-project/pack/types/data/email';
 
-export class EmailSenderIdentityApi extends BaseCrudApi<EmailSenderIdentityData> {
+export class EmailSenderIdentityApi extends BaseCrudApi<
+    EmailSenderIdentityData,
+    TablePageFormData<EmailSenderIdentityData>
+> {
     constructor() {
         super('/api/admin/email/sender-identity');
     }

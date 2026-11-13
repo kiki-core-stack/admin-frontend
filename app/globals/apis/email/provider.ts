@@ -8,7 +8,7 @@ export class EmailProviderApi extends BaseCrudApi<EmailProviderData, EmailProvid
         super('/api/admin/email/provider');
     }
 
-    override processCreateOrUpdateData(data: EmailProviderFormData) {
+    protected override readonly serializeInput = (data: EmailProviderFormData) => {
         data = cloneDeep(data);
         switch (data.code) {
             case EmailProviderCode.Smtp:
@@ -27,5 +27,5 @@ export class EmailProviderApi extends BaseCrudApi<EmailProviderData, EmailProvid
             ...data,
             apiProxyUrl: data.apiProxyUrl?.trim() || undefined,
         };
-    }
+    };
 }

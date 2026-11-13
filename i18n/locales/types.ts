@@ -17,7 +17,19 @@ export interface AppLocaleMessages {
         search: string;
     };
 
-    errors: { apiResponse: { code: Record<Exclude<ApiResponseErrorCode, 'aborted'>, string> } };
+    errors: {
+        apiResponse: { code: Record<Exclude<ApiResponseErrorCode, 'aborted'>, string> };
+
+        /**
+         * Overrides of the Zod locale messages for common validation issues (see `translateApiValidationIssue`).
+         */
+        validation: {
+            invalidFormat: string;
+            invalidValue: string;
+            required: string;
+        };
+    };
+
     pages: {
         auth: {
             login: {

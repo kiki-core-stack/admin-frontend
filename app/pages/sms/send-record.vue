@@ -8,7 +8,6 @@
         :filter="filter"
         :permissions="{ base: 'sms.sendRecord' }"
         hide-actions-column
-        hide-add-data-btn
         show-time-range-quick-selector
     >
         <template #toolbar-prepend>

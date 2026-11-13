@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@element-plus/nuxt": "^1.1.5",
-    "@kcs-project/pack": "github:kiki-core-stack/pack#4303139849c53da8164a20714c228b669d234672",
+    "@kcs-project/pack": "github:kiki-core-stack/pack#13a51b25a3d3b36b1255da4b8697eba7b33f923d",
     "@kikiutils/micromatch": "^4.0.9",
     "@kikiutils/nuxt": "^14.0.1",
     "@kikiutils/shared": "^20.1.2",
@@ -39,7 +39,8 @@
     "sweetalert2": "^11.26.25",
     "ts-extras": "^2.0.0",
     "vue": "^3.5.45",
-    "vue-i18n": "^11.4.18"
+    "vue-i18n": "^11.4.18",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^10.0.0",

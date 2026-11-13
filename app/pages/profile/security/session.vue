@@ -6,8 +6,6 @@
         :confirm-delete-message="(row) => `確定要刪除 ${parseDataToDeviceColumnText(row)} (${row.lastActiveIp}) 嗎？`"
         :crud-api="ProfileSecuritySessionApi.use()"
         :disable-row-delete-btn-rule="(row) => row.isCurrent"
-        hide-add-data-btn
-        hide-edit-btn
         hide-footer
         hide-timestamp-columns
     >

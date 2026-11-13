@@ -30,6 +30,11 @@ export default {
                 validationFailed: '資料格式錯誤',
             },
         },
+        validation: {
+            invalidFormat: '格式錯誤',
+            invalidValue: '請輸入有效的值',
+            required: '此欄位為必填',
+        },
     },
     pages: {
         auth: {

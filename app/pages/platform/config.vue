@@ -6,8 +6,6 @@
         :before-dialog-open="(row) => void (formData.config = cloneDeep(row?.config || {}))"
         :crud-api="PlatformConfigApi.use()"
         :permissions="{ base: 'platform.config' }"
-        hide-add-data-btn
-        hide-delete-btn
     >
         <template #table>
             <el-table-column

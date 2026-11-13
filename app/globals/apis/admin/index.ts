@@ -7,12 +7,10 @@ export class AdminApi extends BaseCrudApi<AdminData, AdminFormData> {
         super('/api/admin/admin');
     }
 
-    override processCreateOrUpdateData(data: AdminFormData) {
-        return {
-            ...data,
-            email: data.email?.trim() || undefined,
-            password: data.password?.trim() || undefined,
-            roles: data.roles.map((role) => role.id),
-        };
-    }
+    protected override readonly serializeInput = (data: AdminFormData) => ({
+        ...data,
+        email: data.email?.trim() || undefined,
+        password: data.password?.trim() || undefined,
+        roles: data.roles.map((role) => role.id),
+    });
 }

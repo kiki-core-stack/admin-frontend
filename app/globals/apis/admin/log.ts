@@ -2,7 +2,7 @@ import type { AdminLogData } from '@kcs-project/pack/types/data/admin';
 
 import type { GetAdminLogListFilter } from '@/types/admin';
 
-export class AdminLogApi extends BaseCrudApi<AdminLogData> {
+export class AdminLogApi extends BaseCrudApi<AdminLogData, never> {
     constructor() {
         super('/api/admin/admin/log');
     }

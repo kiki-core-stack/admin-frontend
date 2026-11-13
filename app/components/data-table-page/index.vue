@@ -14,7 +14,7 @@
                     <div class="gap-btns flex flex-wrap">
                         <slot name="toolbar-actions-prepend" />
                         <el-button
-                            v-if="capabilities.create && !hideAddDataBtn"
+                            v-if="actionVisibility.create"
                             @click="openDialog()"
                         >
                             {{ addDataBtnText }}
@@ -40,6 +40,7 @@
                     ref="elTableRef"
                     table-layout="auto"
                     :data="tableData"
+                    :empty-text="hasLoadDataFailed ? '載入失敗，請重新整理' : undefined"
                     :row-key="rowKey"
                     border
                     flexible
@@ -79,14 +80,14 @@
                                     name="action-btns-prepend"
                                 />
                                 <el-action-btn
-                                    v-if="capabilities.update && !hideEditBtn && !hideRowEditBtnRule?.(scope.row)"
+                                    v-if="actionVisibility.edit && !hideRowEditBtnRule?.(scope.row)"
                                     :disabled="disableRowEditBtnRule?.(scope.row)"
                                     @click="openDialog({ mode: 'edit', row: scope.row })"
                                 >
                                     編輯
                                 </el-action-btn>
                                 <el-action-btn
-                                    v-if="capabilities.delete && !hideDeleteBtn && !hideRowDeleteBtnRule?.(scope.row)"
+                                    v-if="actionVisibility.delete && !hideRowDeleteBtnRule?.(scope.row)"
                                     type="danger"
                                     :disabled="disableRowDeleteBtnRule?.(scope.row)"
                                     @click="confirmDelete(scope.row)"
@@ -125,10 +126,12 @@
                 </div>
                 <!-- @vue-generic {TR, FD} -->
                 <data-table-page-form-dialog
+                    v-if="formData"
                     ref="dataTablePageFormDialogRef"
                     v-model:form-data="formData"
                     :before-open="beforeDialogOpen"
-                    :can-save="capabilities.create || capabilities.update"
+                    :can-create="capabilities.create"
+                    :can-update="capabilities.update"
                     :crud-api="crudApi"
                     :rules="formRules"
                     :title-suffix="dialogTitleSuffix"
@@ -146,7 +149,7 @@
     lang="ts"
     generic="
         TR extends TableRowData,
-        FD extends TableRowData = TableRowData
+        FD extends TableRowData = never
     "
     setup
 >
@@ -157,8 +160,10 @@ import type {
     Promisable,
 } from 'type-fest';
 
-import type { PermissionPattern } from '@/types/permission';
+import type { AdminPermissionGroup } from '@/generated/static/types/admin/permission';
+import type { AdminPermissionRequirement } from '@/types/permission';
 
+type CapabilityAction = 'create' | 'delete' | 'list' | 'read' | 'toggle' | 'update';
 type ControlActionBtnFunction = (row: TR) => boolean | undefined;
 
 interface OnSortChangeData {
@@ -192,15 +197,20 @@ interface Props {
     hideRowEditBtnRule?: ControlActionBtnFunction;
     hideTimestampColumns?: boolean;
     hideUpdatedAtColumn?: boolean;
+
+    /**
+     * `ignore` allows every action. Otherwise each action requires `<base>.<action>` (an action whose key is not in
+     * the catalog is denied), unless overridden; `toggle` follows the `update` override.
+     */
     permissions:
       | 'ignore'
       | {
-          base: PermissionPattern;
-          create?: PermissionPattern;
-          delete?: PermissionPattern;
-          list?: PermissionPattern;
-          read?: PermissionPattern;
-          update?: PermissionPattern;
+          base: AdminPermissionGroup;
+          create?: AdminPermissionRequirement;
+          delete?: AdminPermissionRequirement;
+          list?: AdminPermissionRequirement;
+          read?: AdminPermissionRequirement;
+          update?: AdminPermissionRequirement;
       };
 
     rowKey?: string;
@@ -222,6 +232,7 @@ const props = withDefaults(
     },
 );
 
+// Pages with a form pass their full form data at setup; pages without one (list/delete only) omit it.
 const formData = defineModel<FD>('formData');
 const timeRangeEndAt = defineModel<Date>('timeRangeEnd', { default: () => new EnhancedDate() });
 const timeRangeStartAt = defineModel<Date>('timeRangeStart', { default: () => new EnhancedDate() });
@@ -230,6 +241,8 @@ const timeRangeStartAt = defineModel<Date>('timeRangeStart', { default: () => ne
 const autoReloadDataCountdownDropdownBtnRef = useTemplateRef('autoReloadDataCountdownDropdownBtnRef');
 const dataTablePageFormDialogRef = useTemplateRef('dataTablePageFormDialogRef');
 const elTableRef = useTemplateRef('elTableRef');
+const hasForm = formData.value !== undefined;
+const hasLoadDataFailed = ref(false);
 const isLoadingData = ref(false);
 const mainContainerRef = useTemplateRef('mainContainerRef');
 const paginationParams = ref({
@@ -239,37 +252,54 @@ const paginationParams = ref({
 
 const pageTitle = pageHeadTabsController.registerCurrentPageHeadTab(props.title);
 const selectedRows = ref<TR[]>([]);
-const sortQueryParam = ref<string | undefined>(undefined);
+const sortQueryParam = ref(toSortQueryParam(props.defaultSort));
 const tableData = ref<TR[]>([]);
 const totalTableDataCount = ref(0);
+let loadDataAbortController: AbortController | undefined;
 
 // Computed properties
 const capabilities = computed(() => {
-    const obj = {
-        create: true,
-        delete: true,
-        list: true,
-        read: true,
-        toggle: true,
-        update: true,
+    const { permissions } = props;
+    if (permissions === 'ignore') {
+        return {
+            create: true,
+            delete: true,
+            list: true,
+            read: true,
+            toggle: true,
+            update: true,
+        };
+    }
+
+    const can = (action: CapabilityAction, override?: AdminPermissionRequirement) => {
+        if (override) return hasPermission(override);
+        const key = `${permissions.base}.${action}`;
+        return isAdminPermissionKey(key) && hasPermission(key);
     };
 
-    if (props.permissions === 'ignore') return obj;
-    obj.create = hasPermission(props.permissions.create || `${props.permissions.base}.create`);
-    obj.delete = hasPermission(props.permissions.delete || `${props.permissions.base}.delete`);
-    obj.list = hasPermission(props.permissions.list || `${props.permissions.base}.list`);
-    obj.read = hasPermission(props.permissions.list || `${props.permissions.base}.read`);
-    obj.toggle = hasPermission(props.permissions.update || `${props.permissions.base}.toggle`);
-    obj.update = hasPermission(props.permissions.update || `${props.permissions.base}.update`);
-    return obj;
+    return {
+        create: can('create', permissions.create),
+        delete: can('delete', permissions.delete),
+        list: can('list', permissions.list),
+        read: can('read', permissions.read),
+        toggle: can('toggle', permissions.update),
+        update: can('update', permissions.update),
+    };
 });
+
+// Built-in buttons; kept apart from `capabilities`, which only reflects permissions.
+const actionVisibility = computed(() => ({
+    create: hasForm && capabilities.value.create && !props.hideAddDataBtn,
+    delete: capabilities.value.delete && !props.hideDeleteBtn,
+    edit: hasForm && capabilities.value.update && !props.hideEditBtn,
+}));
 
 // Functions
 const clearSelection = () => elTableRef.value?.clearSelection();
 const confirmDelete = createElMessageBoxConfirmHandler<TR>(
-    props.confirmDeleteMessage || ((data) => `確定要刪除 ${(data as any).name} 嗎？`),
+    props.confirmDeleteMessage || defaultConfirmDeleteMessage,
     '刪除中...',
-    async (data) => !!(await props.crudApi.delete(data.id))?.data?.success,
+    async (row) => (await props.crudApi.delete(row.id)).data.success,
     async () => {
         ElNotification.success('刪除成功');
         await loadData();
@@ -283,30 +313,42 @@ function closeDialog() {
     dataTablePageFormDialogRef.value?.close();
 }
 
+function defaultConfirmDeleteMessage(row: TR) {
+    return 'name' in row && typeof row.name === 'string' ? `確定要刪除 ${row.name} 嗎？` : '確定要刪除此資料嗎？';
+}
+
+/**
+ * Loads the current page; a newer call cancels the pending one, so the latest filter/sort/page always wins.
+ */
 async function loadData() {
-    if (isLoadingData.value || !capabilities.value.list) return;
+    if (!capabilities.value.list) return;
+    loadDataAbortController?.abort();
+    const abortController = loadDataAbortController = new AbortController();
     isLoadingData.value = true;
     autoReloadDataCountdownDropdownBtnRef.value?.stop();
-    const response = await props.crudApi.getList({
-        ...props.disablePagination || props.hideFooter ? {} : paginationParams.value,
-        filter: props.filter,
-        sort: sortQueryParam.value,
-    });
+    const response = await props.crudApi.getList(
+        {
+            ...props.disablePagination || props.hideFooter ? {} : paginationParams.value,
+            filter: props.filter,
+            sort: sortQueryParam.value,
+        },
+        { signal: abortController.signal },
+    );
 
-    if (response?.data?.data) {
+    if (abortController !== loadDataAbortController) return;
+    loadDataAbortController = undefined;
+    isLoadingData.value = false;
+    hasLoadDataFailed.value = !response.data.success;
+    if (response.data.data) {
         tableData.value = response.data.data.list;
         totalTableDataCount.value = response.data.data.count || 0;
     }
 
-    isLoadingData.value = false;
     autoReloadDataCountdownDropdownBtnRef.value?.start();
 }
 
 async function onSortChange(data: OnSortChangeData) {
-    if (data.order === 'ascending') sortQueryParam.value = data.prop ?? undefined;
-    else if (data.order === 'descending') sortQueryParam.value = `-${data.prop}`;
-    else sortQueryParam.value = undefined;
-
+    sortQueryParam.value = toSortQueryParam(data);
     await loadData();
 }
 
@@ -314,7 +356,14 @@ async function openDialog(payload?: Parameters<NonNullable<typeof dataTablePageF
     await dataTablePageFormDialogRef.value?.open(payload);
 }
 
+function toSortQueryParam(sort?: Except<OnSortChangeData, 'column'>) {
+    if (!sort?.prop) return;
+    if (sort.order === 'ascending') return sort.prop;
+    if (sort.order === 'descending') return `-${sort.prop}`;
+}
+
 // Hooks
+onBeforeUnmount(() => loadDataAbortController?.abort());
 onMounted(loadData);
 usePreserveScroll(mainContainerRef);
 
@@ -330,10 +379,6 @@ defineExpose({
     openDialog,
     selectedRows: readonly(selectedRows),
 });
-
-// Init
-if (props.defaultSort?.order === 'ascending') sortQueryParam.value = props.defaultSort.prop ?? undefined;
-else if (props.defaultSort?.order === 'descending') sortQueryParam.value = `-${props.defaultSort.prop}`;
 </script>
 
 <style lang="scss" scoped>

@@ -52,7 +52,16 @@ const emit = defineEmits<{ (e: 'trigger'): void }>();
 // Constants/Refs/Variables
 const currentInterval = ref<null | number>(props.defaultSeconds);
 const countdown = ref<null | number>(currentInterval.value);
-let countdownInterval: NodeJS.Timeout | null = null;
+const countdownTicker = useIntervalFn(
+    () => {
+        if (countdown.value !== null && --countdown.value > 0) return;
+        const isCompleted = countdown.value !== null;
+        stop();
+        if (isCompleted) emit('trigger');
+    },
+    1000,
+    { immediate: false },
+);
 
 // Computed properties
 const buttonText = computed(() => {
@@ -68,25 +77,13 @@ function setIntervalSeconds(seconds: null | number) {
 }
 
 function start() {
-    if (currentInterval.value === null || countdownInterval) return;
+    if (currentInterval.value === null || countdownTicker.isActive.value) return;
     countdown.value = currentInterval.value;
-    countdownInterval = setInterval(
-        () => {
-            if (countdown.value !== null) {
-                countdown.value--;
-                if (countdown.value > 0) return;
-                emit('trigger');
-            }
-
-            stop();
-        },
-        1000,
-    );
+    countdownTicker.resume();
 }
 
 function stop() {
-    if (countdownInterval) clearInterval(countdownInterval);
-    countdownInterval = null;
+    countdownTicker.pause();
     countdown.value = currentInterval.value;
 }
 
@@ -94,8 +91,6 @@ function stop() {
 onMounted(() => {
     if (props.autostart) start();
 });
-
-onScopeDispose(stop);
 
 // Exposes
 defineExpose({
