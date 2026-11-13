@@ -17,7 +17,7 @@
             <el-table-column
                 align="center"
                 label="服務商"
-                :formatter="(row: SmsProviderData) => smsProviderCodeToTextMap[row.code]"
+                :formatter="(row: SmsProviderData) => localize(smsProviderCodeToLabelMap[row.code])"
             />
             <el-table-confirmable-status-switch-column
                 field="enabled"
@@ -42,7 +42,7 @@
                 prop="editedByAdmin.account"
             />
         </template>
-        <template #form>
+        <template #form="{ editingRow }">
             <el-form-input
                 v-model="formData.name"
                 label="名稱"
@@ -75,13 +75,13 @@
             >
                 <el-select
                     v-model="formData.code"
-                    :disabled="!!formData.id"
+                    :disabled="!!editingRow"
                     :teleported="false"
                 >
                     <el-option
                         v-for="provider in getEnumNumberValues(SmsProviderCode)"
                         :key="provider"
-                        :label="smsProviderCodeToTextMap[provider]"
+                        :label="localize(smsProviderCodeToLabelMap[provider])"
                         :value="provider"
                     />
                 </el-select>
@@ -101,7 +101,7 @@
 <script lang="ts" setup>
 import {
     SmsProviderCode,
-    smsProviderCodeToTextMap,
+    smsProviderCodeToLabelMap,
 } from '@kcs-project/pack/constants/sms';
 import type { SmsProviderData } from '@kcs-project/pack/types/data/sms';
 
@@ -114,21 +114,11 @@ const formData = ref<SmsProviderFormData>({
     code: undefined,
     config: {},
     enabled: false,
-    id: '',
     name: '',
     priority: 0,
 });
 
 const formRules: ElFormRules<SmsProviderFormData> = {
-    apiProxyUrl: [
-        createElFormItemRuleWithDefaults(
-            '請輸入正確的網址',
-            {
-                required: false,
-                type: 'url',
-            },
-        ),
-    ],
     code: [
         createElFormItemRuleWithDefaults(
             '請選擇服務商',
@@ -138,26 +128,6 @@ const formRules: ElFormRules<SmsProviderFormData> = {
             },
         ),
     ],
-    name: [
-        createElFormItemRuleWithDefaults('請輸入名稱'),
-        {
-            max: 64,
-            message: '名稱最多 64 個字元',
-            trigger: [
-                'blur',
-                'change',
-            ],
-        },
-    ],
-    priority: [
-        createElFormItemRuleWithDefaults(
-            '請輸入 -2147483648 至 2147483647 之間的整數優先度',
-            {
-                max: 2147483647,
-                min: -2147483648,
-                type: 'integer',
-            },
-        ),
-    ],
+    name: [createElFormItemRuleWithDefaults('請輸入名稱')],
 };
 </script>

@@ -62,7 +62,7 @@
                         <el-option
                             v-for="platformIpAccessPolicyScope in platformIpAccessPolicyScopes"
                             :key="platformIpAccessPolicyScope"
-                            :label="platformIpAccessPolicyScopeToTextMap[platformIpAccessPolicyScope]"
+                            :label="localize(platformIpAccessPolicyScopeToLabelMap[platformIpAccessPolicyScope])"
                             :value="platformIpAccessPolicyScope"
                         />
                     </el-select>
@@ -132,7 +132,7 @@
 <script lang="ts" setup>
 import {
     PlatformIpAccessPolicyScope,
-    platformIpAccessPolicyScopeToTextMap,
+    platformIpAccessPolicyScopeToLabelMap,
 } from '@kcs-project/pack/constants/platform';
 import type { AuthenticationSessionPrincipalType } from '@kcs-project/pack/types/authentication-session';
 import type { ReadonlyRecord } from '@kikiutils/shared/types';

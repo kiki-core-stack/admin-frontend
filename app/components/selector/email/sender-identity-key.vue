@@ -6,7 +6,7 @@
         <el-option
             v-for="item in getEnumNumberValues(EmailSenderIdentityKey)"
             :key="item"
-            :label="emailSenderIdentityKeyToTextMap[item]"
+            :label="localize(emailSenderIdentityKeyToLabelMap[item])"
             :value="item"
         />
     </el-select>
@@ -15,6 +15,6 @@
 <script lang="ts" setup>
 import {
     EmailSenderIdentityKey,
-    emailSenderIdentityKeyToTextMap,
+    emailSenderIdentityKeyToLabelMap,
 } from '@kcs-project/pack/constants/email';
 </script>

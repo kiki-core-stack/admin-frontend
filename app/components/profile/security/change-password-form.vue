@@ -65,10 +65,7 @@ const formRules: ElFormRules<ProfileSecurityChangePasswordFormData> = {
             validator: (_, value) => value === formData.value.newPassword,
         },
     ],
-    newPassword: [
-        createElFormItemRuleWithDefaults('請輸入新密碼'),
-        ...commonElFormItemRules.adminPassword,
-    ],
+    newPassword: [createElFormItemRuleWithDefaults('請輸入新密碼')],
     oldPassword: [createElFormItemRuleWithDefaults('請輸入舊密碼')],
 };
 
@@ -82,8 +79,13 @@ async function changePassword() {
     await formRef.value?.validate(async (valid) => {
         if (!valid) return;
         statusOverlayRef.value!.showLoading('變更中...');
-        const response = await ProfileSecurityApi.use().changePassword(formData.value);
-        if (!response.data.success) return statusOverlayRef.value!.hide();
+        const { confirmPassword: _, ...data } = formData.value;
+        const response = await ProfileSecurityApi.use().changePassword(data);
+        if (!response.data.success) {
+            showElFormApiFieldErrors(formRef.value, response.data);
+            return statusOverlayRef.value!.hide();
+        }
+
         statusOverlayRef.value!.showSuccess('變更成功', false);
         assignUrlWithRedirectParamFromCurrentLocation('/auth/login/', 1000);
     });

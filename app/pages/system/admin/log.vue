@@ -44,7 +44,7 @@
             />
             <el-table-column
                 label="類型"
-                :formatter="(row: AdminLogData) => adminLogTypeToTextMap[row.type]"
+                :formatter="(row: AdminLogData) => localize(adminLogTypeToLabelMap[row.type])"
             />
             <el-table-column
                 label="備註"
@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts" setup>
-import { adminLogTypeToTextMap } from '@kcs-project/pack/constants/admin';
+import { adminLogTypeToLabelMap } from '@kcs-project/pack/constants/admin';
 import type { AdminLogData } from '@kcs-project/pack/types/data/admin';
 
 import type { GetAdminLogListFilter } from '@/types/admin';

@@ -1,6 +1,8 @@
 /* eslint-disable eslint-comments/no-unlimited-disable */
 /* eslint-disable */
 
+import type { LocalizedMessages } from '@kcs-project/pack/types/i18n';
+
 export const adminPermissionGroups = [
   'admin',
   'admin.account',
@@ -60,3 +62,57 @@ export const adminPermissionKeys = [
 
 export type AdminPermissionKey = (typeof adminPermissionKeys)[number];
 export type AdminPermissionGroup = (typeof adminPermissionGroups)[number];
+
+export const adminPermissionLabelMap: Readonly<Record<AdminPermissionGroup | AdminPermissionKey, LocalizedMessages>> = {
+  'admin': {"en":"Admins","zh-TW":"管理員"},
+  'admin.account': {"en":"Admin accounts","zh-TW":"管理員帳號"},
+  'admin.account.create': {"en":"Create admin accounts","zh-TW":"建立管理員帳號"},
+  'admin.account.delete': {"en":"Delete admin accounts","zh-TW":"刪除管理員帳號"},
+  'admin.account.list': {"en":"List admin accounts","zh-TW":"查看管理員帳號列表"},
+  'admin.account.toggle': {"en":"Enable or disable admin accounts","zh-TW":"切換管理員帳號狀態"},
+  'admin.account.update': {"en":"Update admin accounts","zh-TW":"更新管理員帳號"},
+  'admin.log': {"en":"Admin logs","zh-TW":"管理員日誌"},
+  'admin.log.list': {"en":"List admin logs","zh-TW":"查看管理員日誌列表"},
+  'admin.role': {"en":"Admin roles","zh-TW":"管理員身分組"},
+  'admin.role.create': {"en":"Create admin roles","zh-TW":"建立管理員身分組"},
+  'admin.role.delete': {"en":"Delete admin roles","zh-TW":"刪除管理員身分組"},
+  'admin.role.list': {"en":"List admin roles","zh-TW":"查看管理員身分組列表"},
+  'admin.role.update': {"en":"Update admin roles","zh-TW":"更新管理員身分組"},
+  'email': {"en":"Email","zh-TW":"電子郵件"},
+  'email.provider': {"en":"Email providers","zh-TW":"電子郵件服務商"},
+  'email.provider.create': {"en":"Create email providers","zh-TW":"建立電子郵件服務商"},
+  'email.provider.delete': {"en":"Delete email providers","zh-TW":"刪除電子郵件服務商"},
+  'email.provider.list': {"en":"List email providers","zh-TW":"查看電子郵件服務商列表"},
+  'email.provider.toggle': {"en":"Enable or disable email providers","zh-TW":"切換電子郵件服務商狀態"},
+  'email.provider.update': {"en":"Update email providers","zh-TW":"更新電子郵件服務商"},
+  'email.sendRecord': {"en":"Email send records","zh-TW":"電子郵件發送紀錄"},
+  'email.sendRecord.list': {"en":"List email send records","zh-TW":"查看電子郵件發送紀錄列表"},
+  'email.senderIdentity': {"en":"Email sender identities","zh-TW":"電子郵件寄件身分"},
+  'email.senderIdentity.create': {"en":"Create email sender identities","zh-TW":"建立電子郵件寄件身分"},
+  'email.senderIdentity.delete': {"en":"Delete email sender identities","zh-TW":"刪除電子郵件寄件身分"},
+  'email.senderIdentity.list': {"en":"List email sender identities","zh-TW":"查看電子郵件寄件身分列表"},
+  'email.senderIdentity.toggle': {"en":"Enable or disable email sender identities","zh-TW":"切換電子郵件寄件身分狀態"},
+  'email.senderIdentity.update': {"en":"Update email sender identities","zh-TW":"更新電子郵件寄件身分"},
+  'home': {"en":"Home","zh-TW":"首頁"},
+  'home.dashboard': {"en":"Home dashboard","zh-TW":"首頁儀表板"},
+  'home.dashboard.view': {"en":"View home dashboard","zh-TW":"查看首頁儀表板"},
+  'platform': {"en":"Platform","zh-TW":"平台"},
+  'platform.config': {"en":"Platform configs","zh-TW":"平台設定"},
+  'platform.config.list': {"en":"List platform configs","zh-TW":"查看平台設定列表"},
+  'platform.config.update': {"en":"Update platform configs","zh-TW":"更新平台設定"},
+  'platform.ipAccessPolicy': {"en":"IP access policies","zh-TW":"IP 存取規則"},
+  'platform.ipAccessPolicy.create': {"en":"Create IP access policies","zh-TW":"建立IP 存取規則"},
+  'platform.ipAccessPolicy.delete': {"en":"Delete IP access policies","zh-TW":"刪除IP 存取規則"},
+  'platform.ipAccessPolicy.list': {"en":"List IP access policies","zh-TW":"查看IP 存取規則列表"},
+  'platform.ipAccessPolicy.toggle': {"en":"Enable or disable IP access policies","zh-TW":"切換IP 存取規則狀態"},
+  'platform.ipAccessPolicy.update': {"en":"Update IP access policies","zh-TW":"更新IP 存取規則"},
+  'sms': {"en":"SMS","zh-TW":"簡訊"},
+  'sms.provider': {"en":"SMS providers","zh-TW":"簡訊服務商"},
+  'sms.provider.create': {"en":"Create SMS providers","zh-TW":"建立簡訊服務商"},
+  'sms.provider.delete': {"en":"Delete SMS providers","zh-TW":"刪除簡訊服務商"},
+  'sms.provider.list': {"en":"List SMS providers","zh-TW":"查看簡訊服務商列表"},
+  'sms.provider.toggle': {"en":"Enable or disable SMS providers","zh-TW":"切換簡訊服務商狀態"},
+  'sms.provider.update': {"en":"Update SMS providers","zh-TW":"更新簡訊服務商"},
+  'sms.sendRecord': {"en":"SMS send records","zh-TW":"簡訊發送紀錄"},
+  'sms.sendRecord.list': {"en":"List SMS send records","zh-TW":"查看簡訊發送紀錄列表"},
+};

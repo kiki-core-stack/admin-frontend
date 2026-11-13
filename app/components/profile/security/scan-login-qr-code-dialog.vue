@@ -84,21 +84,18 @@ function open() {
 
 const confirmLogin = createElMessageBoxConfirmHandler<
     AuthenticationSessionQrCodeLoginApprovalRequestData & { approvalToken: string }
->(
-    (data) => `確定要允許 ${parseUserAgentToDeviceInfo(data.targetUserAgent)} (${data.targetIp}) 的登入嗎？`,
-    '登入中...',
-    async (data) => {
+>({
+    boxOptions: { type: 'warning' },
+    confirm: async (data) => {
         const response = await AuthApi.use().approveQrCodeLogin(data.approvalToken, { silent: true });
         if (response.data.success) return true;
-        if (response.status === 410) return 'gone';
-        return response.data.message || '系統錯誤';
+        if (response.data.errorCode === 'gone') return 'gone';
+        return response.data.message;
     },
-    () => {
-        ElNotification.success('已允許登入');
-        close();
-        emit('approved');
-    },
-    (_, done, reason) => {
+    loadingText: '登入中...',
+    message: (data) => `確定要允許 ${parseUserAgentToDeviceInfo(data.targetUserAgent)} (${data.targetIp}) 的登入嗎？`,
+    onCancel: resumeScanning,
+    onFailed: (_, done, reason) => {
         if (reason === 'gone') {
             done();
             resumeScanning();
@@ -107,9 +104,12 @@ const confirmLogin = createElMessageBoxConfirmHandler<
 
         if (reason) ElNotification.error(reason);
     },
-    resumeScanning,
-    { type: 'warning' },
-);
+    onSuccess: () => {
+        ElNotification.success('已允許登入');
+        close();
+        emit('approved');
+    },
+});
 
 async function onScanSuccess(decodedText: string) {
     if (scanner?.getState() !== Html5QrcodeScannerState.SCANNING) return;

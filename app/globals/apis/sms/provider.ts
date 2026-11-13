@@ -6,9 +6,4 @@ export class SmsProviderApi extends BaseCrudApi<SmsProviderData, SmsProviderForm
     constructor() {
         super('/api/admin/sms/provider');
     }
-
-    protected override readonly serializeInput = (data: SmsProviderFormData) => ({
-        ...data,
-        apiProxyUrl: data.apiProxyUrl?.trim() || undefined,
-    });
 }

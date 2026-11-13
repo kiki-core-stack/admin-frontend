@@ -5,7 +5,7 @@ declare global {
 
     interface ElTreeNode {
         children?: ElTreeNode[];
-        label: null | string;
+        label: string;
         value: string;
     }
 }

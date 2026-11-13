@@ -1,10 +1,4 @@
-import type {
-    AdminPermissionGroup,
-    AdminPermissionKey,
-} from '@/generated/static/types/admin/permission';
-import type { ApiResponseErrorCode } from '@/types/api';
-
-export type PermissionsLocaleMessages = Record<`permissions.${AdminPermissionGroup | AdminPermissionKey}`, string>;
+import type { ClientApiErrorCode } from '@kcs-project/pack/types/api';
 
 export interface AppLocaleMessages {
     common: {
@@ -17,17 +11,14 @@ export interface AppLocaleMessages {
         search: string;
     };
 
-    errors: {
-        apiResponse: { code: Record<Exclude<ApiResponseErrorCode, 'aborted'>, string> };
-
+    /**
+     * Messages of client-side failures only; API errors carry their own localized message.
+     */
+    errors: Record<ClientApiErrorCode, string> & {
         /**
-         * Overrides of the Zod locale messages for common validation issues (see `translateApiValidationIssue`).
+         * The server answered with something other than an API envelope (e.g. a proxy error page).
          */
-        validation: {
-            invalidFormat: string;
-            invalidValue: string;
-            required: string;
-        };
+        invalidResponse: string;
     };
 
     pages: {
@@ -41,5 +32,5 @@ export interface AppLocaleMessages {
 }
 
 declare module 'vue-i18n' {
-    export interface DefineLocaleMessage extends AppLocaleMessages, PermissionsLocaleMessages {}
+    export interface DefineLocaleMessage extends AppLocaleMessages {}
 }

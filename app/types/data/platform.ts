@@ -4,7 +4,7 @@ import type { AdminData } from '@kcs-project/pack/types/data/admin';
 import type { PlatformIpAccessPolicyData } from '@kcs-project/pack/types/data/platform';
 import type { SetFieldType } from 'type-fest';
 
-export type PlatformIpAccessPolicyFormData = TablePageFormData<PlatformIpAccessPolicyListItemData>;
+export type PlatformIpAccessPolicyFormData = CrudFormData<PlatformIpAccessPolicyListItemData>;
 export type PlatformIpAccessPolicyListItemData = SetFieldType<
     PlatformIpAccessPolicyData,
     'targets',

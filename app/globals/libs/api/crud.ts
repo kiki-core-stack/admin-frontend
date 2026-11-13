@@ -1,12 +1,24 @@
 import type { TableRowData } from '@kcs-project/pack/types/data';
 import type { AxiosRequestConfig } from 'axios';
-import type { Promisable } from 'type-fest';
+import { kebabCase } from 'es-toolkit';
+import type {
+    ConditionalKeys,
+    Promisable,
+} from 'type-fest';
+
+export interface GetListParams {
+    [key: string]: any;
+    fields?: string[];
+    filter?: Record<string, any>;
+    limit?: number;
+    page?: number;
+}
 
 /**
  * CRUD API of a resource.
  *
  * - `TRow`: the list/detail row returned by the backend.
- * - `TInput`: the form data sent on create/update; `never` for resources without a form.
+ * - `TInput`: the form data sent on create/update (usually `CrudFormData<TRow>`); `never` for resources without a form.
  */
 export class BaseCrudApi<TRow extends TableRowData, TInput extends object> extends BaseApi {
     /**
@@ -28,7 +40,7 @@ export class BaseCrudApi<TRow extends TableRowData, TInput extends object> exten
         return await this.getRequest<TRow>(`/${id}`, params);
     }
 
-    async getList(params?: GetListApiParams, config?: AxiosRequestConfig) {
+    async getList(params?: GetListParams, config?: AxiosRequestConfig) {
         return await this.getRequest<{ count: number; list: TRow[]; totals?: Record<string, number | string> }>(
             '/list',
             {
@@ -55,13 +67,10 @@ export class BaseCrudApi<TRow extends TableRowData, TInput extends object> exten
         );
     }
 
-    async updateBooleanField(id: string, field: string, value: boolean) {
-        return await this.patchRequest(
-            `/${id}/boolean-field`,
-            {
-                field,
-                value,
-            },
-        );
+    /**
+     * Sets a boolean field through its own endpoint, `PATCH /<id>/<field in kebab-case>` with `{ <field>: value }`.
+     */
+    async setBooleanField(row: TRow, field: ConditionalKeys<TRow, boolean> & string, value: boolean) {
+        return await this.patchRequest(`/${row.id}/${kebabCase(field)}`, { [field]: value });
     }
 }

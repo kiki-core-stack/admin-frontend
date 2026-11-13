@@ -35,10 +35,7 @@ export default defineNuxtConfig({
         locales: [
             {
                 code: 'zh-TW',
-                files: [
-                    'zh-TW/index.ts',
-                    'zh-TW/permissions.ts',
-                ],
+                files: ['zh-TW/index.ts'],
                 name: '繁體中文',
             },
         ],
@@ -190,7 +187,6 @@ export default defineNuxtConfig({
                 '@kikiutils/shared/url',
                 '@kikiutils/shared/vue',
                 '@kikiutils/shared/web',
-                '@sylke/email-validation',
                 '@vueuse/integrations/useQRCode',
                 'axios',
                 'bowser',

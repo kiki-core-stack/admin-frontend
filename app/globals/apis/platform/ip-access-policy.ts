@@ -13,7 +13,6 @@ export class PlatformIpAccessPolicyApi extends BaseCrudApi<
 
     protected override readonly serializeInput = (data: PlatformIpAccessPolicyFormData) => ({
         ...data,
-        note: data.note.trim() || undefined,
         targets: data.targets.map((target) => ({
             ...target,
             principalIds: target.principalIds?.map((principal) => principal.id) ?? null,

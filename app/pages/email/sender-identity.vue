@@ -4,7 +4,7 @@
         v-model:form-data="formData"
         dialog-title-suffix="電子郵件寄件身份"
         title="電子寄件身份管理"
-        :confirm-delete-message="(row) => `確定要刪除寄件身分為 ${emailSenderIdentityKeyToTextMap[row.key]} 的設定嗎？`"
+        :confirm-delete-message="(row) => `確定要刪除寄件身分為 ${localize(emailSenderIdentityKeyToLabelMap[row.key])} 的設定嗎？`"
         :crud-api="EmailSenderIdentityApi.use()"
         :form-rules="formRules"
         :permissions="{ base: 'email.senderIdentity' }"
@@ -12,7 +12,7 @@
         <template #table>
             <el-table-column
                 label="寄件身分"
-                :formatter="(row: EmailSenderIdentityData) => emailSenderIdentityKeyToTextMap[row.key]"
+                :formatter="(row: EmailSenderIdentityData) => localize(emailSenderIdentityKeyToLabelMap[row.key])"
             />
             <el-table-column
                 label="寄件地址"
@@ -21,7 +21,7 @@
             <el-table-confirmable-status-switch-column
                 field="enabled"
                 label="啟用"
-                :confirm-message="(row) => `是否切換寄件身分為 ${emailSenderIdentityKeyToTextMap[row.key]} 的啟用狀態？`"
+                :confirm-message="(row) => `是否切換寄件身分為 ${localize(emailSenderIdentityKeyToLabelMap[row.key])} 的啟用狀態？`"
                 :crud-api="EmailSenderIdentityApi.use()"
                 :disabled-condition="!dataTablePageRef?.capabilities.toggle"
                 @status-change="dataTablePageRef?.loadData()"
@@ -62,34 +62,17 @@
 <script lang="ts" setup>
 import {
     EmailSenderIdentityKey,
-    emailSenderIdentityKeyToTextMap,
+    emailSenderIdentityKeyToLabelMap,
 } from '@kcs-project/pack/constants/email';
 import type { EmailSenderIdentityData } from '@kcs-project/pack/types/data/email';
-import { isValid } from '@sylke/email-validation';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
-const formData = ref<TablePageFormData<EmailSenderIdentityData>>({
+const formData = ref<CrudFormData<EmailSenderIdentityData>>({
     enabled: false,
     from: '',
-    id: '',
     key: EmailSenderIdentityKey.Admin,
 });
 
-const formRules: TablePageElFormRules<EmailSenderIdentityData> = {
-    from: [
-        createElFormItemRuleWithDefaults('請輸入寄件地址'),
-        {
-            message: '請輸入正確格式的寄件地址',
-            validator: (_, value) => isValid(
-                value,
-                {
-                    allowDisplayText: true,
-                    allowDomainLiteral: false,
-                    minimumSubDomains: 2,
-                },
-            ),
-        },
-    ],
-};
+const formRules: ElFormRules<CrudFormData<EmailSenderIdentityData>> = { from: [createElFormItemRuleWithDefaults('請輸入寄件地址')] };
 </script>

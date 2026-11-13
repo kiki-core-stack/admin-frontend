@@ -3,10 +3,7 @@
         v-model="config.apiUrl"
         label="API網址"
         prop="config.apiUrl"
-        :rules="[
-            createElFormItemRuleWithDefaults('請輸入API網址'),
-            createElFormItemRuleWithDefaults('請輸入正確的網址', { type: 'url' }),
-        ]"
+        :rules="[createElFormItemRuleWithDefaults('請輸入API網址')]"
     />
     <el-form-input
         v-model="config.username"

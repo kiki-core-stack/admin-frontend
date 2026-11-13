@@ -47,47 +47,40 @@
 <script lang="ts" setup>
 import type { AdminRoleData } from '@kcs-project/pack/types/data/admin';
 
+import {
+    adminPermissionGroups,
+    adminPermissionKeys,
+    adminPermissionLabelMap,
+} from '@/generated/static/types/admin/permission';
+
 // Constants/Refs/Variables
-const { locale } = useI18n();
-const formData = ref<TablePageFormData<AdminRoleData>>({
-    id: '',
+const formData = ref<CrudFormData<AdminRoleData>>({
     name: '',
     permissions: [],
 });
 
-const formRules: TablePageElFormRules<AdminRoleData> = {
-    name: [
-        createElFormItemRuleWithDefaults('請輸入名稱'),
-        {
-            max: 64,
-            message: '名稱最多 64 個字元',
-            trigger: [
-                'blur',
-                'change',
-            ],
-        },
-    ],
-};
+const formRules: ElFormRules<CrudFormData<AdminRoleData>> = { name: [createElFormItemRuleWithDefaults('請輸入名稱')] };
 
-const permissionTreeNodes = ref<ElTreeNode[]>([]);
+// Computed properties
+// Groups and keys nest by their dotted paths; labels follow the current locale.
+const permissionTreeNodes = computed(() => {
+    const pathToNodeMap = new Map<string, ElTreeNode>();
+    const rootNodes: ElTreeNode[] = [];
+    for (const path of [
+        ...adminPermissionGroups,
+        ...adminPermissionKeys,
+    ].toSorted()) {
+        const node: ElTreeNode = {
+            label: localize(adminPermissionLabelMap[path]),
+            value: path,
+        };
 
-// Functions
-async function loadPermissionTreeNodes() {
-    const response = await AdminPermissionApi.use().getTreeNodes();
-    permissionTreeNodes.value = response.data.data || [];
-    translatePermissionTreeNodes(permissionTreeNodes.value);
-}
+        pathToNodeMap.set(path, node);
+        const parentNode = pathToNodeMap.get(path.slice(0, path.lastIndexOf('.')));
+        if (parentNode) (parentNode.children ??= []).push(node);
+        else rootNodes.push(node);
+    }
 
-function translatePermissionTreeNodes(nodes: ElTreeNode[]) {
-    nodes.forEach((node) => {
-        if (node.children?.length) translatePermissionTreeNodes(node.children);
-        node.label = $t(`permissions.${node.label}`);
-    });
-}
-
-// Hooks
-onMounted(loadPermissionTreeNodes);
-
-// Watchers
-watch(() => locale.value, loadPermissionTreeNodes);
+    return rootNodes;
+});
 </script>

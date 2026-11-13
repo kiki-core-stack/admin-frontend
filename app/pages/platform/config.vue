@@ -10,7 +10,7 @@
         <template #table>
             <el-table-column
                 label="設定範圍"
-                :formatter="(row: PlatformConfigData) => platformConfigScopeToTextMap[row.scope]"
+                :formatter="(row: PlatformConfigData) => localize(platformConfigScopeToLabelMap[row.scope])"
             />
             <el-table-column
                 label="建立管理員帳號"
@@ -23,7 +23,7 @@
         </template>
         <template #form>
             <el-form-item label="設定範圍">
-                {{ platformConfigScopeToTextMap[formData.scope] }}
+                {{ localize(platformConfigScopeToLabelMap[formData.scope]) }}
             </el-form-item>
             <platform-config-form-system
                 v-if="formData.scope === PlatformConfigScope.System"
@@ -41,14 +41,13 @@
 import {
     defaultPlatformConfigs,
     PlatformConfigScope,
-    platformConfigScopeToTextMap,
+    platformConfigScopeToLabelMap,
 } from '@kcs-project/pack/constants/platform';
 import type { PlatformConfigData } from '@kcs-project/pack/types/data/platform';
 
 // Constants/Refs/Variables
-const formData = ref<TablePageFormData<PlatformConfigData>>({
+const formData = ref<CrudFormData<PlatformConfigData>>({
     config: cloneDeep(defaultPlatformConfigs[PlatformConfigScope.System]),
-    id: '',
     scope: PlatformConfigScope.System,
 });
 </script>

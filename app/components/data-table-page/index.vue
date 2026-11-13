@@ -137,7 +137,12 @@
                     :title-suffix="dialogTitleSuffix"
                     @saved="loadData"
                 >
-                    <slot name="form" />
+                    <template #default="{ editingRow }">
+                        <slot
+                            name="form"
+                            :editing-row="editingRow"
+                        />
+                    </template>
                 </data-table-page-form-dialog>
             </div>
         </div>
@@ -149,7 +154,7 @@
     lang="ts"
     generic="
         TR extends TableRowData,
-        FD extends TableRowData = never
+        FD extends object = never
     "
     setup
 >
@@ -296,18 +301,16 @@ const actionVisibility = computed(() => ({
 
 // Functions
 const clearSelection = () => elTableRef.value?.clearSelection();
-const confirmDelete = createElMessageBoxConfirmHandler<TR>(
-    props.confirmDeleteMessage || defaultConfirmDeleteMessage,
-    '刪除中...',
-    async (row) => (await props.crudApi.delete(row.id)).data.success,
-    async () => {
+const confirmDelete = createElMessageBoxConfirmHandler<TR>({
+    boxOptions: { type: 'warning' },
+    confirm: async (row) => (await props.crudApi.delete(row.id)).data.success,
+    loadingText: '刪除中...',
+    message: props.confirmDeleteMessage || defaultConfirmDeleteMessage,
+    onSuccess: async () => {
         ElNotification.success('刪除成功');
         await loadData();
     },
-    undefined,
-    undefined,
-    { type: 'warning' },
-);
+});
 
 function closeDialog() {
     dataTablePageFormDialogRef.value?.close();

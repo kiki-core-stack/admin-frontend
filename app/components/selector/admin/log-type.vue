@@ -6,7 +6,7 @@
         <el-option
             v-for="item in getEnumNumberValues(AdminLogType)"
             :key="item"
-            :label="adminLogTypeToTextMap[item]"
+            :label="localize(adminLogTypeToLabelMap[item])"
             :value="item"
         />
     </el-select>
@@ -15,6 +15,6 @@
 <script lang="ts" setup>
 import {
     AdminLogType,
-    adminLogTypeToTextMap,
+    adminLogTypeToLabelMap,
 } from '@kcs-project/pack/constants/admin';
 </script>

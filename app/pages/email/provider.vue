@@ -17,7 +17,7 @@
             <el-table-column
                 align="center"
                 label="服務商"
-                :formatter="(row: EmailProviderData) => emailProviderCodeToTextMap[row.code]"
+                :formatter="(row: EmailProviderData) => localize(emailProviderCodeToLabelMap[row.code])"
             />
             <el-table-confirmable-status-switch-column
                 field="enabled"
@@ -42,7 +42,7 @@
                 prop="editedByAdmin.account"
             />
         </template>
-        <template #form>
+        <template #form="{ editingRow }">
             <el-form-input
                 v-model="formData.name"
                 label="名稱"
@@ -75,13 +75,13 @@
             >
                 <el-select
                     v-model="formData.code"
-                    :disabled="!!formData.id"
+                    :disabled="!!editingRow"
                     :teleported="false"
                 >
                     <el-option
                         v-for="provider in getEnumNumberValues(EmailProviderCode)"
                         :key="provider"
-                        :label="emailProviderCodeToTextMap[provider]"
+                        :label="localize(emailProviderCodeToLabelMap[provider])"
                         :value="provider"
                     />
                 </el-select>
@@ -97,7 +97,7 @@
 <script lang="ts" setup>
 import {
     EmailProviderCode,
-    emailProviderCodeToTextMap,
+    emailProviderCodeToLabelMap,
 } from '@kcs-project/pack/constants/email';
 import type { EmailProviderData } from '@kcs-project/pack/types/data/email';
 
@@ -110,21 +110,11 @@ const formData = ref<EmailProviderFormData>({
     code: undefined,
     config: {},
     enabled: false,
-    id: '',
     name: '',
     priority: 0,
 });
 
 const formRules: ElFormRules<EmailProviderFormData> = {
-    apiProxyUrl: [
-        createElFormItemRuleWithDefaults(
-            '請輸入正確的網址',
-            {
-                required: false,
-                type: 'url',
-            },
-        ),
-    ],
     code: [
         createElFormItemRuleWithDefaults(
             '請選擇服務商',
@@ -134,26 +124,6 @@ const formRules: ElFormRules<EmailProviderFormData> = {
             },
         ),
     ],
-    name: [
-        createElFormItemRuleWithDefaults('請輸入名稱'),
-        {
-            max: 64,
-            message: '名稱最多 64 個字元',
-            trigger: [
-                'blur',
-                'change',
-            ],
-        },
-    ],
-    priority: [
-        createElFormItemRuleWithDefaults(
-            '請輸入 -2147483648 至 2147483647 之間的整數優先度',
-            {
-                max: 2147483647,
-                min: -2147483648,
-                type: 'integer',
-            },
-        ),
-    ],
+    name: [createElFormItemRuleWithDefaults('請輸入名稱')],
 };
 </script>

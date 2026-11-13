@@ -112,8 +112,9 @@ async function login() {
         if (!valid) return;
         statusOverlayRef.value!.showLoading('登入中...');
         const response = await AuthApi.use().login(formData.value);
-        if (response.status === 404) accountInputRef.value?.focus();
-        else if (response.data.success) return await handleLoginSuccess();
+        if (response.data.success) return await handleLoginSuccess();
+        if (response.data.errorCode === 'invalidCredentials') accountInputRef.value?.focus();
+        else showElFormApiFieldErrors(formRef.value, response.data);
 
         statusOverlayRef.value!.hide();
     });
@@ -134,7 +135,7 @@ async function pollQrCodeLoginCompletion() {
 
     if (completionToken !== qrCodeLoginCompletionToken) return;
     if (response.data.data?.state === 'completed') return await handleLoginSuccess();
-    if (response.status === 410) {
+    if (!response.data.success && response.data.errorCode === 'gone') {
         ElNotification.error('QR Code已過期，已自動刷新');
         qrCodeLoginApprovalToken.value = '';
         qrCodeLoginCompletionToken = undefined;

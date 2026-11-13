@@ -5,7 +5,7 @@ import type {
 } from 'type-fest';
 
 export type EmailProviderFormData = SetOptional<
-    TablePageFormData<
+    CrudFormData<
         SetFieldType<EmailProviderData, 'config', Record<string, any>>,
         'cacheKey'
     >,

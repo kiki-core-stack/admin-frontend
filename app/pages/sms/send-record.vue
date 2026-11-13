@@ -35,7 +35,7 @@
             <el-table-column
                 align="center"
                 label="狀態"
-                :formatter="(row: SmsSendRecordData) => commonStatusToTextMap[row.status]"
+                :formatter="(row: SmsSendRecordData) => localize(commonStatusToLabelMap[row.status])"
             />
             <el-table-column
                 label="錯誤原因"

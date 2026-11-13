@@ -16,15 +16,13 @@
   },
   "dependencies": {
     "@element-plus/nuxt": "^1.1.5",
-    "@kcs-project/pack": "github:kiki-core-stack/pack#13a51b25a3d3b36b1255da4b8697eba7b33f923d",
-    "@kikiutils/micromatch": "^4.0.9",
+    "@kcs-project/pack": "github:kiki-core-stack/pack#a9aaef6f72f44f092e3b5bca6369804e5c9891ff",
     "@kikiutils/nuxt": "^14.0.1",
     "@kikiutils/shared": "^20.1.2",
     "@nuxt/icon": "2.6.2",
     "@nuxtjs/color-mode": "^4.1.0",
     "@nuxtjs/i18n": "^10.6.0",
     "@nuxtjs/robots": "^7.0.2",
-    "@sylke/email-validation": "^1.0.0",
     "@vueuse/integrations": "^15.0.0",
     "axios": "^1.21.1",
     "bowser": "^2.15.0",
@@ -39,7 +37,7 @@
     "sweetalert2": "^11.26.25",
     "ts-extras": "^2.0.0",
     "vue": "^3.5.45",
-    "vue-i18n": "^11.4.18",
+    "vue-i18n": "^11.4.19",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -49,7 +47,6 @@
     "@kikiutils/eslint-config": "^11.0.1",
     "@kikiutils/mongoose": "^9.0.3",
     "@kikiutils/stylelint-config": "^0.6.1",
-    "@types/micromatch": "^4.0.10",
     "@types/qrcode": "^1.5.6",
     "@unocss/nuxt": "^66.12.0",
     "dotenv-cli": "^11.1.0",

@@ -1,7 +1,7 @@
 import type {
     ApiErrorResponseData,
     ClientApiErrorCode,
-} from '@kcs-project/pack/types/data';
+} from '@kcs-project/pack/types/api';
 import axios, { AxiosError } from 'axios';
 import type {
     AxiosResponse,
@@ -21,15 +21,25 @@ const loginRequiredErrorCodes = new Set<ApiResponseErrorCode>([
 // Functions
 export function createApiAxiosInstance(config?: CreateAxiosDefaults) {
     const instance = axios.create(config);
+    // Backend messages (errors, validation issues) follow the app's locale.
+    instance.interceptors.request.use((requestConfig) => {
+        requestConfig.headers.set('Accept-Language', useNuxtApp().$i18n.locale.value);
+        return requestConfig;
+    });
+
     instance.interceptors.response.use(
         (response) => response,
         (error) => {
             if (!(error instanceof AxiosError)) throw error;
             const response = toFailureResponse(error);
-            const { errorCode, requestId } = response.data;
+            const {
+                errorCode,
+                message,
+                requestId,
+            } = response.data;
+
             if (loginRequiredErrorCodes.has(errorCode)) assignUrlWithRedirectParamFromCurrentLocation('/auth/login/');
             else if (errorCode !== 'aborted' && !error.config?.silent) {
-                const message = use$t(`errors.apiResponse.code.${errorCode}`);
                 ElNotification.error(requestId ? `${message} (${requestId})` : message);
             }
 
@@ -50,29 +60,35 @@ function isApiErrorEnvelope(data: unknown): data is ApiErrorEnvelope {
 /**
  * Always resolves to a response whose `data` is the API error envelope: HTTP errors keep their response (with a
  * fallback envelope when the body is not one, e.g. a proxy error page), and failures without a response are
- * synthesized with status 0.
+ * synthesized with status 0. Synthesized envelopes carry the app's own messages.
  */
 function toFailureResponse(error: AxiosError): AxiosResponse<ApiErrorEnvelope> {
-    const response: AxiosResponse<ApiErrorEnvelope> = error.response
-        ? {
+    let response: AxiosResponse<ApiErrorEnvelope>;
+    if (error.response) {
+        response = {
             ...error.response,
             data: isApiErrorEnvelope(error.response.data)
                 ? error.response.data
                 : {
                     errorCode: 'internalServerError',
+                    message: use$t('errors.invalidResponse'),
                     success: false,
                 },
-        }
-        : {
+        };
+    } else {
+        const errorCode: ClientApiErrorCode = axios.isCancel(error) ? 'aborted' : 'networkError';
+        response = {
             config: error.config!,
             data: {
-                errorCode: (axios.isCancel(error) ? 'aborted' : 'networkError') satisfies ClientApiErrorCode,
+                errorCode,
+                message: use$t(`errors.${errorCode}`),
                 success: false,
             },
             headers: {},
             status: 0,
             statusText: '',
         };
+    }
 
     response.error = error;
     return response;

@@ -9,6 +9,7 @@ export const apiErrorCodes = [
   'gatewayTimeout',
   'gone',
   'internalServerError',
+  'invalidCredentials',
   'notFound',
   'payloadTooLarge',
   'serviceUnavailable',

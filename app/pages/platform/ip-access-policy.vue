@@ -16,7 +16,7 @@
             <el-table-column
                 align="center"
                 label="模式"
-                :formatter="(row: PlatformIpAccessPolicyListItemData) => platformIpAccessPolicyModeToTextMap[row.mode]"
+                :formatter="(row: PlatformIpAccessPolicyListItemData) => formatMode(row)"
             />
             <el-table-column
                 label="適用目標"
@@ -66,7 +66,7 @@
                     <el-option
                         v-for="mode in getEnumNumberValues(PlatformIpAccessPolicyMode)"
                         :key="mode"
-                        :label="platformIpAccessPolicyModeToTextMap[mode]"
+                        :label="localize(platformIpAccessPolicyModeToLabelMap[mode])"
                         :value="mode"
                     />
                 </el-select>
@@ -96,10 +96,9 @@
 <script lang="ts" setup>
 import {
     PlatformIpAccessPolicyMode,
-    platformIpAccessPolicyModeToTextMap,
-    platformIpAccessPolicyScopeToTextMap,
+    platformIpAccessPolicyModeToLabelMap,
+    platformIpAccessPolicyScopeToLabelMap,
 } from '@kcs-project/pack/constants/platform';
-import { ipAddressOrCidrSchema } from '@kcs-project/pack/schemas/ip';
 
 import { authenticationSessionPrincipalTypeToTextMap } from '@/constants/authentication-session';
 import type {
@@ -111,7 +110,6 @@ import type {
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const formData = ref<PlatformIpAccessPolicyFormData>({
     enabled: false,
-    id: '',
     ipEntries: [],
     mode: PlatformIpAccessPolicyMode.Blacklist,
     name: '',
@@ -134,37 +132,21 @@ const formRules: ElFormRules<PlatformIpAccessPolicyFormData> = {
                 type: 'array',
             },
         ),
-        {
-            trigger: [
-                'blur',
-                'change',
-            ],
-            validator(_rule, value: string[], callback) {
-                const invalidEntry = value.find((entry) => !ipAddressOrCidrSchema.safeParse(entry).success);
-                callback(invalidEntry !== undefined ? new Error(`IP或CIDR格式錯誤：${invalidEntry}`) : undefined);
-            },
-        },
     ],
-    name: [
-        createElFormItemRuleWithDefaults('請輸入名稱'),
-        {
-            max: 64,
-            message: '名稱最多 64 個字元',
-            trigger: [
-                'blur',
-                'change',
-            ],
-        },
-    ],
+    name: [createElFormItemRuleWithDefaults('請輸入名稱')],
 };
 
 // Functions
+function formatMode(row: PlatformIpAccessPolicyListItemData) {
+    return localize(platformIpAccessPolicyModeToLabelMap[row.mode]);
+}
+
 function formatTargets(row: PlatformIpAccessPolicyListItemData) {
     return row
         .targets
         .map((target) => {
             if (target.scope === null) return '全域 API';
-            const scope = platformIpAccessPolicyScopeToTextMap[target.scope];
+            const scope = localize(platformIpAccessPolicyScopeToLabelMap[target.scope]);
             if (target.principalType === null) return `${scope}／全部`;
             const items = target.principalIds === null ? '全部' : `${target.principalIds.length} 個指定項目`;
             return `${scope}／${authenticationSessionPrincipalTypeToTextMap[target.principalType]}／${items}`;

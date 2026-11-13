@@ -5,7 +5,7 @@ import type {
 } from 'type-fest';
 
 export type SmsProviderFormData = SetOptional<
-    TablePageFormData<
+    CrudFormData<
         SetFieldType<SmsProviderData, 'config', Record<string, any>>,
         'cacheKey'
     >,
