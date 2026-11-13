@@ -4,10 +4,4 @@ export class AdminRoleApi extends BaseCrudApi<AdminRoleData, CrudFormData<AdminR
     constructor() {
         super('/api/admin/admin/role');
     }
-
-    // The tree also reports checked group nodes; roles store permission keys only.
-    protected override readonly serializeInput = (data: CrudFormData<AdminRoleData>) => ({
-        ...data,
-        permissions: data.permissions.filter(isAdminPermissionKey),
-    });
 }
