@@ -16,8 +16,8 @@ importers:
         specifier: ^1.1.5
         version: 1.1.5(@element-plus/icons-vue@2.3.2(vue@3.5.45(typescript@6.0.3)))(@nuxt/schema@4.6.4)(confbox@0.2.4)(dotenv@17.4.2)(element-plus@2.14.8(vue@3.5.45(typescript@6.0.3)))(esbuild@0.28.2)(giget@3.3.1)(jiti@2.7.0)(mlly@1.8.2)(oxc-parser@0.141.0)(rolldown@1.2.19)(rollup@4.68.2)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.108.2)(sass@1.108.2)(terser@5.51.2)(yaml@2.9.1))(webpack@5.112.2(cssnano@9.9.0(postcss@8.5.32))(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.32))
       '@kcs-project/pack':
-        specifier: github:kiki-core-stack/pack#e6109f2cb8a2a9d088042f0491e62b8019e64adc
-        version: '@kiki-core-stack/pack@https://codeload.github.com/kiki-core-stack/pack/tar.gz/e6109f2cb8a2a9d088042f0491e62b8019e64adc(@kikiutils/mongoose@9.0.3)(async-validator@4.2.5)(axios@1.21.1(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2))(bson@7.3.4)(decimal.js@10.6.0)(element-plus@2.14.8(vue@3.5.45(typescript@6.0.3)))(mongoose@9.12.1)(on-change@6.0.2)(supports-color@10.2.2)(vue-router@5.5.0(@vue/compiler-sfc@3.5.45)(esbuild@0.28.2)(rolldown@1.2.19)(rollup@4.68.2)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.108.2)(sass@1.108.2)(terser@5.51.2)(yaml@2.9.1))(vue@3.5.45(typescript@6.0.3))(webpack@5.112.2(cssnano@9.9.0(postcss@8.5.32))(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.32)))(vue@3.5.45(typescript@6.0.3))'
+        specifier: github:kiki-core-stack/pack#840071ea46fdd148d2edee06b7641e5975a00067
+        version: '@kiki-core-stack/pack@https://codeload.github.com/kiki-core-stack/pack/tar.gz/840071ea46fdd148d2edee06b7641e5975a00067(@kikiutils/mongoose@9.0.3)(async-validator@4.2.5)(axios@1.21.1(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2))(bson@7.3.4)(decimal.js@10.6.0)(element-plus@2.14.8(vue@3.5.45(typescript@6.0.3)))(mongoose@9.12.1)(on-change@6.0.2)(supports-color@10.2.2)(vue-router@5.5.0(@vue/compiler-sfc@3.5.45)(esbuild@0.28.2)(rolldown@1.2.19)(rollup@4.68.2)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.108.2)(sass@1.108.2)(terser@5.51.2)(yaml@2.9.1))(vue@3.5.45(typescript@6.0.3))(webpack@5.112.2(cssnano@9.9.0(postcss@8.5.32))(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.32)))(vue@3.5.45(typescript@6.0.3))'
       '@kikiutils/nuxt':
         specifier: ^14.0.1
         version: 14.0.1(3b8af267c81f7f31219b063335c9360b)
@@ -1058,8 +1058,8 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
-  '@kiki-core-stack/pack@https://codeload.github.com/kiki-core-stack/pack/tar.gz/e6109f2cb8a2a9d088042f0491e62b8019e64adc':
-    resolution: {gitHosted: true, integrity: sha512-DkUS7wxpmeJv4Zlj2wWbmmFtiHPH0r+51D+g/t0tPpLSHDJC9w74UDl7IwX5ENiUDn9uk4Qujl9+Nznj2tyOkg==, tarball: https://codeload.github.com/kiki-core-stack/pack/tar.gz/e6109f2cb8a2a9d088042f0491e62b8019e64adc}
+  '@kiki-core-stack/pack@https://codeload.github.com/kiki-core-stack/pack/tar.gz/840071ea46fdd148d2edee06b7641e5975a00067':
+    resolution: {gitHosted: true, integrity: sha512-RT55i2G+fh9KVjK4V+wQvFTdtQqihUyWdLHRm6VpaQVILCg3RTqx20FOnUhiOhHO27VsMZhB3aEa/SOmhNP8mw==, tarball: https://codeload.github.com/kiki-core-stack/pack/tar.gz/840071ea46fdd148d2edee06b7641e5975a00067}
     version: 0.0.0
     engines: {node: '>=24.0.0'}
     peerDependencies:
@@ -7986,7 +7986,7 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@kiki-core-stack/pack@https://codeload.github.com/kiki-core-stack/pack/tar.gz/e6109f2cb8a2a9d088042f0491e62b8019e64adc(@kikiutils/mongoose@9.0.3)(async-validator@4.2.5)(axios@1.21.1(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2))(bson@7.3.4)(decimal.js@10.6.0)(element-plus@2.14.8(vue@3.5.45(typescript@6.0.3)))(mongoose@9.12.1)(on-change@6.0.2)(supports-color@10.2.2)(vue-router@5.5.0(@vue/compiler-sfc@3.5.45)(esbuild@0.28.2)(rolldown@1.2.19)(rollup@4.68.2)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.108.2)(sass@1.108.2)(terser@5.51.2)(yaml@2.9.1))(vue@3.5.45(typescript@6.0.3))(webpack@5.112.2(cssnano@9.9.0(postcss@8.5.32))(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.32)))(vue@3.5.45(typescript@6.0.3))':
+  '@kiki-core-stack/pack@https://codeload.github.com/kiki-core-stack/pack/tar.gz/840071ea46fdd148d2edee06b7641e5975a00067(@kikiutils/mongoose@9.0.3)(async-validator@4.2.5)(axios@1.21.1(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2))(bson@7.3.4)(decimal.js@10.6.0)(element-plus@2.14.8(vue@3.5.45(typescript@6.0.3)))(mongoose@9.12.1)(on-change@6.0.2)(supports-color@10.2.2)(vue-router@5.5.0(@vue/compiler-sfc@3.5.45)(esbuild@0.28.2)(rolldown@1.2.19)(rollup@4.68.2)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.108.2)(sass@1.108.2)(terser@5.51.2)(yaml@2.9.1))(vue@3.5.45(typescript@6.0.3))(webpack@5.112.2(cssnano@9.9.0(postcss@8.5.32))(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.32)))(vue@3.5.45(typescript@6.0.3))':
     dependencies:
       '@kikiutils/shared': 20.1.2(async-validator@4.2.5)(bson@7.3.4)(date-fns@4.4.0)(decimal.js@10.6.0)(element-plus@2.14.8(vue@3.5.45(typescript@6.0.3)))(file-type@22.3.0(supports-color@10.2.2))(lru-cache@11.5.3)(msgpackr@2.1.4)(vue-router@5.5.0(@vue/compiler-sfc@3.5.45)(esbuild@0.28.2)(rolldown@1.2.19)(rollup@4.68.2)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.108.2)(sass@1.108.2)(terser@5.51.2)(yaml@2.9.1))(vue@3.5.45(typescript@6.0.3))(webpack@5.112.2(cssnano@9.9.0(postcss@8.5.32))(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.32)))(vue@3.5.45(typescript@6.0.3))
       date-fns: 4.4.0
