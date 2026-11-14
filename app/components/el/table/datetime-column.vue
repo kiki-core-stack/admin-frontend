@@ -11,6 +11,7 @@
 import { get } from 'es-toolkit/compat';
 
 interface Props {
+    dateFormat?: string;
     emptyText?: string;
     prop?: string;
 }
@@ -28,6 +29,6 @@ const props = withDefaults(
 function formatDateCell(row: Record<string, any>) {
     const value = get(row, props.prop);
     if (value === null || value === undefined) return props.emptyText;
-    return formatDate(value);
+    return formatDate(value, props.dateFormat);
 }
 </script>

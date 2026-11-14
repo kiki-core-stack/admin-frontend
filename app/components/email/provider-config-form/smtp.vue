@@ -30,15 +30,18 @@
     <el-form-switch
         v-model="config.secure"
         label="啟用SSL"
+        prop="config.secure"
     />
     <el-form-switch
         v-model="config.tls.required"
         label="啟用TLS"
+        prop="config.tls.required"
     />
     <el-form-switch
         v-model="config.tls.rejectUnauthorized"
         class="mb-0!"
         label="拒絕TLS自簽名憑證"
+        prop="config.tls.rejectUnauthorized"
     />
 </template>
 

@@ -68,7 +68,10 @@
                     },
                 ]"
             />
-            <el-form-item label="身分組">
+            <el-form-item
+                label="身分組"
+                prop="roles"
+            >
                 <selector-admin-role
                     v-model="formData.roles"
                     value-key="id"
