@@ -1,6 +1,6 @@
 # admin-frontend 架構
 
-總管理後台前端（Nuxt、Element Plus），對接 management-backend 的 `/api/admin/*`。由 nuxt-template 合併而來；共用規則（API 回應格式、錯誤碼、多語系、權限）見 pack README。
+總管理後台前端（Nuxt、Element Plus），對接 management-backend 的 `/api/admin/*`。由 nuxt-template 合併而來；共用規則（API 回應格式、錯誤碼、多語系、權限）見 [pack README](https://github.com/kiki-core-stack/pack)。
 
 ## 啟動
 
