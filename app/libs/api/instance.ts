@@ -29,8 +29,9 @@ export function createApiAxiosInstance(config?: CreateAxiosDefaults) {
 
     instance.interceptors.response.use(
         (response) => response,
-        (error) => {
+        async (error) => {
             if (!(error instanceof AxiosError)) throw error;
+            if (error.response) error.response.data = await parseBlobJsonData(error.response.data);
             const response = toFailureResponse(error);
             const {
                 errorCode,
@@ -55,6 +56,19 @@ function isApiErrorEnvelope(data: unknown): data is ApiErrorEnvelope {
       && data !== null
       && (data as ApiErrorEnvelope).success === false
       && typeof (data as ApiErrorEnvelope).errorCode === 'string';
+}
+
+/**
+ * Parses a JSON `Blob` body (an error of a request with `responseType: 'blob'`, e.g. a file download) so it can be
+ * read as the API envelope; other data is returned as is.
+ */
+async function parseBlobJsonData(data: unknown) {
+    if (!(data instanceof Blob) || !data.type.includes('json')) return data;
+    try {
+        return JSON.parse(await data.text());
+    } catch {
+        return data;
+    }
 }
 
 /**

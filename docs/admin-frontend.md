@@ -20,7 +20,7 @@
   - libs/permission.ts：`hasPermission`、`isAdminPermissionKey`。
   - libs/element-plus.ts：`createElMessageBoxConfirmHandler`、`showElFormApiFieldErrors`。
 - app/libs/：需明確 import 的內部實作。
-  - api/instance.ts：axios 實例；帶上 `Accept-Language`、把失敗統一成 envelope、預設顯示錯誤通知（`silent` 可關閉）、需登入時導向登入頁。
+  - api/instance.ts：axios 實例；帶上 `Accept-Language`、把失敗統一成 envelope（`responseType: 'blob'` 的 JSON 錯誤內容也會解析）、預設顯示錯誤通知（`silent` 可關閉）、需登入時導向登入頁。
   - api/error-data.ts：`getApiErrorData(responseData, code)` 取得有型別的 `errorData`；本後端自訂的 errorData 型別加在 `ApiErrorDataMap`。
 - app/components/：
   - data-table-page/：列表頁元件（`index.vue`）與新增／編輯對話框（`form-dialog.vue`）。
