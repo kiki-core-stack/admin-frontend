@@ -12,10 +12,7 @@
 
 <script
     lang="ts"
-    generic="
-        CA extends BaseCrudApi<any, any>,
-        TR extends TableRowData = CA extends BaseCrudApi<infer T, any> ? T : never
-    "
+    generic="TR extends TableRowData"
     setup
 >
 import type { TableRowData } from '@kcs-project/pack/types/data';
@@ -23,7 +20,8 @@ import type { ConditionalKeys } from 'type-fest';
 
 interface Props {
     confirmMessage: ((row: TR) => string) | string;
-    crudApi: CA;
+    // Only the boolean field endpoint is used, so APIs without a form (`BaseCrudApi<T, never>`) are accepted too.
+    crudApi: Pick<BaseCrudApi<TR, never>, 'setBooleanField'>;
     disabledCondition?: ((row: TR) => boolean | undefined) | boolean;
     field: ConditionalKeys<TR, boolean> & string;
 }
