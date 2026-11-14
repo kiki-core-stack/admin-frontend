@@ -3,17 +3,17 @@
         ref="dataTablePageRef"
         v-model:time-range-end="filter.createdAt.$lt"
         v-model:time-range-start="filter.createdAt.$gte"
+        permission-group="admin.log"
         title="管理員日誌"
         :crud-api="AdminLogApi.use()"
         :filter="filter"
-        :permissions="{ base: 'admin.log' }"
         hide-actions-column
         hide-updated-at-column
         show-time-range-quick-selector
     >
         <template #toolbar-prepend>
             <filter-form
-                v-if="dataTablePageRef?.capabilities.list"
+                v-if="dataTablePageRef?.can('list')"
                 v-model="filter"
                 class="pb-1 pl-1"
                 @submit.prevent="dataTablePageRef?.loadData()"

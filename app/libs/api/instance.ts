@@ -23,7 +23,7 @@ export function createApiAxiosInstance(config?: CreateAxiosDefaults) {
     const instance = axios.create(config);
     // Backend messages (errors, validation issues) follow the app's locale.
     instance.interceptors.request.use((requestConfig) => {
-        requestConfig.headers.set('Accept-Language', useNuxtApp().$i18n.locale.value);
+        requestConfig.headers.set('accept-language', useNuxtApp().$i18n.locale.value);
         return requestConfig;
     });
 

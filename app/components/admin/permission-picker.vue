@@ -71,11 +71,11 @@ import {
     adminPermissionKeys,
     adminPermissionLabelMap,
     adminPermissionRequirementMap,
-} from '@/generated/static/types/admin/permission';
+} from '@/generated/admin/permission';
 import type {
     AdminPermissionGroup,
     AdminPermissionKey,
-} from '@/generated/static/types/admin/permission';
+} from '@/generated/admin/permission';
 
 interface PermissionRow {
     keys: AdminPermissionKey[];

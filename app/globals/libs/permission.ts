@@ -1,8 +1,8 @@
 import { hasPermission as hasPrincipalPermission } from '@kcs-project/pack/libs/permission';
 import type { Arrayable } from 'type-fest';
 
-import { adminPermissionKeys } from '@/generated/static/types/admin/permission';
-import type { AdminPermissionKey } from '@/generated/static/types/admin/permission';
+import { adminPermissionKeys } from '@/generated/admin/permission';
+import type { AdminPermissionKey } from '@/generated/admin/permission';
 import type { AdminPermissionRequirement } from '@/types/permission';
 
 // Constants/Variables

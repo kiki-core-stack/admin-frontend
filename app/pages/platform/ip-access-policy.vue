@@ -3,10 +3,10 @@
         ref="dataTablePageRef"
         v-model:form-data="formData"
         dialog-title-suffix="IP存取規則"
+        permission-group="platform.ipAccessPolicy"
         title="IP存取規則管理"
         :crud-api="PlatformIpAccessPolicyApi.use()"
         :form-rules="formRules"
-        :permissions="{ base: 'platform.ipAccessPolicy' }"
     >
         <template #table>
             <el-table-column
@@ -31,7 +31,7 @@
                 label="啟用"
                 :confirm-message="(row) => `是否切換IP 存取規則 ${row.name} 的啟用狀態？`"
                 :crud-api="PlatformIpAccessPolicyApi.use()"
-                :disabled-condition="!dataTablePageRef?.capabilities.toggle"
+                :disabled-condition="!dataTablePageRef?.can('toggle')"
                 @status-change="dataTablePageRef?.loadData()"
             />
             <el-table-column

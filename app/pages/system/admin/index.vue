@@ -3,12 +3,12 @@
         ref="dataTablePageRef"
         v-model:form-data="formData"
         dialog-title-suffix="管理員"
+        permission-group="admin.account"
         title="管理員管理"
         :confirm-delete-message="(row) => `確定要刪除 ${row.account} 嗎？`"
         :crud-api="AdminApi.use()"
         :disable-row-delete-btn-rule="(row) => row.id === profileState.id"
         :form-rules="formRules"
-        :permissions="{ base: 'admin.account' }"
     >
         <template #table>
             <el-table-column
@@ -24,7 +24,7 @@
                 label="啟用"
                 :confirm-message="(row) => `是否切換 ${row.account} 的啟用狀態？`"
                 :crud-api="AdminApi.use()"
-                :disabled-condition="(row) => !dataTablePageRef?.capabilities.toggle || row.id === profileState.id"
+                :disabled-condition="(row) => !dataTablePageRef?.can('toggle') || row.id === profileState.id"
                 @status-change="dataTablePageRef?.loadData()"
             />
         </template>

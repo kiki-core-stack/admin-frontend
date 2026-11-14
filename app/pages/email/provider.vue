@@ -3,11 +3,11 @@
         ref="dataTablePageRef"
         v-model:form-data="formData"
         dialog-title-suffix="電子郵件服務商"
+        permission-group="email.provider"
         title="電子郵件服務商管理"
         :before-dialog-open="(row) => void (formData.config = cloneDeep(row?.config || {}))"
         :crud-api="EmailProviderApi.use()"
         :form-rules="formRules"
-        :permissions="{ base: 'email.provider' }"
     >
         <template #table>
             <el-table-column
@@ -24,7 +24,7 @@
                 label="啟用"
                 :confirm-message="(row) => `是否切換電子郵件服務商 ${row.name} 的啟用狀態？`"
                 :crud-api="EmailProviderApi.use()"
-                :disabled-condition="!dataTablePageRef?.capabilities.toggle"
+                :disabled-condition="!dataTablePageRef?.can('toggle')"
                 @status-change="dataTablePageRef?.loadData()"
             />
             <el-table-column

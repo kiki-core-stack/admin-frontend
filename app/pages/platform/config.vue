@@ -2,10 +2,10 @@
     <data-table-page
         v-model:form-data="formData"
         dialog-title-suffix="平台設定"
+        permission-group="platform.config"
         title="平台設定"
         :before-dialog-open="(row) => void (formData.config = cloneDeep(row?.config || {}))"
         :crud-api="PlatformConfigApi.use()"
-        :permissions="{ base: 'platform.config' }"
     >
         <template #table>
             <el-table-column

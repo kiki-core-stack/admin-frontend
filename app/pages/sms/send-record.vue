@@ -3,16 +3,16 @@
         ref="dataTablePageRef"
         v-model:time-range-end="filter.createdAt.$lt"
         v-model:time-range-start="filter.createdAt.$gte"
+        permission-group="sms.sendRecord"
         title="簡訊發送紀錄"
         :crud-api="SmsSendRecordApi.use()"
         :filter="filter"
-        :permissions="{ base: 'sms.sendRecord' }"
         hide-actions-column
         show-time-range-quick-selector
     >
         <template #toolbar-prepend>
             <filter-form
-                v-if="dataTablePageRef?.capabilities.list"
+                v-if="dataTablePageRef?.can('list')"
                 v-model="filter"
                 class="pb-1 pl-1"
                 @submit.prevent="dataTablePageRef?.loadData()"

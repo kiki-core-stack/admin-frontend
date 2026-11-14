@@ -20,13 +20,13 @@
                             {{ addDataBtnText }}
                         </el-button>
                         <countdown-dropdown-btn
-                            v-if="capabilities.list"
+                            v-if="can('list')"
                             ref="autoReloadDataCountdownDropdownBtnRef"
                             text="刷新"
                             @trigger="loadData"
                         />
                         <time-range-quick-selector
-                            v-if="capabilities.list && showTimeRangeQuickSelector"
+                            v-if="can('list') && showTimeRangeQuickSelector"
                             v-model:end="timeRangeEndAt"
                             v-model:start="timeRangeStartAt"
                             @select="loadData"
@@ -36,7 +36,7 @@
                     <slot name="toolbar-append" />
                 </div>
                 <el-table
-                    v-if="capabilities.list"
+                    v-if="can('list')"
                     ref="elTableRef"
                     table-layout="auto"
                     :data="tableData"
@@ -107,7 +107,7 @@
                     class="b b-t-0 el-bg-and-border rounded-b-1 p-1"
                 >
                     <el-pagination
-                        v-if="capabilities.list && !disablePagination"
+                        v-if="can('list') && !disablePagination"
                         v-model:current-page="paginationParams.page"
                         v-model:page-size="paginationParams.limit"
                         layout="total, prev, pager, next, sizes"
@@ -130,8 +130,8 @@
                     ref="dataTablePageFormDialogRef"
                     v-model:form-data="formData"
                     :before-open="beforeDialogOpen"
-                    :can-create="capabilities.create"
-                    :can-update="capabilities.update"
+                    :can-create="can('create')"
+                    :can-update="can('update')"
                     :crud-api="crudApi"
                     :rules="formRules"
                     :title-suffix="dialogTitleSuffix"
@@ -165,10 +165,8 @@ import type {
     Promisable,
 } from 'type-fest';
 
-import type { AdminPermissionGroup } from '@/generated/static/types/admin/permission';
-import type { AdminPermissionRequirement } from '@/types/permission';
+import type { AdminPermissionGroup } from '@/generated/admin/permission';
 
-type CapabilityAction = 'create' | 'delete' | 'list' | 'read' | 'toggle' | 'update';
 type ControlActionBtnFunction = (row: TR) => boolean | undefined;
 
 interface OnSortChangeData {
@@ -204,19 +202,10 @@ interface Props {
     hideUpdatedAtColumn?: boolean;
 
     /**
-     * `ignore` allows every action. Otherwise each action requires `<base>.<action>` (an action whose key is not in
-     * the catalog is denied), unless overridden; `toggle` follows the `update` override.
+     * Permission group of the page: each action (`list`, `create`, `update`, `delete`, `toggle` or any other) requires
+     * `<group>.<action>`, and an action whose key is not in the catalog is denied. `ignore` allows every action.
      */
-    permissions:
-      | 'ignore'
-      | {
-          base: AdminPermissionGroup;
-          create?: AdminPermissionRequirement;
-          delete?: AdminPermissionRequirement;
-          list?: AdminPermissionRequirement;
-          read?: AdminPermissionRequirement;
-          update?: AdminPermissionRequirement;
-      };
+    permissionGroup: 'ignore' | AdminPermissionGroup;
 
     rowKey?: string;
     selectable?: (row: TR, index: number) => boolean;
@@ -263,40 +252,11 @@ const totalTableDataCount = ref(0);
 let loadDataAbortController: AbortController | undefined;
 
 // Computed properties
-const capabilities = computed(() => {
-    const { permissions } = props;
-    if (permissions === 'ignore') {
-        return {
-            create: true,
-            delete: true,
-            list: true,
-            read: true,
-            toggle: true,
-            update: true,
-        };
-    }
-
-    const can = (action: CapabilityAction, override?: AdminPermissionRequirement) => {
-        if (override) return hasPermission(override);
-        const key = `${permissions.base}.${action}`;
-        return isAdminPermissionKey(key) && hasPermission(key);
-    };
-
-    return {
-        create: can('create', permissions.create),
-        delete: can('delete', permissions.delete),
-        list: can('list', permissions.list),
-        read: can('read', permissions.read),
-        toggle: can('toggle', permissions.update),
-        update: can('update', permissions.update),
-    };
-});
-
-// Built-in buttons; kept apart from `capabilities`, which only reflects permissions.
+// Built-in buttons; kept apart from `can`, which only reflects permissions.
 const actionVisibility = computed(() => ({
-    create: hasForm && capabilities.value.create && !props.hideAddDataBtn,
-    delete: capabilities.value.delete && !props.hideDeleteBtn,
-    edit: hasForm && capabilities.value.update && !props.hideEditBtn,
+    create: hasForm && can('create') && !props.hideAddDataBtn,
+    delete: can('delete') && !props.hideDeleteBtn,
+    edit: hasForm && can('update') && !props.hideEditBtn,
 }));
 
 // Functions
@@ -312,6 +272,15 @@ const confirmDelete = createElMessageBoxConfirmHandler<TR>({
     },
 });
 
+/**
+ * Whether the current admin may perform `action` on this page (see `permissionGroup`).
+ */
+function can(action: string) {
+    if (props.permissionGroup === 'ignore') return true;
+    const key = `${props.permissionGroup}.${action}`;
+    return isAdminPermissionKey(key) && hasPermission(key);
+}
+
 function closeDialog() {
     dataTablePageFormDialogRef.value?.close();
 }
@@ -324,7 +293,7 @@ function defaultConfirmDeleteMessage(row: TR) {
  * Loads the current page; a newer call cancels the pending one, so the latest filter/sort/page always wins.
  */
 async function loadData() {
-    if (!capabilities.value.list) return;
+    if (!can('list')) return;
     loadDataAbortController?.abort();
     const abortController = loadDataAbortController = new AbortController();
     isLoadingData.value = true;
@@ -375,7 +344,7 @@ watch(() => props.title, (nv) => pageTitle.value = nv);
 
 // Exposes
 defineExpose({
-    capabilities: readonly(capabilities),
+    can,
     clearSelection,
     closeDialog,
     loadData,

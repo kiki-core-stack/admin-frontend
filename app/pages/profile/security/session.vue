@@ -1,7 +1,7 @@
 <template>
     <data-table-page
         ref="dataTablePageRef"
-        permissions="ignore"
+        permission-group="ignore"
         title="目前登入的裝置"
         :confirm-delete-message="(row) => `確定要刪除 ${parseDataToDeviceColumnText(row)} (${row.lastActiveIp}) 嗎？`"
         :crud-api="ProfileSecuritySessionApi.use()"

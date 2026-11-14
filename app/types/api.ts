@@ -4,7 +4,7 @@ import type {
 } from '@kcs-project/pack/types/api';
 import type { AxiosResponse } from 'axios';
 
-import type { ApiErrorCode } from '@/generated/static/types/api-error-code';
+import type { ApiErrorCode } from '@/generated/api-error-code';
 
 /**
  * Every API call resolves to a response (never throws) whose `data` is always the API envelope, so failures carry

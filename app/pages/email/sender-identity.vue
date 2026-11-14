@@ -3,11 +3,11 @@
         ref="dataTablePageRef"
         v-model:form-data="formData"
         dialog-title-suffix="電子郵件寄件身份"
+        permission-group="email.senderIdentity"
         title="電子寄件身份管理"
         :confirm-delete-message="(row) => `確定要刪除寄件身分為 ${localize(emailSenderIdentityKeyToLabelMap[row.key])} 的設定嗎？`"
         :crud-api="EmailSenderIdentityApi.use()"
         :form-rules="formRules"
-        :permissions="{ base: 'email.senderIdentity' }"
     >
         <template #table>
             <el-table-column
@@ -23,7 +23,7 @@
                 label="啟用"
                 :confirm-message="(row) => `是否切換寄件身分為 ${localize(emailSenderIdentityKeyToLabelMap[row.key])} 的啟用狀態？`"
                 :crud-api="EmailSenderIdentityApi.use()"
-                :disabled-condition="!dataTablePageRef?.capabilities.toggle"
+                :disabled-condition="!dataTablePageRef?.can('toggle')"
                 @status-change="dataTablePageRef?.loadData()"
             />
             <el-table-column
