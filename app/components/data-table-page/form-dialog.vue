@@ -119,20 +119,24 @@ async function save() {
     formRef.value?.clearValidate();
     if (!await formRef.value?.validate().catch(() => false)) return;
 
+    // Hidden even when saving throws (e.g. a failed upload in `serializeInput`), so the form stays usable.
     statusOverlayRef.value.showLoading('儲存中...');
-    const response = row
-        ? await props.crudApi.update(row, formData.value)
-        : await props.crudApi.create(formData.value);
+    try {
+        const response = row
+            ? await props.crudApi.update(row, formData.value)
+            : await props.crudApi.create(formData.value);
 
-    if (!response.data.success) {
-        showElFormApiFieldErrors(formRef.value, response.data);
-        statusOverlayRef.value.hide();
-        return;
+        if (!response.data.success) {
+            showElFormApiFieldErrors(formRef.value, response.data);
+            return;
+        }
+
+        close();
+        ElNotification.success(row ? '儲存成功' : '新增成功');
+        emit('saved');
+    } finally {
+        statusOverlayRef.value?.hide();
     }
-
-    close();
-    ElNotification.success(row ? '儲存成功' : '新增成功');
-    emit('saved');
 }
 
 // Hooks

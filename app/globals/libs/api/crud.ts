@@ -23,7 +23,8 @@ export interface GetListParams {
 export class BaseCrudApi<TRow extends TableRowData, TInput extends object> extends BaseApi {
     /**
      * Converts form data into the request body. Override with an arrow function property, so the input type is
-     * checked strictly (a method parameter would be bivariant and accept a mismatched type).
+     * checked strictly (a method parameter would be bivariant and accept a mismatched type). Throw to abort the request
+     * (e.g. when uploading a file fails); the form dialog stops loading and keeps the form open.
      */
     protected readonly serializeInput: (data: TInput) => Promisable<object> = (data) => data;
 
