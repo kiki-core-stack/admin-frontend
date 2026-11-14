@@ -223,6 +223,12 @@ watch(
 </script>
 
 <style lang="scss" scoped>
+// Rows carry their own vertical padding; Element Plus adds a 25px bottom padding to every collapse item.
+/* stylelint-disable-next-line selector-class-pattern */
+:deep(.el-collapse-item__content) {
+    @apply pb-2;
+}
+
 .permission-row {
     border-top: 1px solid var(--el-border-color-lighter);
 }
