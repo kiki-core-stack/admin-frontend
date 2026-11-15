@@ -1,8 +1,8 @@
 <template>
     <data-table-page
         v-model:form-data="formData"
-        dialog-title-suffix="管理員身分組"
         permission-group="admin.role"
+        resource-name="管理員身分組"
         title="管理員身分組管理"
         :crud-api="AdminRoleApi.use()"
         :form-rules="formRules"

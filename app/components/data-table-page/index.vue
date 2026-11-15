@@ -133,8 +133,8 @@
                     :can-create="can('create')"
                     :can-update="can('update')"
                     :crud-api="crudApi"
+                    :resource-name="resourceName"
                     :rules="formRules"
-                    :title-suffix="dialogTitleSuffix"
                     @saved="loadData"
                 >
                     <template #default="{ editingRow }">
@@ -163,6 +163,7 @@ import type { TableSortOrder } from 'element-plus/es/components/table/src/table/
 import type {
     Except,
     Promisable,
+    UnknownRecord,
 } from 'type-fest';
 
 import type { AdminPermissionGroup } from '@/generated/admin/permission';
@@ -178,12 +179,16 @@ interface OnSortChangeData {
 interface Props {
     addDataBtnText?: string;
     beforeDialogOpen?: (row?: TR) => Promisable<void>;
+
+    /**
+     * Defaults to `確定要刪除<resourceName>「<label>」嗎？` with the row's `name`, then `title`, as the label, or
+     * `確定要刪除此<resourceName>嗎？` without either.
+     */
     confirmDeleteMessage?: ((row: TR) => string) | string;
     crudApi: BaseCrudApi<TR, NoInfer<FD>>;
     defaultPaginationLimit?: number;
     defaultSort?: Except<OnSortChangeData, 'column'>;
     deleteBtnText?: string;
-    dialogTitleSuffix?: string;
     disablePagination?: boolean;
     disableRowDeleteBtnRule?: ControlActionBtnFunction;
     disableRowEditBtnRule?: ControlActionBtnFunction;
@@ -206,6 +211,11 @@ interface Props {
      * `<group>.<action>`, and an action whose key is not in the catalog is denied. `ignore` allows every action.
      */
     permissionGroup: 'ignore' | AdminPermissionGroup;
+
+    /**
+     * Display name of the row's resource (e.g. `管理員`), used in the form dialog title and the delete confirmation.
+     */
+    resourceName?: string;
 
     rowKey?: string;
     selectable?: (row: TR, index: number) => boolean;
@@ -286,7 +296,13 @@ function closeDialog() {
 }
 
 function defaultConfirmDeleteMessage(row: TR) {
-    return 'name' in row && typeof row.name === 'string' ? `確定要刪除 ${row.name} 嗎？` : '確定要刪除此資料嗎？';
+    const label = [
+        'name',
+        'title',
+    ].map((key) => (row as UnknownRecord)[key]).find((value): value is string => typeof value === 'string' && value !== '');
+
+    const resourceName = props.resourceName ?? '';
+    return label ? `確定要刪除${resourceName}「${label}」嗎？` : `確定要刪除此${resourceName || '資料'}嗎？`;
 }
 
 /**

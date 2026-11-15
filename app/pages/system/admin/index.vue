@@ -2,10 +2,10 @@
     <data-table-page
         ref="dataTablePageRef"
         v-model:form-data="formData"
-        dialog-title-suffix="管理員"
         permission-group="admin.account"
+        resource-name="管理員"
         title="管理員管理"
-        :confirm-delete-message="(row) => `確定要刪除 ${row.account} 嗎？`"
+        :confirm-delete-message="(row) => `確定要刪除管理員「${row.account}」嗎？`"
         :crud-api="AdminApi.use()"
         :disable-row-delete-btn-rule="(row) => row.id === profileState.id"
         :form-rules="formRules"

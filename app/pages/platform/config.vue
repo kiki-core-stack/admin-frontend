@@ -1,8 +1,8 @@
 <template>
     <data-table-page
         v-model:form-data="formData"
-        dialog-title-suffix="平台設定"
         permission-group="platform.config"
+        resource-name="平台設定"
         title="平台設定"
         :before-dialog-open="(row) => void (formData.config = cloneDeep(row?.config || {}))"
         :crud-api="PlatformConfigApi.use()"

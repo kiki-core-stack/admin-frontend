@@ -2,8 +2,8 @@
     <data-table-page
         ref="dataTablePageRef"
         v-model:form-data="formData"
-        dialog-title-suffix="IP 存取規則"
         permission-group="platform.ipAccessPolicy"
+        resource-name="IP 存取規則"
         title="IP 存取規則管理"
         :crud-api="PlatformIpAccessPolicyApi.use()"
         :form-rules="formRules"

@@ -2,8 +2,8 @@
     <data-table-page
         ref="dataTablePageRef"
         v-model:form-data="formData"
-        dialog-title-suffix="電子郵件服務商"
         permission-group="email.provider"
+        resource-name="電子郵件服務商"
         title="電子郵件服務商管理"
         :before-dialog-open="(row) => void (formData.config = cloneDeep(row?.config || {}))"
         :crud-api="EmailProviderApi.use()"

@@ -4,7 +4,7 @@
         :before-close="beforeClose"
         :close-on-click-modal="!statusOverlayRef?.isVisible"
         :close-on-press-escape="!statusOverlayRef?.isVisible"
-        :title="`${editingRow ? '編輯' : '新增'}${titleSuffix}`"
+        :title="`${editingRow ? '編輯' : '新增'}${resourceName ?? ''}`"
         :width="elDialogWidthByWindowSize"
         align-center
         append-to-body
@@ -53,8 +53,8 @@ interface Props {
     canCreate: boolean;
     canUpdate: boolean;
     crudApi: BaseCrudApi<TR, FD>;
+    resourceName?: string;
     rules?: ElFormRules<Record<string, any>>;
-    titleSuffix?: string;
 }
 
 // Define props, models and emits
