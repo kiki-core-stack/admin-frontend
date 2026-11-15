@@ -4,7 +4,7 @@
             <img :src="qrCodeImageSrc">
         </div>
         <p class="fs-24px mt-4">
-            使用QR Code登入
+            使用 QR Code 登入
         </p>
         <p class="text-gray md:whitespace-nowrap">
             使用已登入的裝置對此掃描就能立即登入。
@@ -14,7 +14,7 @@
             size="small"
             @click="$emit('reload')"
         >
-            重新獲取QR Code
+            重新獲取 QR Code
         </el-button>
     </div>
 </template>

@@ -75,19 +75,19 @@
                     </h3>
                     <div class="cards-container mt-4 grid gap-1">
                         <el-card>
-                            <h4>數量1</h4>
+                            <h4>數量 1</h4>
                             <p>1</p>
                         </el-card>
                         <el-card>
-                            <h4>數量2</h4>
+                            <h4>數量 2</h4>
                             <p>2</p>
                         </el-card>
                         <el-card>
-                            <h4>數量3</h4>
+                            <h4>數量 3</h4>
                             <p>3</p>
                         </el-card>
                         <el-card>
-                            <h4>數量4</h4>
+                            <h4>數量 4</h4>
                             <p>4</p>
                         </el-card>
                     </div>

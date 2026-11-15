@@ -8,7 +8,7 @@
     <el-form-item
         label="Port"
         prop="config.port"
-        :rules="[createElFormItemRuleWithDefaults('請輸入Port', { type: 'integer' })]"
+        :rules="[createElFormItemRuleWithDefaults('請輸入 Port', { type: 'integer' })]"
     >
         <el-filtered-input-number
             v-model="config.port"
@@ -29,18 +29,18 @@
     />
     <el-form-switch
         v-model="config.secure"
-        label="啟用SSL"
+        label="啟用 SSL"
         prop="config.secure"
     />
     <el-form-switch
         v-model="config.tls.required"
-        label="啟用TLS"
+        label="啟用 TLS"
         prop="config.tls.required"
     />
     <el-form-switch
         v-model="config.tls.rejectUnauthorized"
         class="mb-0!"
-        label="拒絕TLS自簽名憑證"
+        label="拒絕 TLS 自簽名憑證"
         prop="config.tls.rejectUnauthorized"
     />
 </template>

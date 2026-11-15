@@ -1,9 +1,9 @@
 <template>
     <el-form-input
         v-model="config.apiUrl"
-        label="API網址"
+        label="API 網址"
         prop="config.apiUrl"
-        :rules="[createElFormItemRuleWithDefaults('請輸入API網址')]"
+        :rules="[createElFormItemRuleWithDefaults('請輸入 API 網址')]"
     />
     <el-form-input
         v-model="config.username"
@@ -13,9 +13,9 @@
     />
     <el-form-input
         v-model="config.password"
-        label="API密碼"
+        label="API 密碼"
         prop="config.password"
-        :rules="[createElFormItemRuleWithDefaults('請輸入API密碼')]"
+        :rules="[createElFormItemRuleWithDefaults('請輸入 API 密碼')]"
     />
 </template>
 

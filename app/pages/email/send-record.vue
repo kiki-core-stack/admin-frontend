@@ -54,7 +54,7 @@
                 prop="from"
             />
             <el-table-column
-                label="外部交易ID"
+                label="外部交易 ID"
                 prop="providerTransactionId"
             />
         </template>

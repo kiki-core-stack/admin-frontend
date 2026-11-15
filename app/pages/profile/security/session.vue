@@ -11,7 +11,7 @@
     >
         <template #toolbar-actions-append>
             <el-button @click="profileSecurityScanLoginQrCodeDialogRef?.open()">
-                掃描登入QR Code
+                掃描登入 QR Code
             </el-button>
             <el-button @click="confirmLogoutAllSessions">
                 登出所有裝置
@@ -23,7 +23,7 @@
                 :formatter="(row: AuthenticationSessionListItemData) => parseDataToDeviceColumnText(row)"
             />
             <el-table-column
-                label="最後活動IP"
+                label="最後活動 IP"
                 prop="lastActiveIp"
             />
             <el-table-datetime-column
@@ -31,7 +31,7 @@
                 prop="lastActiveAt"
             />
             <el-table-column
-                label="登入IP"
+                label="登入 IP"
                 prop="loginIp"
             />
             <el-table-datetime-column

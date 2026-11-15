@@ -19,12 +19,12 @@ export const sidebarMenuItems: ReadonlyDeep<SidebarMenuItem[]> = [
             {
                 path: '/email/sender-identity/',
                 requiredPermissions: ['email.senderIdentity.*'],
-                title: '寄件身份管理',
+                title: '寄件身分管理',
             },
             {
                 path: '/email/send-record/',
                 requiredPermissions: ['email.sendRecord.*'],
-                title: '發送記錄',
+                title: '發送紀錄',
             },
         ],
         requiredPermissions: 'email.*',
@@ -58,7 +58,7 @@ export const sidebarMenuItems: ReadonlyDeep<SidebarMenuItem[]> = [
             {
                 path: '/platform/ip-access-policy/',
                 requiredPermissions: 'platform.ipAccessPolicy.*',
-                title: 'IP存取規則',
+                title: 'IP 存取規則',
             },
         ],
         requiredPermissions: 'platform.*',

@@ -136,7 +136,7 @@ async function pollQrCodeLoginCompletion() {
     if (completionToken !== qrCodeLoginCompletionToken) return;
     if (response.data.data?.state === 'completed') return await handleLoginSuccess();
     if (!response.data.success && response.data.errorCode === 'gone') {
-        ElNotification.error('QR Code已過期，已自動刷新');
+        ElNotification.error('QR Code 已過期，已自動刷新');
         qrCodeLoginApprovalToken.value = '';
         qrCodeLoginCompletionToken = undefined;
         return await reloadLoginQrCodeAndStartPolling();

@@ -2,9 +2,9 @@
     <data-table-page
         ref="dataTablePageRef"
         v-model:form-data="formData"
-        dialog-title-suffix="IP存取規則"
+        dialog-title-suffix="IP 存取規則"
         permission-group="platform.ipAccessPolicy"
-        title="IP存取規則管理"
+        title="IP 存取規則管理"
         :crud-api="PlatformIpAccessPolicyApi.use()"
         :form-rules="formRules"
     >
@@ -29,7 +29,7 @@
             <el-table-confirmable-status-switch-column
                 field="enabled"
                 label="啟用"
-                :confirm-message="(row) => `是否切換IP 存取規則 ${row.name} 的啟用狀態？`"
+                :confirm-message="(row) => `是否切換 IP 存取規則 ${row.name} 的啟用狀態？`"
                 :crud-api="PlatformIpAccessPolicyApi.use()"
                 :disabled-condition="!dataTablePageRef?.can('toggle')"
                 @status-change="dataTablePageRef?.loadData()"

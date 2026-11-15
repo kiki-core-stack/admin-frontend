@@ -2,9 +2,9 @@
     <data-table-page
         ref="dataTablePageRef"
         v-model:form-data="formData"
-        dialog-title-suffix="電子郵件寄件身份"
+        dialog-title-suffix="電子郵件寄件身分"
         permission-group="email.senderIdentity"
-        title="電子寄件身份管理"
+        title="電子郵件寄件身分管理"
         :confirm-delete-message="(row) => `確定要刪除寄件身分為 ${localize(emailSenderIdentityKeyToLabelMap[row.key])} 的設定嗎？`"
         :crud-api="EmailSenderIdentityApi.use()"
         :form-rules="formRules"

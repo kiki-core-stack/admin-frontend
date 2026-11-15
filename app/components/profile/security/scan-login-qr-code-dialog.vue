@@ -10,7 +10,7 @@
     >
         <div class="text-center">
             <p class="fs-24px">
-                請掃描登入畫面上的QR Code
+                請掃描登入畫面上的 QR Code
             </p>
             <div class="mt-4 flex flex-col items-center">
                 <aspect-ratio
@@ -99,7 +99,7 @@ const confirmLogin = createElMessageBoxConfirmHandler<
         if (reason === 'gone') {
             done();
             resumeScanning();
-            return ElNotification.error('QR Code已過期');
+            return ElNotification.error('QR Code 已過期');
         }
 
         if (reason) ElNotification.error(reason);
@@ -132,7 +132,7 @@ async function onScanSuccess(decodedText: string) {
             ...response.data.data,
         });
     } else {
-        statusOverlayRef.value!.showError('QR Code錯誤或過期');
+        statusOverlayRef.value!.showError('QR Code 錯誤或過期');
         resumeTimeout = setTimeout(resumeScanning, 1000);
     }
 }

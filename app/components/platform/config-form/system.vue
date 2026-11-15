@@ -1,7 +1,7 @@
 <template>
     <el-form-switch
         v-model="config.ipAccessPolicy.enabled"
-        label="IP存取規則總開關"
+        label="IP 存取規則總開關"
         prop="config.ipAccessPolicy.enabled"
     />
 </template>

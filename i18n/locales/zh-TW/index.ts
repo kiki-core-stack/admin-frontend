@@ -18,7 +18,7 @@ export default {
     pages: {
         auth: {
             login: {
-                qrCodeLogin: 'QR Code登入',
+                qrCodeLogin: 'QR Code 登入',
                 title: '總後台登入',
             },
         },
