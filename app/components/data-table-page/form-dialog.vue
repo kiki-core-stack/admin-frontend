@@ -4,7 +4,7 @@
         :before-close="beforeClose"
         :close-on-click-modal="!statusOverlayRef?.isVisible"
         :close-on-press-escape="!statusOverlayRef?.isVisible"
-        :title="`${editingRow ? '編輯' : '新增'}${resourceName ?? ''}`"
+        :title="joinCjkText(editingRow ? '編輯' : '新增', resourceName ?? '')"
         :width="elDialogWidthByWindowSize"
         align-center
         append-to-body

@@ -301,8 +301,9 @@ function defaultConfirmDeleteMessage(row: TR) {
         'title',
     ].map((key) => (row as UnknownRecord)[key]).find((value): value is string => typeof value === 'string' && value !== '');
 
-    const resourceName = props.resourceName ?? '';
-    return label ? `確定要刪除${resourceName}「${label}」嗎？` : `確定要刪除此${resourceName || '資料'}嗎？`;
+    return label
+        ? joinCjkText('確定要刪除', props.resourceName ?? '', `「${label}」嗎？`)
+        : joinCjkText('確定要刪除此', props.resourceName || '資料', '嗎？');
 }
 
 /**
