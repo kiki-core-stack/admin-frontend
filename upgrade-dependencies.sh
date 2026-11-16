@@ -12,6 +12,5 @@ rm -rf ./.nuxt
 [[ " $@ " =~ ' -c ' ]] && rm -rf ./node_modules ./pnpm-lock.yaml
 
 pnpm upgrade -L
-pnpm add -D stylelint@^17
 pnpm run postinstall
 ./modify-files-permissions.sh
