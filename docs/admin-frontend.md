@@ -1,6 +1,6 @@
 # admin-frontend 架構
 
-總管理後台前端（Nuxt、Element Plus），對接 management-backend 的 `/api/admin/*`。由 nuxt-template 合併而來；共用規則（API 回應格式、錯誤碼、多語系、權限）見 [pack README](https://github.com/kiki-core-stack/pack)。
+總管理後台前端（Nuxt、Element Plus），對接 management-backend 的 `/api/admin/*`。由 nuxt-template 合併而來；共用規則（API 回應格式、錯誤碼、多語系、權限）見 [pack docs](https://github.com/kiki-core-stack/pack/blob/main/docs/pack.md)。
 
 ## 啟動
 
@@ -20,7 +20,7 @@
   - libs/permission.ts：`hasPermission`、`isAdminPermissionKey`。
   - libs/element-plus.ts：`createElMessageBoxConfirmHandler`、`showElFormApiFieldErrors`。
 - app/libs/：需明確 import 的內部實作。
-  - api/instance.ts：axios 實例；帶上 `Accept-Language`、把失敗統一成 envelope（`responseType: 'blob'` 的 JSON 錯誤內容也會解析）、預設顯示錯誤通知（`silent` 可關閉）、需登入時導向登入頁。
+  - api/instance.ts：axios 實例；帶上 `Accept-Language`、以 pack 的 `toApiClientFailureResponse` 把失敗統一成 envelope（`responseType: 'blob'` 的 JSON 錯誤內容也會解析）、預設顯示錯誤通知（`silent` 可關閉）、需登入時導向登入頁。
   - api/error-data.ts：`getApiErrorData(responseData, code)` 取得有型別的 `errorData`；本後端自訂的 errorData 型別加在 `ApiErrorDataMap`。
 - app/components/：
   - data-table-page/：列表頁元件（`index.vue`）與新增／編輯對話框（`form-dialog.vue`）。
@@ -54,6 +54,7 @@
 </data-table-page>
 ```
 
+- `resource-name` 為資源名稱，用於對話框標題與預設的刪除確認訊息（`確定要刪除<resource-name>「<name 或 title>」嗎？`）。
 - `permission-group` 為權限群組，各動作需要 `<group>.<action>`（不在權限清單內的動作視為無權限）；`ignore` 不檢查。頁面自訂的按鈕以 ref 的 `can('<action>')` 判斷（例如 `can('toggle')`）。
 - 不傳 `formData` 時沒有新增、編輯與對話框；`hide-*` 可隱藏內建按鈕，改用 slot 放自訂按鈕。
 - `formData` 須在 setup 時提供完整欄位（`CrudFormData<T>`，不含 `id`）；每次開啟都從這份預設值建立，編輯時只取 row 中表單有的欄位。編輯模式以 slot 的 `editingRow` 判斷。
