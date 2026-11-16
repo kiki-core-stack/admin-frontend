@@ -1,16 +1,8 @@
-import type {
-    ApiErrorResponseData,
-    ClientApiErrorCode,
-} from '@kcs-project/pack/types/api';
+import { toApiClientFailureResponse } from '@kcs-project/pack/libs/api-client/failure-response';
 import axios, { AxiosError } from 'axios';
-import type {
-    AxiosResponse,
-    CreateAxiosDefaults,
-} from 'axios';
+import type { CreateAxiosDefaults } from 'axios';
 
 import type { ApiResponseErrorCode } from '@/types/api';
-
-type ApiErrorEnvelope = ApiErrorResponseData<ApiResponseErrorCode>;
 
 // Constants/Variables
 const loginRequiredErrorCodes = new Set<ApiResponseErrorCode>([
@@ -31,16 +23,17 @@ export function createApiAxiosInstance(config?: CreateAxiosDefaults) {
         (response) => response,
         async (error) => {
             if (!(error instanceof AxiosError)) throw error;
-            if (error.response) error.response.data = await parseBlobJsonData(error.response.data);
-            const response = toFailureResponse(error);
+            // Synthesized envelopes carry the app's own messages.
+            const response = await toApiClientFailureResponse(error, (key) => use$t(`errors.${key}`));
             const {
                 errorCode,
                 message,
                 requestId,
             } = response.data;
 
-            if (loginRequiredErrorCodes.has(errorCode)) assignUrlWithRedirectParamFromCurrentLocation('/auth/login/');
-            else if (errorCode !== 'aborted' && !error.config?.silent) {
+            if (loginRequiredErrorCodes.has(errorCode as ApiResponseErrorCode)) {
+                assignUrlWithRedirectParamFromCurrentLocation('/auth/login/');
+            } else if (errorCode !== 'aborted' && !error.config?.silent) {
                 ElNotification.error(requestId ? `${message} (${requestId})` : message);
             }
 
@@ -49,61 +42,4 @@ export function createApiAxiosInstance(config?: CreateAxiosDefaults) {
     );
 
     return instance;
-}
-
-function isApiErrorEnvelope(data: unknown): data is ApiErrorEnvelope {
-    return typeof data === 'object'
-      && data !== null
-      && (data as ApiErrorEnvelope).success === false
-      && typeof (data as ApiErrorEnvelope).errorCode === 'string';
-}
-
-/**
- * Parses a JSON `Blob` body (an error of a request with `responseType: 'blob'`, e.g. a file download) so it can be
- * read as the API envelope; other data is returned as is.
- */
-async function parseBlobJsonData(data: unknown) {
-    if (!(data instanceof Blob) || !data.type.includes('json')) return data;
-    try {
-        return JSON.parse(await data.text());
-    } catch {
-        return data;
-    }
-}
-
-/**
- * Always resolves to a response whose `data` is the API error envelope: HTTP errors keep their response (with a
- * fallback envelope when the body is not one, e.g. a proxy error page), and failures without a response are
- * synthesized with status 0. Synthesized envelopes carry the app's own messages.
- */
-function toFailureResponse(error: AxiosError): AxiosResponse<ApiErrorEnvelope> {
-    let response: AxiosResponse<ApiErrorEnvelope>;
-    if (error.response) {
-        response = {
-            ...error.response,
-            data: isApiErrorEnvelope(error.response.data)
-                ? error.response.data
-                : {
-                    errorCode: 'internalServerError',
-                    message: use$t('errors.invalidResponse'),
-                    success: false,
-                },
-        };
-    } else {
-        const errorCode: ClientApiErrorCode = axios.isCancel(error) ? 'aborted' : 'networkError';
-        response = {
-            config: error.config!,
-            data: {
-                errorCode,
-                message: use$t(`errors.${errorCode}`),
-                success: false,
-            },
-            headers: {},
-            status: 0,
-            statusText: '',
-        };
-    }
-
-    response.error = error;
-    return response;
 }

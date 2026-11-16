@@ -5,13 +5,6 @@ declare module 'axios' {
          */
         silent?: boolean;
     }
-
-    interface AxiosResponse {
-        /**
-         * The original error, present only on failures (HTTP errors and client-synthesized responses).
-         */
-        error?: AxiosError;
-    }
 }
 
 export {};
