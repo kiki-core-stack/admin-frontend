@@ -42,89 +42,64 @@
                     </el-button>
                 </div>
             </template>
-            <div class="grid gap-x-2 md:grid-cols-2">
-                <el-form-item
-                    class="mb-2!"
-                    :class="{ 'md:col-span-2': target.scope === null }"
-                    label="適用範圍"
-                    label-position="top"
-                >
-                    <el-select
-                        :empty-values="[undefined]"
-                        :model-value="target.scope ?? ''"
-                        @change="(scope) => onScopeChange(target, scope)"
-                    >
-                        <el-option
-                            label="全域 API"
-                            value=""
-                            :disabled="targets.length > 1"
-                        />
-                        <el-option
-                            v-for="platformIpAccessPolicyScope in platformIpAccessPolicyScopes"
-                            :key="platformIpAccessPolicyScope"
-                            :label="localize(platformIpAccessPolicyScopeToLabelMap[platformIpAccessPolicyScope])"
-                            :value="platformIpAccessPolicyScope"
-                        />
-                    </el-select>
-                </el-form-item>
-                <el-form-item
-                    v-if="target.scope !== null"
-                    class="mb-2!"
-                    label="身分類型"
-                    label-position="top"
-                >
-                    <el-select
-                        :empty-values="[undefined]"
-                        :model-value="target.principalType ?? ''"
-                        @change="(principalType) => onPrincipalTypeChange(target, principalType)"
-                    >
-                        <el-option
-                            label="全部身分"
-                            value=""
-                        />
-                        <el-option
-                            v-for="principalType in platformIpAccessPolicyScopeToPrincipalTypesMap[target.scope]"
-                            :key="principalType"
-                            :label="authenticationSessionPrincipalTypeToTextMap[principalType]"
-                            :value="principalType"
-                        />
-                    </el-select>
-                </el-form-item>
-            </div>
             <el-form-item
-                v-if="target.principalType !== null"
                 class="mb-2!"
-                label="項目範圍"
-                label-position="left"
-                label-width="auto"
-            >
-                <el-radio-group
-                    :model-value="target.principalIds !== null"
-                    @change="(value) => target.principalIds = value ? [] : null"
-                >
-                    <el-radio :value="false">
-                        全部
-                    </el-radio>
-                    <el-radio :value="true">
-                        指定
-                    </el-radio>
-                </el-radio-group>
-            </el-form-item>
-            <el-form-item
-                v-if="target.principalType !== null && target.principalIds !== null"
+                label="適用範圍"
                 label-position="top"
-                :label="`指定${authenticationSessionPrincipalTypeToTextMap[target.principalType]}`"
-                :prop="`targets.${index}.principalIds`"
-                :rules="principalIdsFormItemRules"
             >
-                <component
-                    :is="platformIpAccessPolicyPrincipalTypeToSelectorComponentMap[target.principalType]"
-                    v-model="target.principalIds"
-                    value-key="id"
-                    :selected-data="target.principalIds"
-                    multiple
-                />
+                <el-select
+                    :empty-values="[undefined]"
+                    :model-value="target.scope ?? ''"
+                    @change="(scope) => onScopeChange(target, scope)"
+                >
+                    <el-option
+                        label="全域 API"
+                        value=""
+                        :disabled="targets.length > 1"
+                    />
+                    <el-option
+                        v-for="platformIpAccessPolicyScope in platformIpAccessPolicyScopes"
+                        :key="platformIpAccessPolicyScope"
+                        :label="localize(platformIpAccessPolicyScopeToLabelMap[platformIpAccessPolicyScope])"
+                        :value="platformIpAccessPolicyScope"
+                    />
+                </el-select>
             </el-form-item>
+            <template v-if="target.scope !== null && platformIpAccessPolicyScopeToPrincipalMap[target.scope]">
+                <el-form-item
+                    class="mb-2!"
+                    label="項目範圍"
+                    label-position="left"
+                    label-width="auto"
+                >
+                    <el-radio-group
+                        :model-value="target.principalIds !== null"
+                        @change="(value) => target.principalIds = value ? [] : null"
+                    >
+                        <el-radio :value="false">
+                            全部
+                        </el-radio>
+                        <el-radio :value="true">
+                            指定
+                        </el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item
+                    v-if="target.principalIds !== null"
+                    label-position="top"
+                    :label="`指定${platformIpAccessPolicyScopeToPrincipalMap[target.scope]!.label}`"
+                    :prop="`targets.${index}.principalIds`"
+                    :rules="principalIdsFormItemRules"
+                >
+                    <component
+                        :is="platformIpAccessPolicyScopeToPrincipalMap[target.scope]!.selectorComponent"
+                        v-model="target.principalIds"
+                        value-key="id"
+                        :selected-data="target.principalIds"
+                        multiple
+                    />
+                </el-form-item>
+            </template>
         </el-card>
     </div>
 </template>
@@ -134,12 +109,9 @@ import {
     PlatformIpAccessPolicyScope,
     platformIpAccessPolicyScopeToLabelMap,
 } from '@kcs-project/pack/constants/platform';
-import type { AuthenticationSessionPrincipalType } from '@kcs-project/pack/types/authentication-session';
-import type { ReadonlyRecord } from '@kikiutils/shared/types';
 import type { Component } from 'vue';
 
 import SelectorAdmin from '@/components/selector/admin/index.vue';
-import { authenticationSessionPrincipalTypeToTextMap } from '@/constants/authentication-session';
 import type { PlatformIpAccessPolicyTargetData } from '@/types/data/platform';
 
 // Define props, models and emits
@@ -157,13 +129,17 @@ const principalIdsFormItemRules = [
     ),
 ];
 
-// eslint-disable-next-line vue/max-len
-const platformIpAccessPolicyPrincipalTypeToSelectorComponentMap: ReadonlyRecord<AuthenticationSessionPrincipalType, Component> = { admin: SelectorAdmin };
 const platformIpAccessPolicyScopes = getEnumNumberValues(PlatformIpAccessPolicyScope);
-const platformIpAccessPolicyScopeToPrincipalTypesMap: ReadonlyRecord<
-    PlatformIpAccessPolicyScope,
-    readonly AuthenticationSessionPrincipalType[]
-> = { [PlatformIpAccessPolicyScope.AdminManagement]: ['admin'] };
+
+// 可指定帳號的範圍；未列出的範圍只能套用到整個範圍。
+const platformIpAccessPolicyScopeToPrincipalMap: Readonly<
+    Partial<Record<PlatformIpAccessPolicyScope, { label: string; selectorComponent: Component }>>
+> = {
+    [PlatformIpAccessPolicyScope.AdminManagement]: {
+        label: '管理員',
+        selectorComponent: SelectorAdmin,
+    },
+};
 
 const targetToKeyMap = new WeakMap<PlatformIpAccessPolicyTargetData, number>();
 
@@ -174,7 +150,6 @@ const hasGlobalTarget = computed(() => targets.value.some((target) => target.sco
 function addTarget() {
     targets.value.push({
         principalIds: null,
-        principalType: null,
         scope: platformIpAccessPolicyScopes[0] ?? null,
     });
 }
@@ -189,17 +164,8 @@ function getTargetKey(target: PlatformIpAccessPolicyTargetData) {
     return key;
 }
 
-function onPrincipalTypeChange(
-    target: PlatformIpAccessPolicyTargetData,
-    principalType: '' | AuthenticationSessionPrincipalType,
-) {
-    target.principalType = principalType || null;
-    target.principalIds = null;
-}
-
 function onScopeChange(target: PlatformIpAccessPolicyTargetData, scope: '' | PlatformIpAccessPolicyScope) {
     target.scope = scope === '' ? null : scope;
-    target.principalType = null;
     target.principalIds = null;
 }
 </script>

@@ -100,7 +100,6 @@ import {
     platformIpAccessPolicyScopeToLabelMap,
 } from '@kcs-project/pack/constants/platform';
 
-import { authenticationSessionPrincipalTypeToTextMap } from '@/constants/authentication-session';
 import type {
     PlatformIpAccessPolicyFormData,
     PlatformIpAccessPolicyListItemData,
@@ -117,7 +116,6 @@ const formData = ref<PlatformIpAccessPolicyFormData>({
     targets: [
         {
             principalIds: null,
-            principalType: null,
             scope: null,
         },
     ],
@@ -147,9 +145,7 @@ function formatTargets(row: PlatformIpAccessPolicyListItemData) {
         .map((target) => {
             if (target.scope === null) return '全域 API';
             const scope = localize(platformIpAccessPolicyScopeToLabelMap[target.scope]);
-            if (target.principalType === null) return `${scope}／全部`;
-            const items = target.principalIds === null ? '全部' : `${target.principalIds.length} 個指定項目`;
-            return `${scope}／${authenticationSessionPrincipalTypeToTextMap[target.principalType]}／${items}`;
+            return `${scope}／${target.principalIds === null ? '全部' : `${target.principalIds.length} 個指定項目`}`;
         })
         .join('；');
 }

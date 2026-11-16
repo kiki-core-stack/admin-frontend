@@ -1,5 +1,4 @@
 import type { PlatformIpAccessPolicyScope } from '@kcs-project/pack/constants/platform';
-import type { AuthenticationSessionPrincipalType } from '@kcs-project/pack/types/authentication-session';
 import type { AdminData } from '@kcs-project/pack/types/data/admin';
 import type { PlatformIpAccessPolicyData } from '@kcs-project/pack/types/data/platform';
 import type { SetFieldType } from 'type-fest';
@@ -11,12 +10,7 @@ export type PlatformIpAccessPolicyListItemData = SetFieldType<
     PlatformIpAccessPolicyTargetData[]
 >;
 
-export interface PlatformIpAccessPolicyPrincipalTypeToDataMap {
-    admin: Partial<AdminData>;
-}
-
 export interface PlatformIpAccessPolicyTargetData {
-    principalIds: Array<PlatformIpAccessPolicyPrincipalTypeToDataMap[AuthenticationSessionPrincipalType]> | null;
-    principalType: AuthenticationSessionPrincipalType | null;
+    principalIds: Array<Partial<AdminData>> | null;
     scope: null | PlatformIpAccessPolicyScope;
 }
