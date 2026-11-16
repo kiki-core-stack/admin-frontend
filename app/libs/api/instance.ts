@@ -5,10 +5,10 @@ import type { CreateAxiosDefaults } from 'axios';
 import type { ApiResponseErrorCode } from '@/types/api';
 
 // Constants/Variables
-const loginRequiredErrorCodes = new Set<ApiResponseErrorCode>([
+const loginRequiredErrorCodes = new Set<string>([
     'sessionInvalid',
     'unauthorized',
-]);
+] satisfies ApiResponseErrorCode[]);
 
 // Functions
 export function createApiAxiosInstance(config?: CreateAxiosDefaults) {
@@ -31,7 +31,7 @@ export function createApiAxiosInstance(config?: CreateAxiosDefaults) {
                 requestId,
             } = response.data;
 
-            if (loginRequiredErrorCodes.has(errorCode as ApiResponseErrorCode)) {
+            if (loginRequiredErrorCodes.has(errorCode)) {
                 assignUrlWithRedirectParamFromCurrentLocation('/auth/login/');
             } else if (errorCode !== 'aborted' && !error.config?.silent) {
                 ElNotification.error(requestId ? `${message} (${requestId})` : message);
