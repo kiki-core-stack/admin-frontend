@@ -11,7 +11,7 @@
             變更密碼
         </p>
         <p class="text-gray mt-2">
-            變更後其他裝置會被登出，目前的裝置會保持登入。
+            變更後所有裝置都會被登出，需要以新密碼重新登入。
         </p>
         <el-form-input
             v-model="formData.currentPassword"
@@ -51,6 +51,7 @@
 </template>
 
 <script lang="ts" setup>
+import { loginPagePath } from '@/constants/auth';
 import type { AuthChangePasswordFormData } from '@/types/data/auth';
 
 // Constants/Refs/Variables
@@ -90,9 +91,9 @@ async function changePassword() {
             return statusOverlayRef.value!.hide();
         }
 
-        // The backend reissues this device's session and signs out the others, so the admin stays logged in.
-        statusOverlayRef.value!.showSuccess('變更成功');
-        resetChangePasswordForm();
+        // The backend signs out every device, this one included.
+        statusOverlayRef.value!.showSuccess('變更成功，請重新登入');
+        assignUrlWithRedirectParamFromCurrentLocation(loginPagePath, 1000);
     });
 }
 
