@@ -10,7 +10,7 @@
         <template #table>
             <el-table-column
                 label="設定範圍"
-                :formatter="(row: PlatformConfigData) => localize(platformConfigScopeToLabelMap[row.scope])"
+                :formatter="(row: PlatformConfigData) => localize(platformScopeToLabelMap[row.scope])"
             />
             <el-table-column
                 label="建立管理員帳號"
@@ -23,14 +23,14 @@
         </template>
         <template #form>
             <el-form-item label="設定範圍">
-                {{ localize(platformConfigScopeToLabelMap[formData.scope]) }}
+                {{ localize(platformScopeToLabelMap[formData.scope]) }}
             </el-form-item>
             <platform-config-form-system
-                v-if="formData.scope === PlatformConfigScope.System"
+                v-if="formData.scope === PlatformScope.System"
                 v-model="formData.config"
             />
             <platform-config-form-admin-management
-                v-else-if="formData.scope === PlatformConfigScope.AdminManagement"
+                v-else-if="formData.scope === PlatformScope.AdminManagement"
                 v-model="formData.config"
             />
         </template>
@@ -40,14 +40,14 @@
 <script lang="ts" setup>
 import {
     defaultPlatformConfigs,
-    PlatformConfigScope,
-    platformConfigScopeToLabelMap,
+    PlatformScope,
+    platformScopeToLabelMap,
 } from '@kcs-project/pack/constants/platform';
 import type { PlatformConfigData } from '@kcs-project/pack/types/data/platform';
 
 // Constants/Refs/Variables
 const formData = ref<CrudFormData<PlatformConfigData>>({
-    config: cloneDeep(defaultPlatformConfigs[PlatformConfigScope.System]),
-    scope: PlatformConfigScope.System,
+    config: cloneDeep(defaultPlatformConfigs[PlatformScope.System]),
+    scope: PlatformScope.System,
 });
 </script>

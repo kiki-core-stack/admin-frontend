@@ -1,4 +1,4 @@
-import type { PlatformIpAccessPolicyScope } from '@kcs-project/pack/constants/platform';
+import type { PlatformScope } from '@kcs-project/pack/constants/platform';
 import type { AdminData } from '@kcs-project/pack/types/data/admin';
 import type { PlatformIpAccessPolicyData } from '@kcs-project/pack/types/data/platform';
 import type { SetFieldType } from 'type-fest';
@@ -12,5 +12,5 @@ export type PlatformIpAccessPolicyListItemData = SetFieldType<
 
 export interface PlatformIpAccessPolicyTargetData {
     principalIds: Array<Partial<AdminData>> | null;
-    scope: null | PlatformIpAccessPolicyScope;
+    scope: PlatformScope;
 }

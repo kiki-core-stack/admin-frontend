@@ -3,11 +3,11 @@
         <span class="font-500">適用目標</span>
         <el-tooltip
             placement="top"
-            :content="hasGlobalTarget ? '全域 API 已涵蓋所有範圍，請先改為特定範圍再新增目標' : '新增目標'"
+            :content="hasSystemTarget ? '全系統已涵蓋所有範圍，請先改為特定範圍再新增目標' : '新增目標'"
         >
             <span class="inline-flex">
                 <el-button
-                    :disabled="hasGlobalTarget"
+                    :disabled="hasSystemTarget"
                     circle
                     @click="addTarget"
                 >
@@ -48,24 +48,19 @@
                 label-position="top"
             >
                 <el-select
-                    :empty-values="[undefined]"
-                    :model-value="target.scope ?? ''"
+                    :model-value="target.scope"
                     @change="(scope) => onScopeChange(target, scope)"
                 >
                     <el-option
-                        label="全域 API"
-                        value=""
-                        :disabled="targets.length > 1"
-                    />
-                    <el-option
-                        v-for="platformIpAccessPolicyScope in platformIpAccessPolicyScopes"
-                        :key="platformIpAccessPolicyScope"
-                        :label="localize(platformIpAccessPolicyScopeToLabelMap[platformIpAccessPolicyScope])"
-                        :value="platformIpAccessPolicyScope"
+                        v-for="platformScope in platformScopes"
+                        :key="platformScope"
+                        :disabled="platformScope === PlatformScope.System && targets.length > 1"
+                        :label="localize(platformScopeToLabelMap[platformScope])"
+                        :value="platformScope"
                     />
                 </el-select>
             </el-form-item>
-            <template v-if="target.scope !== null && platformIpAccessPolicyScopeToPrincipalMap[target.scope]">
+            <template v-if="platformIpAccessPolicyScopeToPrincipalMap[target.scope]">
                 <el-form-item
                     class="mb-2!"
                     label="項目範圍"
@@ -106,8 +101,8 @@
 
 <script lang="ts" setup>
 import {
-    PlatformIpAccessPolicyScope,
-    platformIpAccessPolicyScopeToLabelMap,
+    PlatformScope,
+    platformScopeToLabelMap,
 } from '@kcs-project/pack/constants/platform';
 import type { Component } from 'vue';
 
@@ -129,13 +124,13 @@ const principalIdsFormItemRules = [
     ),
 ];
 
-const platformIpAccessPolicyScopes = getEnumNumberValues(PlatformIpAccessPolicyScope);
+const platformScopes = getEnumNumberValues(PlatformScope).toSorted((a, b) => a - b);
 
 // 可指定帳號的範圍；未列出的範圍只能套用到整個範圍。
 const platformIpAccessPolicyScopeToPrincipalMap: Readonly<
-    Partial<Record<PlatformIpAccessPolicyScope, { label: string; selectorComponent: Component }>>
+    Partial<Record<PlatformScope, { label: string; selectorComponent: Component }>>
 > = {
-    [PlatformIpAccessPolicyScope.AdminManagement]: {
+    [PlatformScope.AdminManagement]: {
         label: '管理員',
         selectorComponent: SelectorAdmin,
     },
@@ -144,13 +139,13 @@ const platformIpAccessPolicyScopeToPrincipalMap: Readonly<
 const targetToKeyMap = new WeakMap<PlatformIpAccessPolicyTargetData, number>();
 
 // Computed properties
-const hasGlobalTarget = computed(() => targets.value.some((target) => target.scope === null));
+const hasSystemTarget = computed(() => targets.value.some((target) => target.scope === PlatformScope.System));
 
 // Functions
 function addTarget() {
     targets.value.push({
         principalIds: null,
-        scope: platformIpAccessPolicyScopes[0] ?? null,
+        scope: platformScopes.find((scope) => scope !== PlatformScope.System)!,
     });
 }
 
@@ -164,8 +159,8 @@ function getTargetKey(target: PlatformIpAccessPolicyTargetData) {
     return key;
 }
 
-function onScopeChange(target: PlatformIpAccessPolicyTargetData, scope: '' | PlatformIpAccessPolicyScope) {
-    target.scope = scope === '' ? null : scope;
+function onScopeChange(target: PlatformIpAccessPolicyTargetData, scope: PlatformScope) {
+    target.scope = scope;
     target.principalIds = null;
 }
 </script>

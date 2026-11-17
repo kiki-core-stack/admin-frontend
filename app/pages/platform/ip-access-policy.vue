@@ -97,7 +97,8 @@
 import {
     PlatformIpAccessPolicyMode,
     platformIpAccessPolicyModeToLabelMap,
-    platformIpAccessPolicyScopeToLabelMap,
+    PlatformScope,
+    platformScopeToLabelMap,
 } from '@kcs-project/pack/constants/platform';
 
 import type {
@@ -116,7 +117,7 @@ const formData = ref<PlatformIpAccessPolicyFormData>({
     targets: [
         {
             principalIds: null,
-            scope: null,
+            scope: PlatformScope.System,
         },
     ],
 });
@@ -143,8 +144,8 @@ function formatTargets(row: PlatformIpAccessPolicyListItemData) {
     return row
         .targets
         .map((target) => {
-            if (target.scope === null) return '全域 API';
-            const scope = localize(platformIpAccessPolicyScopeToLabelMap[target.scope]);
+            const scope = localize(platformScopeToLabelMap[target.scope]);
+            if (target.scope === PlatformScope.System) return scope;
             return `${scope}／${target.principalIds === null ? '全部' : `${target.principalIds.length} 個指定項目`}`;
         })
         .join('；');
