@@ -4,7 +4,7 @@
         permission-group="platform.config"
         resource-name="平台設定"
         title="平台設定"
-        :before-dialog-open="(row) => void (formData.config = cloneDeep(row?.config || {}))"
+        :before-dialog-open="resetFormConfig"
         :crud-api="PlatformConfigApi.use()"
     >
         <template #table>
@@ -50,4 +50,9 @@ const formData = ref<CrudFormData<PlatformConfigData>>({
     config: cloneDeep(defaultPlatformConfigs[PlatformScope.System]),
     scope: PlatformScope.System,
 });
+
+// Functions
+function resetFormConfig(row?: PlatformConfigData) {
+    formData.value.config = cloneDeep(row?.config ?? defaultPlatformConfigs[PlatformScope.System]);
+}
 </script>

@@ -20,15 +20,21 @@
   - libs/permission.ts：`hasPermission`、`isAdminPermissionKey`。
   - libs/element-plus.ts：`createElMessageBoxConfirmHandler`、`showElFormApiFieldErrors`。
 - app/libs/：需明確 import 的內部實作。
-  - api/instance.ts：axios 實例；帶上 `Accept-Language`、以 pack 的 `toApiClientFailureResponse` 把失敗統一成 envelope（`responseType: 'blob'` 的 JSON 錯誤內容也會解析）、預設顯示錯誤通知（`silent` 可關閉）、需登入時導向登入頁。
+  - api/instance.ts：axios 實例；帶上 `Accept-Language`、以 pack 的 `toApiClientFailureResponse` 把失敗統一成 envelope（`responseType: 'blob'` 的 JSON 錯誤內容也會解析）、預設顯示錯誤通知（`silent` 可關閉）、需登入時導向登入頁、受限工作階段導向雙重驗證設定頁、`verificationRequired` 時要求驗證身分後自動重送（見「登入與身分驗證」）。
   - api/error-data.ts：`getApiErrorData(responseData, code)` 取得有型別的 `errorData`；本後端自訂的 errorData 型別加在 `ApiErrorDataMap`。
+  - auth/：`index.ts`（`enterAuthenticatedSession`、`logout`）、`passkey.ts`（WebAuthn 的註冊與驗證、`isPasskeySupported`）、`qr-code-login.ts`（QR 核准網址的產生與解析）、`verification.ts`（高危操作驗證的請求佇列）。
 - app/components/：
+  - auth/：`factor-proof-form.vue`（輸入第二因子或密碼，登入第二步與高危驗證共用）、`verification-dialog.vue`（全域的驗證身分對話框，掛在 `app.vue`）、QR Code 登入區塊。
+  - profile/security/：安全性頁面的各張卡片、驗證器綁定對話框、救援碼對話框、掃描登入 QR Code 對話框。
+  - admin/security-dialog.vue：管理其他管理員的雙重驗證與登入裝置。
+  - platform/config-form/auth-fields.vue：平台設定的 auth 政策欄位，各後台 scope 的表單共用。
   - data-table-page/：列表頁元件（`index.vue`）與新增／編輯對話框（`form-dialog.vue`）。
   - admin/permission-picker.vue：身分組的權限選擇。
   - el/、selector/、filter/：Element Plus 包裝、資料選擇器、篩選表單。
 - app/composables/i18n.ts：`use$t`、`localize(messages)`（取 pack 與產生檔的多語系文字）。
 - app/types/：`api.ts`（`ApiRequestResult`、`ApiResponseEnvelope`）、`data/`（各資源的表單與 filter 型別）、`index.ts`（全域 `CrudFormData`）、`axios.ts`（`silent` 等請求選項）。
-- app/constants/sidebar.ts：側邊選單與各項目需要的權限。
+- app/constants/：`sidebar.ts`（側邊選單與各項目需要的權限）、`auth.ts`（登入、雙重驗證設定、QR 核准頁的路徑）。
+- app/plugins/：`load-profile`（載入個人資料）→ `auth-redirect`（未登入導向登入頁、受限工作階段導向雙重驗證設定頁）→ `initialize-session`。
 - i18n/locales/：介面文字；錯誤、驗證、enum 與權限名稱由後端或 pack 提供，不放這裡。
 
 ## API 呼叫
@@ -38,6 +44,21 @@
   - 失敗：`response.data.errorCode` 判斷原因；`response.data.message` 是後端翻好的訊息（攔截器已預設顯示）。
 - 表單送出失敗時呼叫 `showElFormApiFieldErrors(formRef, response.data)`，把後端的欄位錯誤標到對應的 `el-form-item`（`prop` 需與後端欄位路徑一致）。
 - 前端表單只保留必填與「確認密碼一致」等 UI 規則；格式、長度等以後端為準。
+
+## 登入與身分驗證
+
+後端行為見 pack 的 `docs/auth.md`；其他前端要用同一套流程時複製以下檔案再調整。
+
+- 頁面：
+  - `/auth/login/`：密碼登入、密碼金鑰登入、QR Code 登入（後端回 `qrCodeLoginDisabled` 時隱藏）；需要第二步時在同一頁以 `factor-proof-form` 完成。QR Code 登入的建立、輪詢與重新取得在 `composables/auth/qr-code-login.ts`（`useAuthQrCodeLogin`）。
+  - `/auth/second-factor-setup/`：受限工作階段（必須使用雙重驗證但尚未綁定）只能停在這頁綁定驗證器或密碼金鑰，完成後才進入系統。
+  - `/auth/qr-code-login/#<qrToken>`：已登入裝置核准或拒絕 QR Code 登入。登入頁的 QR Code 內容就是這個網址，手機相機或「登入裝置」頁的掃描對話框都會開到這頁。
+  - `/profile/security/`（密碼、雙重驗證、驗證器、密碼金鑰、救援碼）、`/profile/security/session/`（登入裝置）、`/profile/security/event/`（安全性紀錄，可依時間範圍與類型過濾）。
+  - 管理員管理的「安全性」對話框（需 `admin.account.manageSecurity`）、平台設定的總後台 auth 政策。
+- 高危操作驗證由 API 層統一處理，頁面不需要知道哪些操作需要驗證：
+  - 後端回 `verificationRequired` 時，`errorData` 帶有操作名稱與帳號可用的因子；攔截器呼叫 `requestAuthVerification` 開啟驗證對話框，驗證成功後把一次性憑據放進 `X-Auth-Verification` 標頭重送原請求，呼叫端拿到的是重送後的結果。
+  - 使用者取消驗證時，呼叫端拿到 `errorCode === 'verificationRequired'` 的失敗回應且不會顯示錯誤通知，當作使用者取消處理。
+- 個人資料的 `restricted` 為 true 表示受限工作階段。
 
 ## data-table-page
 

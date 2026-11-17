@@ -50,8 +50,8 @@ import { logout } from '@/libs/auth';
 
 // Constants/Refs/Variables
 const colorMode = useColorMode();
-let latestTransitionId = 0;
 const sidebarState = useSidebarState();
+let latestTransitionId = 0;
 
 // Computed properties
 const isDark = computed(() => colorMode.preference === 'dark');

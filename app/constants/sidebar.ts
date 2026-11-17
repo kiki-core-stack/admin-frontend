@@ -102,6 +102,11 @@ export const sidebarMenuItems: ReadonlyDeep<SidebarMenuItem[]> = [
                         requiredPermissions: 'ignore',
                         title: '登入裝置',
                     },
+                    {
+                        path: '/profile/security/event/',
+                        requiredPermissions: 'ignore',
+                        title: '安全性紀錄',
+                    },
                 ],
                 requiredPermissions: 'ignore',
                 title: '安全性',

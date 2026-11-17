@@ -5,6 +5,7 @@
             <nuxt-layout>
                 <nuxt-page />
             </nuxt-layout>
+            <auth-verification-dialog />
         </el-config-provider>
     </div>
 </template>

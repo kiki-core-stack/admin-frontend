@@ -26,6 +26,7 @@ export const adminPermissionKeys = [
   'admin.account.create',
   'admin.account.delete',
   'admin.account.list',
+  'admin.account.manageSecurity',
   'admin.account.toggle',
   'admin.account.update',
   'admin.log.list',
@@ -69,6 +70,7 @@ export const adminPermissionLabelMap: Readonly<Record<AdminPermissionGroup | Adm
   'admin.account.create': {"en":"Create","zh-TW":"建立"},
   'admin.account.delete': {"en":"Delete","zh-TW":"刪除"},
   'admin.account.list': {"en":"View list","zh-TW":"查看列表"},
+  'admin.account.manageSecurity': {"en":"Manage sessions and two-factor authentication","zh-TW":"管理工作階段與雙重驗證"},
   'admin.account.toggle': {"en":"Enable or disable","zh-TW":"啟用／停用"},
   'admin.account.update': {"en":"Update","zh-TW":"更新"},
   'admin.log': {"en":"Admin logs","zh-TW":"管理員日誌"},
@@ -120,6 +122,7 @@ export const adminPermissionLabelMap: Readonly<Record<AdminPermissionGroup | Adm
 export const adminPermissionRequirementMap: Readonly<Partial<Record<AdminPermissionKey, readonly AdminPermissionKey[]>>> = {
   'admin.account.create': ["admin.account.list","admin.role.list"],
   'admin.account.delete': ["admin.account.list"],
+  'admin.account.manageSecurity': ["admin.account.list"],
   'admin.account.toggle': ["admin.account.list"],
   'admin.account.update': ["admin.account.list","admin.role.list"],
   'admin.role.create': ["admin.role.list"],

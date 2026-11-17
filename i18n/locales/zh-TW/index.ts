@@ -18,6 +18,7 @@ export default {
     pages: {
         auth: {
             login: {
+                passkeyLogin: '密碼金鑰登入',
                 qrCodeLogin: 'QR Code 登入',
                 title: '總後台登入',
             },

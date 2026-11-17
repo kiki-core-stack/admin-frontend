@@ -28,6 +28,14 @@
                 @status-change="dataTablePageRef?.loadData()"
             />
         </template>
+        <template #action-btns-append="{ row }">
+            <el-action-btn
+                v-if="dataTablePageRef?.can('manageSecurity')"
+                @click="adminSecurityDialogRef?.open(row)"
+            >
+                安全性
+            </el-action-btn>
+        </template>
         <template #form="{ editingRow }">
             <el-form-input
                 v-model="formData.account"
@@ -86,6 +94,7 @@
                 :disabled="editingRow?.id === profileState.id"
             />
         </template>
+        <admin-security-dialog ref="adminSecurityDialogRef" />
     </data-table-page>
 </template>
 
@@ -93,6 +102,7 @@
 import type { AdminFormData } from '@/types/data/admin';
 
 // Constants/Refs/Variables
+const adminSecurityDialogRef = useTemplateRef('adminSecurityDialogRef');
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const formData = ref<AdminFormData>({
     account: '',

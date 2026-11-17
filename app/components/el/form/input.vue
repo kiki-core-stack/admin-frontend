@@ -11,6 +11,7 @@
             :autosize="autosize"
             :clearable="clearable"
             :disabled="disabled"
+            :inputmode="inputmode"
             :maxlength="maxlength"
             :name="name"
             :placeholder="placeholder"
@@ -25,7 +26,10 @@
 
 <script lang="ts" setup>
 import type { InputAutoSize } from 'element-plus';
-import type { InputTypeHTMLAttribute } from 'vue';
+import type {
+    HTMLAttributes,
+    InputTypeHTMLAttribute,
+} from 'vue';
 
 interface Props {
     autocomplete?: AutoFill;
@@ -33,6 +37,7 @@ interface Props {
     autosize?: InputAutoSize;
     clearable?: boolean;
     disabled?: boolean;
+    inputmode?: HTMLAttributes['inputmode'];
     maxlength?: number | string;
     name?: string;
     placeholder?: string;

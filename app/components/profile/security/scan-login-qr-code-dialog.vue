@@ -47,17 +47,14 @@
 </template>
 
 <script lang="ts" setup>
-import type { AuthenticationSessionQrCodeLoginApprovalRequestData } from '@kcs-project/pack/types/data/authentication-session';
 import {
     Html5Qrcode,
     Html5QrcodeScannerState,
 } from 'html5-qrcode';
 import type { CameraDevice } from 'html5-qrcode';
 
-import { parseUserAgentToDeviceInfo } from '@/libs/user-agent';
-
-// Define props, models and emits
-const emit = defineEmits<{ (e: 'approved'): void }>();
+import { qrCodeLoginApprovalPagePath } from '@/constants/auth';
+import { parseQrCodeLoginApprovalUrl } from '@/libs/auth/qr-code-login';
 
 // Constants/Refs/Variables
 const cameras = useLocalStorage<CameraDevice[]>('loginQrCodeScannerCameras', () => []);
@@ -67,9 +64,9 @@ const selectedCameraId = useLocalStorage<null | string>(
     null,
 );
 
+// Resumes scanning shortly after a QR code that is not a login one was shown.
+const resumeTimeout = useTimeoutFn(resumeScanning, 1000, { immediate: false });
 const statusOverlayRef = useTemplateRef('statusOverlayRef');
-let approvalAbortController: AbortController | undefined;
-let resumeTimeout: NodeJS.Timeout | undefined;
 let scanner: Html5Qrcode | undefined;
 let scannerGeneration = 0;
 
@@ -78,71 +75,32 @@ function close() {
     isVisible.value = false;
 }
 
+/**
+ * Opens the approval page of the scanned QR code login, where the admin sees the requesting device and decides.
+ */
+async function onScanSuccess(decodedText: string) {
+    if (scanner?.getState() !== Html5QrcodeScannerState.SCANNING) return;
+    const qrToken = parseQrCodeLoginApprovalUrl(decodedText);
+    if (!qrToken) {
+        scanner.pause();
+        statusOverlayRef.value!.showError('不是登入用的 QR Code');
+        resumeTimeout.start();
+        return;
+    }
+
+    close();
+    await navigateTo({
+        hash: `#${qrToken}`,
+        path: qrCodeLoginApprovalPagePath,
+    });
+}
+
 function open() {
     isVisible.value = true;
 }
 
-const confirmLogin = createElMessageBoxConfirmHandler<
-    AuthenticationSessionQrCodeLoginApprovalRequestData & { approvalToken: string }
->({
-    boxOptions: { type: 'warning' },
-    confirm: async (data) => {
-        const response = await AuthApi.use().approveQrCodeLogin(data.approvalToken, { silent: true });
-        if (response.data.success) return true;
-        if (response.data.errorCode === 'gone') return 'gone';
-        return response.data.message;
-    },
-    loadingText: '登入中...',
-    message: (data) => `確定要允許 ${parseUserAgentToDeviceInfo(data.targetUserAgent)} (${data.targetIp}) 的登入嗎？`,
-    onCancel: resumeScanning,
-    onFailed: (_, done, reason) => {
-        if (reason === 'gone') {
-            done();
-            resumeScanning();
-            return ElNotification.error('QR Code 已過期');
-        }
-
-        if (reason) ElNotification.error(reason);
-    },
-    onSuccess: () => {
-        ElNotification.success('已允許登入');
-        close();
-        emit('approved');
-    },
-});
-
-async function onScanSuccess(decodedText: string) {
-    if (scanner?.getState() !== Html5QrcodeScannerState.SCANNING) return;
-    scanner.pause();
-    const abortController = new AbortController();
-    approvalAbortController = abortController;
-    const response = await AuthApi.use().getQrCodeLoginApprovalRequest(
-        decodedText,
-        {
-            signal: abortController.signal,
-            silent: true,
-        },
-    );
-
-    if (abortController.signal.aborted || !isVisible.value) return;
-    approvalAbortController = undefined;
-    if (response.data.data?.state === 'pending') {
-        confirmLogin({
-            approvalToken: decodedText,
-            ...response.data.data,
-        });
-    } else {
-        statusOverlayRef.value!.showError('QR Code 錯誤或過期');
-        resumeTimeout = setTimeout(resumeScanning, 1000);
-    }
-}
-
 async function resetScanner() {
-    approvalAbortController?.abort();
-    approvalAbortController = undefined;
-    if (resumeTimeout) clearTimeout(resumeTimeout);
-    resumeTimeout = undefined;
-
+    resumeTimeout.stop();
     if (!scanner) return;
     const scannerState = scanner.getState();
     if (

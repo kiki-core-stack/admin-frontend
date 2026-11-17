@@ -24,6 +24,7 @@ export interface AppLocaleMessages {
     pages: {
         auth: {
             login: {
+                passkeyLogin: string;
                 qrCodeLogin: string;
                 title: string;
             };

@@ -1,4 +1,4 @@
-import type { PrincipalPermissions } from '@kcs-project/pack/types/permission';
+import type { ProfileState } from '@/composables/states/profile';
 
 export class ProfileApi extends BaseApi {
     constructor() {
@@ -6,6 +6,6 @@ export class ProfileApi extends BaseApi {
     }
 
     async get() {
-        return await this.getRequest<{ id: string; permission: PrincipalPermissions }>();
+        return await this.getRequest<ProfileState>();
     }
 }

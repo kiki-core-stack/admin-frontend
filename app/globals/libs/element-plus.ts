@@ -28,7 +28,8 @@ interface ElMessageBoxConfirmHandlerOptions<T> {
 // Functions
 export function createElMessageBoxConfirmHandler<T = any>(options: ElMessageBoxConfirmHandlerOptions<T>) {
     return (data: T) => {
-        void ElMessageBox.confirm(
+        // Canceling or dismissing the box rejects the promise; that is handled in `beforeClose` (`onCancel`).
+        ElMessageBox.confirm(
             typeof options.message === 'function' ? options.message(data) : options.message,
             {
                 beforeClose(action, instance, done) {
@@ -58,7 +59,7 @@ export function createElMessageBoxConfirmHandler<T = any>(options: ElMessageBoxC
                 draggable: true,
                 ...options.boxOptions,
             },
-        );
+        ).catch(() => {});
     };
 }
 

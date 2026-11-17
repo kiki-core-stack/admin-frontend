@@ -7,15 +7,19 @@
         :rules="formRules"
         @submit.prevent="changePassword"
     >
-        <p class="fs-20px text-center">
+        <p class="fs-20px">
             變更密碼
         </p>
+        <p class="text-gray mt-2">
+            變更後其他裝置會被登出，目前的裝置會保持登入。
+        </p>
         <el-form-input
-            v-model="formData.oldPassword"
+            v-model="formData.currentPassword"
             class="mt-4"
-            label="舊密碼"
-            name="old-password"
-            prop="oldPassword"
+            autocomplete="current-password"
+            label="目前密碼"
+            name="current-password"
+            prop="currentPassword"
             type="password"
         />
         <el-form-input
@@ -47,17 +51,17 @@
 </template>
 
 <script lang="ts" setup>
-import type { ProfileSecurityChangePasswordFormData } from '@/types/data/profile';
+import type { AuthChangePasswordFormData } from '@/types/data/auth';
 
 // Constants/Refs/Variables
-const formData = ref<ProfileSecurityChangePasswordFormData>({
+const formData = ref<AuthChangePasswordFormData>({
     confirmPassword: '',
+    currentPassword: '',
     newPassword: '',
-    oldPassword: '',
 });
 
 const formRef = useTemplateRef('formRef');
-const formRules: ElFormRules<ProfileSecurityChangePasswordFormData> = {
+const formRules: ElFormRules<AuthChangePasswordFormData> = {
     confirmPassword: [
         createElFormItemRuleWithDefaults('請輸入確認密碼'),
         {
@@ -65,8 +69,8 @@ const formRules: ElFormRules<ProfileSecurityChangePasswordFormData> = {
             validator: (_, value) => value === formData.value.newPassword,
         },
     ],
+    currentPassword: [createElFormItemRuleWithDefaults('請輸入目前密碼')],
     newPassword: [createElFormItemRuleWithDefaults('請輸入新密碼')],
-    oldPassword: [createElFormItemRuleWithDefaults('請輸入舊密碼')],
 };
 
 const statusOverlayRef = useTemplateRef('statusOverlayRef');
@@ -86,8 +90,9 @@ async function changePassword() {
             return statusOverlayRef.value!.hide();
         }
 
-        statusOverlayRef.value!.showSuccess('變更成功', false);
-        assignUrlWithRedirectParamFromCurrentLocation('/auth/login/', 1000);
+        // The backend reissues this device's session and signs out the others, so the admin stays logged in.
+        statusOverlayRef.value!.showSuccess('變更成功');
+        resetChangePasswordForm();
     });
 }
 

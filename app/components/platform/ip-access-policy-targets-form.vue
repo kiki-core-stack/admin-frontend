@@ -113,7 +113,6 @@ import type { PlatformIpAccessPolicyTargetData } from '@/types/data/platform';
 const targets = defineModel<PlatformIpAccessPolicyTargetData[]>({ required: true });
 
 // Constants/Refs/Variables
-let nextTargetKey = 0;
 const principalIdsFormItemRules = [
     createElFormItemRuleWithDefaults(
         '請至少選擇一個項目',
@@ -137,6 +136,7 @@ const platformIpAccessPolicyScopeToPrincipalMap: Readonly<
 };
 
 const targetToKeyMap = new WeakMap<PlatformIpAccessPolicyTargetData, number>();
+let nextTargetKey = 0;
 
 // Computed properties
 const hasSystemTarget = computed(() => targets.value.some((target) => target.scope === PlatformScope.System));

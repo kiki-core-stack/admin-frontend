@@ -1,11 +1,11 @@
-import type { AuthenticationSessionListItemData } from '@kcs-project/pack/types/data/authentication-session';
+import type { AuthSessionData } from '@kcs-project/pack/types/data/auth';
 
-export class ProfileSecuritySessionApi extends BaseCrudApi<AuthenticationSessionListItemData, never> {
+export class ProfileSecuritySessionApi extends BaseCrudApi<AuthSessionData, never> {
     constructor() {
         super('/api/admin/profile/security/session');
     }
 
-    async deleteAll() {
-        return await this.deleteRequest('/all');
+    async deleteOthers() {
+        return await this.deleteRequest('/others');
     }
 }

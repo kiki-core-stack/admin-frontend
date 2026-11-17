@@ -1,84 +1,81 @@
 <template>
     <data-table-page
         ref="dataTablePageRef"
+        delete-btn-text="登出"
         permission-group="ignore"
-        title="目前登入的裝置"
-        :confirm-delete-message="(row) => `確定要刪除裝置「${parseDataToDeviceColumnText(row)} (${row.lastActiveIp})」嗎？`"
+        title="登入裝置"
+        :confirm-delete-message="(row) => `確定要登出裝置「${parseUserAgentToDeviceInfo(row.userAgent)}${row.ip ? ` (${row.ip})` : ''}」嗎？`"
         :crud-api="ProfileSecuritySessionApi.use()"
-        :disable-row-delete-btn-rule="(row) => row.isCurrent"
+        :disable-row-delete-btn-rule="(row) => row.current"
         hide-footer
         hide-timestamp-columns
     >
         <template #toolbar-actions-append>
-            <el-button @click="profileSecurityScanLoginQrCodeDialogRef?.open()">
+            <el-button
+                v-if="isQrCodeLoginEnabled"
+                @click="profileSecurityScanLoginQrCodeDialogRef?.open()"
+            >
                 掃描登入 QR Code
             </el-button>
-            <el-button @click="confirmLogoutAllSessions">
-                登出所有裝置
+            <el-button @click="confirmLogoutOtherSessions">
+                登出其他裝置
             </el-button>
         </template>
         <template #table>
             <el-table-column
                 label="裝置"
-                :formatter="(row: AuthenticationSessionListItemData) => parseDataToDeviceColumnText(row)"
+                :formatter="(row: AuthSessionData) => `${row.current ? '[當前] ' : ''}${parseUserAgentToDeviceInfo(row.userAgent)}`"
             />
             <el-table-column
-                label="最後活動 IP"
-                prop="lastActiveIp"
+                label="IP"
+                prop="ip"
             />
             <el-table-datetime-column
                 label="最後活動時間"
                 prop="lastActiveAt"
             />
+            <el-table-datetime-column label="登入時間" />
             <el-table-column
-                label="登入 IP"
-                prop="loginIp"
-            />
-            <el-table-datetime-column
-                label="登入時間"
-                prop="loggedAt"
+                label="登入方式"
+                :formatter="formatLoginMethod"
             />
         </template>
-        <profile-security-scan-login-qr-code-dialog
-            ref="profileSecurityScanLoginQrCodeDialogRef"
-            @approved="onQrCodeLoginApproved"
-        />
+        <profile-security-scan-login-qr-code-dialog ref="profileSecurityScanLoginQrCodeDialogRef" />
     </data-table-page>
 </template>
 
 <script lang="ts" setup>
-import type { AuthenticationSessionListItemData } from '@kcs-project/pack/types/data/authentication-session';
+import { authFactorToLabelMap } from '@kcs-project/pack/constants/auth';
+import type { AuthSessionData } from '@kcs-project/pack/types/data/auth';
 
 import { parseUserAgentToDeviceInfo } from '@/libs/user-agent';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
+const isQrCodeLoginEnabled = ref(false);
 const profileSecurityScanLoginQrCodeDialogRef = useTemplateRef('profileSecurityScanLoginQrCodeDialogRef');
 
 // Functions
-const confirmLogoutAllSessions = createElMessageBoxConfirmHandler({
+const confirmLogoutOtherSessions = createElMessageBoxConfirmHandler({
     boxOptions: { type: 'warning' },
-    confirm: async () => (await ProfileSecuritySessionApi.use().deleteAll()).data.success,
+    confirm: async () => (await ProfileSecuritySessionApi.use().deleteOthers()).data.success,
     loadingText: '登出中...',
-    message: '確定要登出所有裝置嗎？',
-    onSuccess: () => {
-        assignUrlWithRedirectParamFromCurrentLocation('/auth/login/', 1000);
-        showSuccessAlert(
-            '登出成功',
-            {
-                allowEscapeKey: false,
-                allowOutsideClick: false,
-                showConfirmButton: false,
-            },
-        );
+    message: '確定要登出其他所有裝置嗎？目前的裝置會保持登入。',
+    onSuccess: async () => {
+        ElNotification.success('登出成功');
+        await dataTablePageRef.value?.loadData();
     },
 });
 
-function onQrCodeLoginApproved() {
-    setTimeout(() => dataTablePageRef.value?.loadData(), 1000);
+function formatLoginMethod(row: AuthSessionData) {
+    const factorsText = row.factors.map((factor) => localize(authFactorToLabelMap[factor])).join('＋');
+    if (!row.approvedBySessionId) return factorsText;
+    return factorsText ? `QR Code 核准（${factorsText}）` : 'QR Code 核准';
 }
 
-function parseDataToDeviceColumnText(row: AuthenticationSessionListItemData) {
-    return `${row.isCurrent ? '[當前] ' : ''}${parseUserAgentToDeviceInfo(row.userAgent)}`;
-}
+// Hooks
+onActivated(async () => {
+    const overview = (await ProfileSecurityApi.use().getOverview()).data.data;
+    if (overview) isQrCodeLoginEnabled.value = overview.qrCodeLoginEnabled;
+});
 </script>
