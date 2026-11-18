@@ -62,6 +62,11 @@
 <script lang="ts" setup>
 import type { AuthQrCodeLoginInfoData } from '@kcs-project/pack/types/data/auth';
 
+import {
+    clearStashedQrCodeLoginToken,
+    getStashedQrCodeLoginToken,
+    stashQrCodeLoginToken,
+} from '@/libs/auth/qr-code-login';
 import { parseUserAgentToDeviceInfo } from '@/libs/user-agent';
 
 definePageMeta({
@@ -71,6 +76,8 @@ definePageMeta({
 
 // Constants/Refs/Variables
 const info = ref<AuthQrCodeLoginInfoData>();
+// The token of the scanned QR code (see `toQrCodeLoginApprovalUrl`).
+const qrToken = ref('');
 const route = useRoute();
 const state = ref<'approved' | 'expired' | 'pending' | 'rejected'>('pending');
 const stateToMessageMap = {
@@ -81,12 +88,26 @@ const stateToMessageMap = {
 
 const statusOverlayRef = useTemplateRef('statusOverlayRef');
 
-// Computed properties
-
-// The token of the scanned QR code (see `toQrCodeLoginApprovalUrl`).
-const qrToken = computed(() => route.hash.slice(1));
-
 // Functions
+
+/**
+ * Takes the token over from the fragment and removes it from the address bar; without a fragment (a reload, or coming
+ * back from the login page) the stashed one is used.
+ */
+async function adoptQrToken() {
+    const token = route.hash.slice(1);
+    if (!token) return void (qrToken.value = getStashedQrCodeLoginToken());
+    stashQrCodeLoginToken(token);
+    qrToken.value = token;
+    await navigateTo(
+        {
+            path: route.path,
+            query: route.query,
+        },
+        { replace: true },
+    );
+}
+
 async function decide(approved: boolean) {
     if (!statusOverlayRef.value || statusOverlayRef.value.isVisible) return;
     statusOverlayRef.value.showLoading('處理中...');
@@ -98,23 +119,40 @@ async function decide(approved: boolean) {
     statusOverlayRef.value.hide();
     if (response.data.success) state.value = approved ? 'approved' : 'rejected';
     else if (response.data.errorCode === 'qrCodeLoginExpired') state.value = 'expired';
+    else return;
+
+    clearStashedQrCodeLoginToken();
 }
 
 async function loadInfo() {
     const token = qrToken.value;
     statusOverlayRef.value?.showLoading('載入中...');
-    const loadedInfo = token ? (await AuthApi.use().getQrCodeLoginInfo(token, { silent: true })).data.data : undefined;
+    const response = token ? await AuthApi.use().getQrCodeLoginInfo(token, { silent: true }) : undefined;
     if (token !== qrToken.value) return;
-    info.value = loadedInfo;
-    state.value = loadedInfo ? 'pending' : 'expired';
+    if (response && !response.data.success && response.data.errorCode === 'qrCodeLoginExpired') {
+        clearStashedQrCodeLoginToken();
+    }
+
+    info.value = response?.data.data;
+    state.value = info.value ? 'pending' : 'expired';
     statusOverlayRef.value?.hide();
 }
 
 // Watchers
 
 // Scanning another QR code while on this page only changes the fragment.
-watch(qrToken, loadInfo);
+watch(
+    () => route.hash,
+    async (hash) => {
+        if (!hash) return;
+        await adoptQrToken();
+        await loadInfo();
+    },
+);
 
 // Hooks
-onMounted(loadInfo);
+onMounted(async () => {
+    await adoptQrToken();
+    await loadInfo();
+});
 </script>
