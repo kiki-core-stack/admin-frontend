@@ -34,6 +34,7 @@ export async function logout(noAlert: boolean = false) {
     const response = await AuthApi.use().logout();
     if (!response.data.success) return !noAlert && showErrorAlert('登出失敗');
     assignUrlWithRedirectParamFromCurrentLocation(loginPagePath, 1000);
+    void wsIoClient.disconnect();
     if (noAlert) return;
     showSuccessAlert(
         '登出成功',
