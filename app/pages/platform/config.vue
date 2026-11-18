@@ -29,9 +29,11 @@
                 v-if="formData.scope === PlatformScope.System"
                 v-model="formData.config"
             />
-            <platform-config-form-admin-management
-                v-else-if="formData.scope === PlatformScope.AdminManagement"
+            <platform-config-form-auth
+                v-else
+                :key="formData.scope"
                 v-model="formData.config"
+                :scope="formData.scope"
             />
         </template>
     </data-table-page>
