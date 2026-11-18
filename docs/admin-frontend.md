@@ -22,11 +22,10 @@
 - app/libs/：需明確 import 的內部實作。
   - api/instance.ts：axios 實例；帶上 `Accept-Language`、以 pack 的 `toApiClientFailureResponse` 把失敗統一成 envelope（`responseType: 'blob'` 的 JSON 錯誤內容也會解析）、預設顯示錯誤通知（`silent` 可關閉）、需登入時導向登入頁、受限工作階段導向雙重驗證設定頁、`verificationRequired` 時要求驗證身分後自動重送（見「登入與身分驗證」）。
   - api/error-data.ts：`getApiErrorData(responseData, code)` 取得有型別的 `errorData`；本後端自訂的 errorData 型別加在 `ApiErrorDataMap`。
-  - auth/：`index.ts`（`enterAuthenticatedSession`、`logout`）、`passkey.ts`（WebAuthn 的註冊與驗證、`isPasskeySupported`）、`qr-code-login.ts`（QR 核准網址的產生與解析）、`verification.ts`（高危操作驗證的請求佇列）。
+  - auth/：`index.ts`（`enterAuthenticatedSession`、`logout`）、`passkey.ts`（WebAuthn 的註冊與驗證、`isPasskeySupported`）、`principal-security.ts`（`PrincipalSecurityApi`：管理某個帳號的安全性與工作階段，路徑由呼叫端傳入，供 `principal-security-dialog.vue` 使用）、`qr-code-login.ts`（QR 核准網址的產生與解析）、`verification.ts`（高危操作驗證的請求佇列）。
 - app/components/：
-  - auth/：`factor-proof-form.vue`（輸入第二因子、密碼或寄送的驗證碼，登入第二步與高危驗證共用；傳入 `sendCode` 才提供驗證碼）、`verification-dialog.vue`（全域的驗證身分對話框，掛在 `app.vue`）、QR Code 登入區塊。
+  - auth/：`factor-proof-form.vue`（輸入第二因子、密碼或寄送的驗證碼，登入第二步與高危驗證共用；傳入 `sendCode` 才提供驗證碼）、`verification-dialog.vue`（全域的驗證身分對話框，掛在 `app.vue`）、`principal-security-dialog.vue`（管理某個帳號的雙重驗證與登入裝置，各 realm 共用：傳入 `apiBasePath`，以 `open({ id, name })` 開啟）、QR Code 登入區塊。
   - profile/security/：安全性頁面的各張卡片、驗證器綁定對話框、救援碼對話框、掃描登入 QR Code 對話框。
-  - admin/security-dialog.vue：管理其他管理員的雙重驗證與登入裝置。
   - platform/config-form/auth-fields.vue：平台設定的 auth 政策欄位，各後台 scope 的表單共用。
   - data-table-page/：列表頁元件（`index.vue`）與新增／編輯對話框（`form-dialog.vue`）。
   - admin/permission-picker.vue：身分組的權限選擇。

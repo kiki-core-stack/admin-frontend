@@ -31,7 +31,10 @@
         <template #action-btns-append="{ row }">
             <el-action-btn
                 v-if="dataTablePageRef?.can('manageSecurity')"
-                @click="adminSecurityDialogRef?.open(row)"
+                @click="securityDialogRef?.open({
+                    id: row.id,
+                    name: row.account,
+                })"
             >
                 安全性
             </el-action-btn>
@@ -94,7 +97,10 @@
                 :disabled="editingRow?.id === profileState.id"
             />
         </template>
-        <admin-security-dialog ref="adminSecurityDialogRef" />
+        <auth-principal-security-dialog
+            ref="securityDialogRef"
+            api-base-path="/api/admin/admin"
+        />
     </data-table-page>
 </template>
 
@@ -102,7 +108,6 @@
 import type { AdminFormData } from '@/types/data/admin';
 
 // Constants/Refs/Variables
-const adminSecurityDialogRef = useTemplateRef('adminSecurityDialogRef');
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const formData = ref<AdminFormData>({
     account: '',
@@ -114,5 +119,6 @@ const formData = ref<AdminFormData>({
 });
 
 const formRules: ElFormRules<AdminFormData> = { account: [createElFormItemRuleWithDefaults('請輸入帳號')] };
+const securityDialogRef = useTemplateRef('securityDialogRef');
 const profileState = useProfileState();
 </script>
