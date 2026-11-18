@@ -26,7 +26,7 @@
                 </el-descriptions-item>
             </el-descriptions>
             <p class="text-gray mt-4">
-                核准後，該裝置將以您的身分登入。若這不是您本人的操作，請拒絕。
+                允許後，該裝置將以您的身分登入。若這不是您本人的操作，請拒絕。
             </p>
             <div class="gap-btns mt-4 flex justify-center">
                 <el-button

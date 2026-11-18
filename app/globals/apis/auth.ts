@@ -3,6 +3,7 @@ import type {
     AuthPasswordLoginData,
     AuthQrCodeLoginCreationData,
     AuthQrCodeLoginInfoData,
+    AuthSentCodeData,
 } from '@kcs-project/pack/types/data/auth';
 import type { AuthenticationResponseJSON } from '@simplewebauthn/browser';
 import type { AxiosRequestConfig } from 'axios';
@@ -98,5 +99,13 @@ export class AuthApi extends BaseApi {
 
     async rejectQrCodeLogin(qrToken: string, config?: AxiosRequestConfig) {
         return await this.postRequest('/login/qr-code/reject', { qrToken }, config);
+    }
+
+    /**
+     * Sends the admin a verification code to verify a high-risk operation with; only for accounts without a second
+     * factor, in realms that send codes.
+     */
+    async sendVerificationCode() {
+        return await this.postRequest<AuthSentCodeData>('/verification/send-code');
     }
 }

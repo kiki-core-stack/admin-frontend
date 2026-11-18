@@ -6,8 +6,11 @@
         <div class="lt-md:p-3 h-full overflow-auto p-4">
             <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-2">
                 <div class="flex flex-col gap-4">
-                    <profile-security-change-password-form />
                     <template v-if="overview">
+                        <profile-security-change-password-form
+                            :has-password="overview.hasPassword"
+                            :requires-current-password="overview.passwordChangeRequiresCurrentPassword"
+                        />
                         <profile-security-two-factor-card
                             :has-second-factor="hasSecondFactor"
                             :two-factor="overview.twoFactor"

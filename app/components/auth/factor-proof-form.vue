@@ -8,8 +8,14 @@
             :options="factorOptions"
             block
         />
+        <p
+            v-if="!selectedFactor"
+            class="text-gray text-center"
+        >
+            此帳號沒有可用的驗證方式，請聯絡管理員。
+        </p>
         <div
-            v-if="selectedFactor === 'passkey'"
+            v-else-if="selectedFactor === 'passkey'"
             class="flex-middle flex-col"
         >
             <p class="text-gray">
@@ -43,24 +49,40 @@
                 type="password"
                 :rules="[createElFormItemRuleWithDefaults('請輸入密碼')]"
             />
-            <el-form-input
-                v-else-if="selectedFactor === 'totp'"
-                ref="inputRef"
-                v-model="formData.code"
-                autocomplete="one-time-code"
-                inputmode="numeric"
-                label="驗證器顯示的 6 位數驗證碼"
-                maxlength="6"
-                name="totp-code"
-                prop="code"
-                :rules="[
-                    createElFormItemRuleWithDefaults('請輸入驗證碼'),
-                    {
-                        message: '驗證碼為 6 位數字',
-                        pattern: /^\d{6}$/,
-                    },
-                ]"
-            />
+            <template v-else-if="selectedFactor === 'code' || selectedFactor === 'totp'">
+                <div
+                    v-if="selectedFactor === 'code'"
+                    class="mb-4 flex items-center justify-between gap-2"
+                >
+                    <span class="text-gray">
+                        {{ sentCodeMessage }}
+                    </span>
+                    <el-button
+                        :disabled="codeResendCooldown.isPending.value"
+                        :loading="isSendingCode"
+                        @click="sendVerificationCode"
+                    >
+                        {{ sentCode ? '重新寄送' : '寄送驗證碼' }}
+                    </el-button>
+                </div>
+                <el-form-input
+                    ref="inputRef"
+                    v-model="formData.code"
+                    autocomplete="one-time-code"
+                    inputmode="numeric"
+                    maxlength="6"
+                    prop="code"
+                    :label="selectedFactor === 'code' ? '收到的 6 位數驗證碼' : '驗證器顯示的 6 位數驗證碼'"
+                    :name="selectedFactor === 'code' ? 'verification-code' : 'totp-code'"
+                    :rules="[
+                        createElFormItemRuleWithDefaults('請輸入驗證碼'),
+                        {
+                            message: '驗證碼為 6 位數字',
+                            pattern: /^\d{6}$/,
+                        },
+                    ]"
+                />
+            </template>
             <el-form-input
                 v-else
                 ref="inputRef"
@@ -86,6 +108,7 @@
 <script lang="ts" setup>
 import { authFactorToLabelMap } from '@kcs-project/pack/constants/auth';
 import type { AuthFactor } from '@kcs-project/pack/types/auth';
+import type { AuthSentCodeData } from '@kcs-project/pack/types/data/auth';
 
 import {
     authenticateWithPasskey,
@@ -105,6 +128,11 @@ interface Props {
     getPasskeyOptions: () => Promise<ApiRequestResult<AuthPasskeyAuthenticationOptionsData>>;
 
     /**
+     * Sends the account a verification code; without it the code factor is not offered.
+     */
+    sendCode?: () => Promise<ApiRequestResult<AuthSentCodeData>>;
+
+    /**
      * Sends the proof; resolves to whether it was accepted. On rejection the form stays for another try.
      */
     submit: (proof: AuthFactorProofData) => Promise<boolean>;
@@ -114,6 +142,7 @@ interface Props {
 const props = defineProps<Props>();
 
 // Constants/Refs/Variables
+const codeResendCooldown = useTimeoutFn(() => {}, 60000, { immediate: false });
 const formData = ref({
     code: '',
     password: '',
@@ -121,30 +150,55 @@ const formData = ref({
 
 const formRef = useTemplateRef('formRef');
 const inputRef = useTemplateRef('inputRef');
+const isSendingCode = ref(false);
 const isSubmitting = ref(false);
 const selectedFactor = ref<AuthFactor>();
+const sentCode = ref<AuthSentCodeData>();
 
 // Computed properties
+
+// `external` only describes how a session logged in; it is never proven here.
 const factorOptions = computed(() => props.factors
-    .filter((factor) => factor !== 'passkey' || isPasskeySupported)
+    .filter((factor) => {
+        if (factor === 'code') return !!props.sendCode;
+        if (factor === 'passkey') return isPasskeySupported;
+        return factor !== 'external';
+    })
     .map((factor) => ({
         label: localize(authFactorToLabelMap[factor]),
         value: factor,
     })));
 
+const sentCodeMessage = computed(() => {
+    if (!sentCode.value) return '按下按鈕以取得驗證碼。';
+    return sentCode.value.destinationHint ? `驗證碼已寄至 ${sentCode.value.destinationHint}。` : '驗證碼已寄出。';
+});
+
 // Functions
+async function sendVerificationCode() {
+    if (!props.sendCode || isSendingCode.value) return;
+    isSendingCode.value = true;
+    const response = await props.sendCode();
+    isSendingCode.value = false;
+    if (!response.data.success) return;
+    sentCode.value = response.data.data ?? {};
+    codeResendCooldown.start();
+    inputRef.value?.focus();
+}
+
 async function submitForm() {
     await formRef.value?.validate(async (valid) => {
-        if (!valid || !selectedFactor.value || selectedFactor.value === 'passkey') return;
+        const factor = selectedFactor.value;
+        if (!valid || !factor || factor === 'external' || factor === 'passkey') return;
         await submitProof(
-            selectedFactor.value === 'password'
+            factor === 'password'
                 ? {
-                    factor: selectedFactor.value,
+                    factor,
                     password: formData.value.password,
                 }
                 : {
                     code: formData.value.code.trim(),
-                    factor: selectedFactor.value,
+                    factor,
                 },
         );
     });

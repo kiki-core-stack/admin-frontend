@@ -24,7 +24,7 @@
   - api/error-data.ts：`getApiErrorData(responseData, code)` 取得有型別的 `errorData`；本後端自訂的 errorData 型別加在 `ApiErrorDataMap`。
   - auth/：`index.ts`（`enterAuthenticatedSession`、`logout`）、`passkey.ts`（WebAuthn 的註冊與驗證、`isPasskeySupported`）、`qr-code-login.ts`（QR 核准網址的產生與解析）、`verification.ts`（高危操作驗證的請求佇列）。
 - app/components/：
-  - auth/：`factor-proof-form.vue`（輸入第二因子或密碼，登入第二步與高危驗證共用）、`verification-dialog.vue`（全域的驗證身分對話框，掛在 `app.vue`）、QR Code 登入區塊。
+  - auth/：`factor-proof-form.vue`（輸入第二因子、密碼或寄送的驗證碼，登入第二步與高危驗證共用；傳入 `sendCode` 才提供驗證碼）、`verification-dialog.vue`（全域的驗證身分對話框，掛在 `app.vue`）、QR Code 登入區塊。
   - profile/security/：安全性頁面的各張卡片、驗證器綁定對話框、救援碼對話框、掃描登入 QR Code 對話框。
   - admin/security-dialog.vue：管理其他管理員的雙重驗證與登入裝置。
   - platform/config-form/auth-fields.vue：平台設定的 auth 政策欄位，各後台 scope 的表單共用。
@@ -53,7 +53,7 @@
   - `/auth/login/`：密碼登入、密碼金鑰登入、QR Code 登入（後端回 `qrCodeLoginDisabled` 時隱藏）；需要第二步時在同一頁以 `factor-proof-form` 完成。QR Code 登入的建立、輪詢與重新取得在 `composables/auth/qr-code-login.ts`（`useAuthQrCodeLogin`）。
   - `/auth/second-factor-setup/`：受限工作階段（必須使用雙重驗證但尚未綁定）只能停在這頁綁定驗證器或密碼金鑰，完成後才進入系統。
   - `/auth/qr-code-login/#<qrToken>`：已登入裝置核准或拒絕 QR Code 登入。登入頁的 QR Code 內容就是這個網址，手機相機或「登入裝置」頁的掃描對話框都會開到這頁。
-  - `/profile/security/`（密碼、雙重驗證、驗證器、密碼金鑰、救援碼）、`/profile/security/session/`（登入裝置）、`/profile/security/event/`（安全性紀錄，可依時間範圍與類型過濾）。
+  - `/profile/security/`（密碼、雙重驗證、驗證器、密碼金鑰、救援碼；密碼表單依安全性總覽的 `hasPassword`、`passwordChangeRequiresCurrentPassword` 顯示「設定／變更」與是否要輸入目前密碼）、`/profile/security/session/`（登入裝置）、`/profile/security/event/`（安全性紀錄，可依時間範圍與類型過濾）。
   - 管理員管理的「安全性」對話框（需 `admin.account.manageSecurity`）、平台設定的總後台 auth 政策。
 - 高危操作驗證由 API 層統一處理，頁面不需要知道哪些操作需要驗證：
   - 後端回 `verificationRequired` 時，`errorData` 帶有操作名稱與帳號可用的因子；攔截器呼叫 `requestAuthVerification` 開啟驗證對話框，驗證成功後把一次性憑據放進 `X-Auth-Verification` 標頭重送原請求，呼叫端拿到的是重送後的結果。

@@ -16,7 +16,7 @@ export type AuthFactorProofData =
   }
   | {
       code: string;
-      factor: 'recoveryCode' | 'totp';
+      factor: 'code' | 'recoveryCode' | 'totp';
   }
   | {
       factor: 'password';

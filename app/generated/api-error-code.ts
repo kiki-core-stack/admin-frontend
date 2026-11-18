@@ -31,6 +31,7 @@ export const apiErrorCodes = [
   'twoFactorEnforced',
   'unauthorized',
   'validationFailed',
+  'verificationCodeUnavailable',
   'verificationRequired',
 ] as const;
 

@@ -24,7 +24,7 @@
         <template #table>
             <el-table-column
                 label="裝置"
-                :formatter="(row: AuthSessionData) => `${row.current ? '[當前] ' : ''}${parseUserAgentToDeviceInfo(row.userAgent)}`"
+                :formatter="(row: AuthSessionData) => `${row.current ? '[目前] ' : ''}${parseUserAgentToDeviceInfo(row.userAgent)}`"
             />
             <el-table-column
                 label="IP"

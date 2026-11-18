@@ -8,14 +8,14 @@
         @submit.prevent="changePassword"
     >
         <p class="fs-20px">
-            變更密碼
+            {{ actionLabel }}密碼
         </p>
-        <p class="text-gray mt-2">
-            變更後所有裝置都會被登出，需要以新密碼重新登入。
+        <p class="text-gray mt-2 mb-4">
+            {{ actionLabel }}後所有裝置都會被登出，需要以新密碼重新登入。
         </p>
         <el-form-input
+            v-if="requiresCurrentPassword"
             v-model="formData.currentPassword"
-            class="mt-4"
             autocomplete="current-password"
             label="目前密碼"
             name="current-password"
@@ -43,7 +43,7 @@
                 清空
             </el-button>
             <el-button native-type="submit">
-                變更
+                {{ actionLabel }}
             </el-button>
         </div>
         <status-overlay ref="statusOverlayRef" />
@@ -53,6 +53,21 @@
 <script lang="ts" setup>
 import { loginPagePath } from '@/constants/auth';
 import type { AuthChangePasswordFormData } from '@/types/data/auth';
+
+interface Props {
+    /**
+     * Accounts registered with an external identity may have no password yet.
+     */
+    hasPassword: boolean;
+
+    /**
+     * Otherwise the backend only asks for a verification.
+     */
+    requiresCurrentPassword: boolean;
+}
+
+// Define props, models and emits
+const props = defineProps<Props>();
 
 // Constants/Refs/Variables
 const formData = ref<AuthChangePasswordFormData>({
@@ -76,6 +91,9 @@ const formRules: ElFormRules<AuthChangePasswordFormData> = {
 
 const statusOverlayRef = useTemplateRef('statusOverlayRef');
 
+// Computed properties
+const actionLabel = computed(() => props.hasPassword ? '變更' : '設定');
+
 // Functions
 const resetChangePasswordForm = () => formRef.value?.resetFields();
 
@@ -83,16 +101,19 @@ async function changePassword() {
     if (!statusOverlayRef.value || statusOverlayRef.value.isVisible) return;
     await formRef.value?.validate(async (valid) => {
         if (!valid) return;
-        statusOverlayRef.value!.showLoading('變更中...');
-        const { confirmPassword: _, ...data } = formData.value;
-        const response = await ProfileSecurityApi.use().changePassword(data);
+        statusOverlayRef.value!.showLoading(`${actionLabel.value}中...`);
+        const response = await ProfileSecurityApi.use().changePassword({
+            currentPassword: props.requiresCurrentPassword ? formData.value.currentPassword : undefined,
+            newPassword: formData.value.newPassword,
+        });
+
         if (!response.data.success) {
             showElFormApiFieldErrors(formRef.value, response.data);
             return statusOverlayRef.value!.hide();
         }
 
         // The backend signs out every device, this one included.
-        statusOverlayRef.value!.showSuccess('變更成功，請重新登入');
+        statusOverlayRef.value!.showSuccess(`${actionLabel.value}成功，請重新登入`);
         assignUrlWithRedirectParamFromCurrentLocation(loginPagePath, 1000);
     });
 }

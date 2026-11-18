@@ -16,6 +16,7 @@
             v-if="request"
             :factors="request.factors"
             :get-passkey-options="() => AuthApi.use().getVerificationPasskeyOptions()"
+            :send-code="() => AuthApi.use().sendVerificationCode()"
             :submit="verify"
         />
     </el-dialog>
