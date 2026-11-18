@@ -52,6 +52,7 @@
 
 <script lang="ts" setup>
 import { loginPagePath } from '@/constants/auth';
+import { expectSessionEnd } from '@/libs/session';
 import type { AuthChangePasswordFormData } from '@/types/data/auth';
 
 interface Props {
@@ -102,12 +103,14 @@ async function changePassword() {
     await formRef.value?.validate(async (valid) => {
         if (!valid) return;
         statusOverlayRef.value!.showLoading(`${actionLabel.value}中...`);
+        expectSessionEnd();
         const response = await ProfileSecurityApi.use().changePassword({
             currentPassword: props.requiresCurrentPassword ? formData.value.currentPassword : undefined,
             newPassword: formData.value.newPassword,
         });
 
         if (!response.data.success) {
+            expectSessionEnd(false);
             showElFormApiFieldErrors(formRef.value, response.data);
             return statusOverlayRef.value!.hide();
         }

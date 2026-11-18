@@ -8,6 +8,7 @@ import {
     secondFactorSetupPagePath,
 } from '@/constants/auth';
 import { requestAuthVerification } from '@/libs/auth/verification';
+import { isSessionEndExpected } from '@/libs/session';
 import type { ApiResponseErrorCode } from '@/types/api';
 
 import { getApiErrorData } from './error-data';
@@ -49,7 +50,7 @@ export function createApiAxiosInstance(config?: CreateAxiosDefaults) {
             }
 
             if (loginRequiredErrorCodes.has(errorCode)) {
-                assignUrlWithRedirectParamFromCurrentLocation(loginPagePath);
+                if (!isSessionEndExpected()) assignUrlWithRedirectParamFromCurrentLocation(loginPagePath);
             } else if (errorCode === ('secondFactorSetupRequired' satisfies ApiResponseErrorCode)) {
                 assignUrlWithRedirectParamFromCurrentLocation(secondFactorSetupPagePath);
             } else if (errorCode !== 'aborted' && !error.config?.silent) {

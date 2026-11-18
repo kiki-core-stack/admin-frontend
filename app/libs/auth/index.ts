@@ -4,7 +4,10 @@ import {
     loginPagePath,
     secondFactorSetupPagePath,
 } from '@/constants/auth';
-import { initializeAuthenticatedSession } from '@/libs/session';
+import {
+    expectSessionEnd,
+    initializeAuthenticatedSession,
+} from '@/libs/session';
 
 // Functions
 
@@ -31,8 +34,13 @@ export async function enterAuthenticatedSession(result: Extract<AuthLoginResultD
 
 export async function logout(noAlert: boolean = false) {
     if (!noAlert) showLoadingAlert('登出中...');
+    expectSessionEnd();
     const response = await AuthApi.use().logout();
-    if (!response.data.success) return !noAlert && showErrorAlert('登出失敗');
+    if (!response.data.success) {
+        expectSessionEnd(false);
+        return !noAlert && showErrorAlert('登出失敗');
+    }
+
     assignUrlWithRedirectParamFromCurrentLocation(loginPagePath, 1000);
     void wsIoClient.disconnect();
     if (noAlert) return;
