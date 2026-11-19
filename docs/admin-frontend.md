@@ -6,7 +6,7 @@
 
 1. 複製 `.env.development` 為 `.env.development.local`，設定 `API_BASE_URL`：management-backend 的 origin（例如 `http://127.0.0.1:8080`），不含 `/api`（產生腳本會自己接上路由路徑）。只有產生腳本使用。
 2. 頁面中的請求一律打同源的 `/api/...`，前端本身不做 proxy；開發與部署都需要前面有反向代理把 `/api` 轉給 management-backend、其餘轉給前端（main 的 gateway，開發時為 dev gateway）。
-3. 先啟動 management-backend，再 `pnpm dev`：會先執行 `scripts/generate-files.ts` 從後端產生 `app/generated/`，再啟動 Nuxt。
+3. 先啟動 management-backend，再 `pnpm dev`：會先以 bun 執行 `scripts/generate-files.ts` 從後端產生 `app/generated/`，再啟動 Nuxt。
 4. 型別檢查用 `pnpm typecheck`（根 `tsconfig.json` 只有 references，`vue-tsc --noEmit` 不會檢查任何檔案）。
 
 ## 結構
@@ -19,12 +19,14 @@
   - libs/api/：`BaseApi`（請求、查詢 filter 序列化）、`BaseCrudApi`（`create`、`update(row, data)`、`delete`、`getList`、`setBooleanField`；`serializeInput` 轉換送出的表單資料）。
   - libs/permission.ts：`hasPermission`、`isAdminPermissionKey`。
   - libs/element-plus.ts：`createElMessageBoxConfirmHandler`、`showElFormApiFieldErrors`。
+  - constants/ws.io-client.ts：`wsIoClient`（ws.io-server 的 `/admin-frontend` namespace，以登入的 cookie 驗證）；收到 `ForceLogout` 時提示該裝置已被登出並導向登入頁。
 - app/libs/：需明確 import 的內部實作。
   - api/instance.ts：axios 實例；帶上 `Accept-Language`、以 pack 的 `toApiClientFailureResponse` 把失敗統一成 envelope（`responseType: 'blob'` 的 JSON 錯誤內容也會解析）、預設顯示錯誤通知（`silent` 可關閉）、需登入時導向登入頁、受限工作階段導向雙重驗證設定頁、`verificationRequired` 時要求驗證身分後自動重送（見「登入與身分驗證」）。
   - api/error-data.ts：`getApiErrorData(responseData, code)` 取得有型別的 `errorData`；本後端自訂的 errorData 型別加在 `ApiErrorDataMap`。
-  - auth/：`index.ts`（`enterAuthenticatedSession`、`logout`）、`passkey.ts`（WebAuthn 的註冊與驗證、`isPasskeySupported`）、`principal-security.ts`（`PrincipalSecurityApi`：管理某個帳號的安全性與工作階段、查看其安全性紀錄，路徑由呼叫端傳入，供 `principal-security-dialog.vue` 使用）、`qr-code-login.ts`（QR 核准網址的產生與解析）、`verification.ts`（高危操作驗證的請求佇列）。
+  - auth/：`index.ts`（`enterAuthenticatedSession`、`logout`）、`passkey.ts`（WebAuthn 的註冊與驗證、`isPasskeySupported`）、`principal-security.ts`（`PrincipalSecurityApi`：管理某個帳號的安全性與工作階段、查看其安全性紀錄，路徑由呼叫端傳入，供 `principal-security-dialog.vue` 使用）、`qr-code-login.ts`（QR 核准網址的產生與解析；核准頁的 token 只放在網址 fragment，離開前移到 sessionStorage，避免進到 `redirect` query 被送到伺服器）、`verification.ts`（驗證身分的請求佇列）。
+  - session.ts：`initializeAuthenticatedSession`（已登入時還原頁首分頁並連線 ws.io）；`expectSessionEnd` 標記由使用者自己結束工作階段（登出、變更密碼），讓隨後的強制登出通知或 401 不被當成意外登出。
 - app/components/：
-  - auth/：`factor-proof-form.vue`（輸入第二因子、密碼或寄送的驗證碼，登入第二步與高危驗證共用；傳入 `sendCode` 才提供驗證碼）、`verification-dialog.vue`（全域的驗證身分對話框，掛在 `app.vue`）、`principal-security-dialog.vue`（管理某個帳號的雙重驗證與登入裝置、查看其安全性紀錄，各 realm 共用：傳入 `apiBasePath`，以 `open({ id, name })` 開啟；後端需在 `<apiBasePath>/<id>/security` 下提供 pack 的管理路由與 `event/list`）、QR Code 登入區塊。
+  - auth/：`factor-proof-form.vue`（輸入第二因子、密碼或寄送的驗證碼，登入第二步與驗證身分共用；傳入 `sendCode` 才提供驗證碼）、`verification-dialog.vue`（全域的驗證身分對話框，掛在 `app.vue`）、`principal-security-dialog.vue`（管理某個帳號的雙重驗證與登入裝置、查看其安全性紀錄，各 realm 共用：傳入 `apiBasePath`，以 `open({ id, name })` 開啟；後端需在 `<apiBasePath>/<id>/security` 下提供 pack 的管理路由與 `event/list`）、QR Code 登入區塊。
   - profile/security/：安全性頁面的各張卡片、驗證器綁定對話框、救援碼對話框、掃描登入 QR Code 對話框。
   - platform/config-form/auth-fields.vue：平台設定的 auth 政策欄位，各後台 scope 的表單共用。
   - data-table-page/：列表頁元件（`index.vue`）與新增／編輯對話框（`form-dialog.vue`）。
@@ -33,7 +35,7 @@
 - app/composables/i18n.ts：`use$t`、`localize(messages)`（取 pack 與產生檔的多語系文字）。
 - app/types/：`api.ts`（`ApiRequestResult`、`ApiResponseEnvelope`）、`data/`（各資源的表單與 filter 型別）、`index.ts`（全域 `CrudFormData`）、`axios.ts`（`silent` 等請求選項）。
 - app/constants/：`sidebar.ts`（側邊選單與各項目需要的權限）、`auth.ts`（登入、雙重驗證設定、QR 核准頁的路徑）。
-- app/plugins/：`load-profile`（載入個人資料）→ `auth-redirect`（未登入導向登入頁、受限工作階段導向雙重驗證設定頁）→ `initialize-session`。
+- app/plugins/：`load-profile`（載入個人資料）→ `auth-redirect`（未登入導向登入頁、受限工作階段導向雙重驗證設定頁）→ `initialize-session`（`initializeAuthenticatedSession`），順序由 `nuxt.config.ts` 的 `plugins` 指定。
 - i18n/locales/：介面文字；錯誤、驗證、enum 與權限名稱由後端或 pack 提供，不放這裡。
 
 ## API 呼叫
@@ -54,7 +56,7 @@
   - `/auth/qr-code-login/#<qrToken>`：已登入裝置核准或拒絕 QR Code 登入。登入頁的 QR Code 內容就是這個網址，手機相機或「登入裝置」頁的掃描對話框都會開到這頁。
   - `/profile/security/`（密碼、雙重驗證、驗證器、密碼金鑰、救援碼；密碼表單依安全性總覽的 `hasPassword`、`passwordChangeRequiresCurrentPassword` 顯示「設定／變更」與是否要輸入目前密碼）、`/profile/security/session/`（登入裝置）、`/profile/security/event/`（安全性紀錄，可依時間範圍與類型過濾）。
   - 管理員管理的「安全性」對話框（需 `admin.account.manageSecurity`）、平台設定的總後台 auth 政策。
-- 高危操作驗證由 API 層統一處理，頁面不需要知道哪些操作需要驗證：
+- 驗證身分由 API 層統一處理，頁面不需要知道哪些操作需要驗證：
   - 後端回 `verificationRequired` 時，`errorData` 帶有操作名稱與帳號可用的因子；攔截器呼叫 `requestAuthVerification` 開啟驗證對話框，驗證成功後把一次性憑據放進 `X-Auth-Verification` 標頭重送原請求，呼叫端拿到的是重送後的結果。
   - 使用者取消驗證時，呼叫端拿到 `errorCode === 'verificationRequired'` 的失敗回應且不會顯示錯誤通知，當作使用者取消處理。
 - 個人資料的 `restricted` 為 true 表示受限工作階段。
