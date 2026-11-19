@@ -1,15 +1,22 @@
 import type {
+    AuthEventData,
     AuthSecurityOverviewData,
     AuthSessionData,
 } from '@kcs-project/pack/types/data/auth';
 
-/**
- * Manages the security settings and sessions of an account of any realm. `basePath` is where the backend forwards the
- * pack auth management routes for that account, e.g. `/api/admin/admin/<id>/security`.
- */
 export class PrincipalSecurityApi extends BaseApi {
     constructor(basePath: string) {
         super(basePath);
+    }
+
+    async getEvents(page: number, limit: number) {
+        return await this.getRequest<{ count: number; list: AuthEventData[] }>(
+            '/event/list',
+            {
+                limit,
+                page,
+            },
+        );
     }
 
     async getOverview() {

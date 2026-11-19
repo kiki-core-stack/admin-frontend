@@ -54,8 +54,21 @@
                     登出所有裝置
                 </el-button>
             </div>
-            <el-table
+            <el-tabs
+                v-model="activeTab"
                 class="mt-4"
+            >
+                <el-tab-pane
+                    label="登入裝置"
+                    name="sessions"
+                />
+                <el-tab-pane
+                    label="安全性紀錄"
+                    name="events"
+                />
+            </el-tabs>
+            <el-table
+                v-show="activeTab === 'sessions'"
                 empty-text="沒有登入中的裝置"
                 table-layout="auto"
                 :data="sessions"
@@ -90,12 +103,53 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <div v-show="activeTab === 'events'">
+                <el-table
+                    v-loading="isLoadingEvents"
+                    empty-text="沒有安全性紀錄"
+                    table-layout="auto"
+                    :data="events"
+                    border
+                    stripe
+                >
+                    <el-table-column
+                        label="類型"
+                        :formatter="formatEventType"
+                    />
+                    <el-table-column
+                        label="使用因子"
+                        :formatter="(row: AuthEventData) => row.factor ? localize(authFactorToLabelMap[row.factor]) : ''"
+                    />
+                    <el-table-column
+                        label="IP"
+                        prop="ip"
+                    />
+                    <el-table-column
+                        label="裝置"
+                        :formatter="(row: AuthEventData) => parseUserAgentToDeviceInfo(row.userAgent)"
+                    />
+                    <el-table-datetime-column label="時間" />
+                </el-table>
+                <el-pagination
+                    v-model:current-page="eventsPage"
+                    class="mt-2 justify-center"
+                    layout="total, prev, pager, next"
+                    :page-size="eventsPageSize"
+                    :total="eventsCount"
+                    @current-change="loadEvents()"
+                />
+            </div>
         </div>
     </el-dialog>
 </template>
 
 <script lang="ts" setup>
+import {
+    authEventTypeToLabelMap,
+    authFactorToLabelMap,
+} from '@kcs-project/pack/constants/auth';
 import type {
+    AuthEventData,
     AuthSecurityOverviewData,
     AuthSessionData,
 } from '@kcs-project/pack/types/data/auth';
@@ -124,7 +178,13 @@ interface Props {
 const props = defineProps<Props>();
 
 // Constants/Refs/Variables
+const activeTab = ref<'events' | 'sessions'>('sessions');
+const events = ref<AuthEventData[]>([]);
+const eventsCount = ref(0);
+const eventsPage = ref(1);
+const eventsPageSize = 10;
 const isLoading = ref(false);
+const isLoadingEvents = ref(false);
 const isVisible = ref(false);
 const overview = ref<AuthSecurityOverviewData>();
 const principal = ref<Principal>();
@@ -195,6 +255,13 @@ function close() {
     isVisible.value = false;
 }
 
+function formatEventType(row: AuthEventData) {
+    const label = localize(authEventTypeToLabelMap[row.type]);
+    // Events such as enforcement changes or resets are performed on the account by an admin.
+    const isByOther = row.actorRealm !== row.realm || row.actorPrincipalId !== row.principalId;
+    return isByOther ? `${label}（由管理員操作）` : label;
+}
+
 async function loadData() {
     const principalId = principal.value?.id;
     if (!principalId) return;
@@ -209,6 +276,19 @@ async function loadData() {
     if (!overviewResponse.data.data || !sessionsResponse.data.data) return close();
     overview.value = overviewResponse.data.data;
     sessions.value = sessionsResponse.data.data.list;
+    if (activeTab.value === 'events') await loadEvents();
+}
+
+async function loadEvents() {
+    const principalId = principal.value?.id;
+    if (!principalId) return;
+    isLoadingEvents.value = true;
+    const response = await securityApi.value.getEvents(eventsPage.value, eventsPageSize);
+    if (principalId !== principal.value?.id) return;
+    isLoadingEvents.value = false;
+    if (!response.data.data) return;
+    events.value = response.data.data.list;
+    eventsCount.value = response.data.data.count;
 }
 
 async function open(target: Principal) {
@@ -221,7 +301,21 @@ function reset() {
     principal.value = undefined;
     overview.value = undefined;
     sessions.value = [];
+    activeTab.value = 'sessions';
+    events.value = [];
+    eventsCount.value = 0;
+    eventsPage.value = 1;
 }
+
+// Watchers
+watch(
+    activeTab,
+    async (tab) => {
+        if (tab !== 'events') return;
+        eventsPage.value = 1;
+        await loadEvents();
+    },
+);
 
 // Exposes
 defineExpose({
