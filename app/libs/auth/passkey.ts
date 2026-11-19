@@ -42,8 +42,13 @@ export async function authenticateWithPasskey(
 }
 
 function notifyPasskeyError(error: unknown) {
-    // Dismissing the browser prompt (or letting it time out) is not a failure worth reporting.
-    if (error instanceof Error && (error.name === 'AbortError' || error.name === 'NotAllowedError')) return;
+    if (error instanceof Error) {
+        // Aborted by the page itself, not by the admin.
+        if (error.name === 'AbortError') return;
+        // Also covers a dismissed prompt, so it is not reported as an error.
+        if (error.name === 'NotAllowedError') return ElNotification.info('密碼金鑰操作已取消或逾時');
+    }
+
     if (error instanceof WebAuthnError && error.code === 'ERROR_AUTHENTICATOR_PREVIOUSLY_REGISTERED') {
         return ElNotification.error('此裝置已經註冊過密碼金鑰');
     }
