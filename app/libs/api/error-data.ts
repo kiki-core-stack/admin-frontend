@@ -10,9 +10,6 @@ import type { ApiResponseEnvelope } from '@/types/api';
  */
 interface ApiErrorDataMap extends AuthApiErrorDataMap, CommonApiErrorDataMap {}
 
-/**
- * The typed `errorData` when the response failed with the given error code.
- */
 export function getApiErrorData<Code extends keyof ApiErrorDataMap>(
     responseData: Pick<ApiResponseEnvelope, 'success'> & { errorCode?: string; errorData?: unknown },
     errorCode: Code,

@@ -11,55 +11,38 @@
 
 ## 結構
 
-- app/generated/：由後端產生，有進版控；後端新增錯誤碼或權限後重新跑 dev 並 commit。
-  - api-error-code.ts：`ApiErrorCode`。
-  - admin/permission.ts：權限群組、key、型別、各語系名稱、依賴表。
-- app/globals/：自動匯入。
-  - apis/：每個資源一個 API 類別（繼承 `BaseApi` 或 `BaseCrudApi`），以 `XxxApi.use()` 取得實例。
-  - libs/api/：`BaseApi`（請求、查詢 filter 序列化）、`BaseCrudApi`（`create`、`update(row, data)`、`delete`、`getList`、`setBooleanField`；`serializeInput` 轉換送出的表單資料）。
-  - libs/permission.ts：`hasPermission`、`isAdminPermissionKey`。
-  - libs/element-plus.ts：`createElMessageBoxConfirmHandler`、`showElFormApiFieldErrors`。
-  - constants/ws.io-client.ts：`wsIoClient`（ws.io-server 的 `/admin-frontend` namespace，以登入的 cookie 驗證）；收到 `ForceLogout` 時提示該裝置已被登出並導向登入頁。
-- app/libs/：需明確 import 的內部實作。
-  - api/instance.ts：axios 實例；帶上 `Accept-Language`、以 pack 的 `toApiClientFailureResponse` 把失敗統一成 envelope（`responseType: 'blob'` 的 JSON 錯誤內容也會解析）、預設顯示錯誤通知（`silent` 可關閉）、需登入時導向登入頁、受限工作階段導向雙重驗證設定頁、`verificationRequired` 時要求驗證身分後自動重送（見「登入與身分驗證」）。
-  - api/error-data.ts：`getApiErrorData(responseData, code)` 取得有型別的 `errorData`；本後端自訂的 errorData 型別加在 `ApiErrorDataMap`。
-  - auth/：`index.ts`（`enterAuthenticatedSession`、`logout`）、`passkey.ts`（WebAuthn 的註冊與驗證、`isPasskeySupported`）、`principal-security.ts`（`PrincipalSecurityApi`：管理某個帳號的安全性與工作階段、查看其安全性紀錄，路徑由呼叫端傳入，供 `principal-security-dialog.vue` 使用）、`qr-code-login.ts`（QR 核准網址的產生與解析；核准頁的 token 只放在網址 fragment，離開前移到 sessionStorage，避免進到 `redirect` query 被送到伺服器）、`verification.ts`（驗證身分的請求佇列）。
-  - session.ts：`initializeAuthenticatedSession`（已登入時還原頁首分頁並連線 ws.io）；`expectSessionEnd` 標記由使用者自己結束工作階段（登出、變更密碼），讓隨後的強制登出通知或 401 不被當成意外登出。
-- app/components/：
-  - auth/：`factor-proof-form.vue`（輸入第二因子、密碼或寄送的驗證碼，登入第二步與驗證身分共用；傳入 `sendCode` 才提供驗證碼）、`verification-dialog.vue`（全域的驗證身分對話框，掛在 `app.vue`）、`principal-security-dialog.vue`（管理某個帳號的雙重驗證與登入裝置、查看其安全性紀錄，各 realm 共用：傳入 `apiBasePath`，以 `open({ id, name })` 開啟；後端需在 `<apiBasePath>/<id>/security` 下提供 pack 的管理路由與 `event/list`）、QR Code 登入區塊。
-  - profile/security/：安全性頁面的各張卡片、驗證器綁定對話框、救援碼對話框、掃描登入 QR Code 對話框。
-  - platform/config-form/auth-fields.vue：平台設定的 auth 政策欄位，各後台 scope 的表單共用。
-  - data-table-page/：列表頁元件（`index.vue`）與新增／編輯對話框（`form-dialog.vue`）。
-  - admin/permission-picker.vue：身分組的權限選擇。
-  - el/、selector/、filter/：Element Plus 包裝、資料選擇器、篩選表單。
-- app/composables/i18n.ts：`use$t`、`localize(messages)`（取 pack 與產生檔的多語系文字）。
-- app/types/：`api.ts`（`ApiRequestResult`、`ApiResponseEnvelope`）、`data/`（各資源的表單與 filter 型別）、`index.ts`（全域 `CrudFormData`）、`axios.ts`（`silent` 等請求選項）。
-- app/constants/：`sidebar.ts`（側邊選單與各項目需要的權限）、`auth.ts`（登入、雙重驗證設定、QR 核准頁的路徑）。
-- app/plugins/：`load-profile`（載入個人資料）→ `auth-redirect`（未登入導向登入頁、受限工作階段導向雙重驗證設定頁）→ `initialize-session`（`initializeAuthenticatedSession`），順序由 `nuxt.config.ts` 的 `plugins` 指定。
+- app/generated/：由後端產生的錯誤碼與權限（群組、key、各語系名稱、依賴表），不可手改；有進版控，後端新增錯誤碼或權限後重新跑 dev 並 commit。
+- app/globals/：自動匯入；`apis/` 每個資源一個 API 類別（繼承 `BaseApi` 或 `BaseCrudApi`，以 `XxxApi.use()` 取得實例）。
+- app/libs/：需明確 import 的內部實作（axios 實例、登入與驗證身分、session）。
+- app/components/、app/composables/、app/pages/、app/layouts/：元件、composable、頁面與版面。
+- app/constants/：側邊選單與各項目需要的權限（`sidebar.ts`）、登入相關頁面的路徑。
+- app/plugins/：`load-profile` → `auth-redirect` → `initialize-session`，順序由 `nuxt.config.ts` 的 `plugins` 指定（導向與連線都依賴先載入的個人資料）。
+- app/types/：API 回應、表單與 filter 型別。
 - i18n/locales/：介面文字；錯誤、驗證、enum 與權限名稱由後端或 pack 提供，不放這裡。
 
 ## API 呼叫
 
 - API 不拋錯，一律回傳 axios response，`response.data` 是 envelope：
   - 成功：`response.data.success === true`，資料在 `response.data.data`。
-  - 失敗：`response.data.errorCode` 判斷原因；`response.data.message` 是後端翻好的訊息（攔截器已預設顯示）。
+  - 失敗：`response.data.errorCode` 判斷原因；`response.data.message` 是後端翻好的訊息（攔截器已預設顯示，請求選項 `silent` 可關閉）。
 - 表單送出失敗時呼叫 `showElFormApiFieldErrors(formRef, response.data)`，把後端的欄位錯誤標到對應的 `el-form-item`（`prop` 需與後端欄位路徑一致）。
 - 前端表單只保留必填與「確認密碼一致」等 UI 規則；格式、長度等以後端為準。
+- 本後端自訂的 `errorData` 型別加在 `app/libs/api/error-data.ts` 的 `ApiErrorDataMap`。
 
-## 登入與身分驗證
+## 登入與驗證身分
 
 後端行為見 pack 的 `docs/auth.md`；其他前端要用同一套流程時複製以下檔案再調整。
 
 - 頁面：
-  - `/auth/login/`：密碼登入、密碼金鑰登入、QR Code 登入（後端回 `qrCodeLoginDisabled` 時隱藏）；需要第二步時在同一頁以 `factor-proof-form` 完成。QR Code 登入的建立、輪詢與重新取得在 `composables/auth/qr-code-login.ts`（`useAuthQrCodeLogin`）。
-  - `/auth/second-factor-setup/`：受限工作階段（必須使用雙重驗證但尚未綁定）只能停在這頁綁定驗證器或密碼金鑰，完成後才進入系統。
-  - `/auth/qr-code-login/#<qrToken>`：已登入裝置核准或拒絕 QR Code 登入。登入頁的 QR Code 內容就是這個網址，手機相機或「登入裝置」頁的掃描對話框都會開到這頁。
-  - `/profile/security/`（密碼、雙重驗證、驗證器、密碼金鑰、救援碼；密碼表單依安全性總覽的 `hasPassword`、`passwordChangeRequiresCurrentPassword` 顯示「設定／變更」與是否要輸入目前密碼）、`/profile/security/session/`（登入裝置）、`/profile/security/event/`（安全性紀錄，可依時間範圍與類型過濾）。
-  - 管理員管理的「安全性」對話框（需 `admin.account.manageSecurity`）、平台設定的總後台 auth 政策。
+  - `/auth/login/`：密碼登入、密碼金鑰登入、QR Code 登入（後端回 `qrCodeLoginDisabled` 時隱藏）；需要第二步時在同一頁完成。
+  - `/auth/second-factor-setup/`：必須使用雙重驗證但尚未綁定的帳號（個人資料 `restricted` 為 true）只能停在這頁綁定驗證器或密碼金鑰，完成後才進入系統。
+  - `/auth/qr-code-login/#<qrToken>`：已登入裝置核准或拒絕 QR Code 登入。登入頁的 QR Code 內容就是這個網址，手機相機或「登入裝置」頁的掃描對話框都會開到這頁。token 只放在網址 fragment，離開前移到 sessionStorage，避免進到 `redirect` query 被送到伺服器。
+  - `/profile/security/`、`/profile/security/session/`（登入裝置）、`/profile/security/event/`（安全性紀錄）。
+  - 管理員管理的「安全性」對話框（需 `admin.account.manageSecurity`；`principal-security-dialog.vue` 各 realm 共用，後端需在 `<apiBasePath>/<id>/security` 下提供 pack 的管理路由與 `event/list`）、平台設定的總後台 auth 政策。
 - 驗證身分由 API 層統一處理，頁面不需要知道哪些操作需要驗證：
-  - 後端回 `verificationRequired` 時，`errorData` 帶有操作名稱與帳號可用的因子；攔截器呼叫 `requestAuthVerification` 開啟驗證對話框，驗證成功後把一次性憑據放進 `X-Auth-Verification` 標頭重送原請求，呼叫端拿到的是重送後的結果。
+  - 後端回 `verificationRequired` 時，`errorData` 帶有操作名稱與帳號可用的因子；攔截器開啟驗證對話框，驗證成功後把一次性憑據放進 `X-Auth-Verification` 標頭重送原請求，呼叫端拿到的是重送後的結果。
   - 使用者取消驗證時，呼叫端拿到 `errorCode === 'verificationRequired'` 的失敗回應且不會顯示錯誤通知，當作使用者取消處理。
-- 個人資料的 `restricted` 為 true 表示受限工作階段。
+- 使用者自己登出或變更密碼時，先以 `expectSessionEnd` 標記，讓隨後的強制登出通知或 401 不被當成意外登出。
 
 ## data-table-page
 
@@ -76,7 +59,6 @@
 </data-table-page>
 ```
 
-- `resource-name` 為資源名稱，用於對話框標題與預設的刪除確認訊息（`確定要刪除<resource-name>「<name 或 title>」嗎？`）。
 - `permission-group` 為權限群組，各動作需要 `<group>.<action>`（不在權限清單內的動作視為無權限）；`ignore` 不檢查。頁面自訂的按鈕以 ref 的 `can('<action>')` 判斷（例如 `can('toggle')`）。
 - 不傳 `formData` 時沒有新增、編輯與對話框；`hide-*` 可隱藏內建按鈕，改用 slot 放自訂按鈕。
 - `formData` 須在 setup 時提供完整欄位（`CrudFormData<T>`，不含 `id`）；每次開啟都從這份預設值建立，編輯時只取 row 中表單有的欄位。編輯模式以 slot 的 `editingRow` 判斷。

@@ -76,7 +76,6 @@ definePageMeta({
 
 // Constants/Refs/Variables
 const info = ref<AuthQrCodeLoginInfoData>();
-// The token of the scanned QR code (see `toQrCodeLoginApprovalUrl`).
 const qrToken = ref('');
 const route = useRoute();
 const state = ref<'approved' | 'expired' | 'pending' | 'rejected'>('pending');

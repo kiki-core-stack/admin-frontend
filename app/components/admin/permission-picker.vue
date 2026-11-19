@@ -109,7 +109,7 @@ const searchText = ref('');
 // Computed properties
 /**
  * Top-level groups as sections; inside a section, every group with keys of its own is a row of its actions (e.g.
- * `admin.account` with create, update...). Labels follow the current locale.
+ * `admin.account` with create, update...).
  */
 const sections = computed(() => {
     const pathToRowMap = new Map<string, PermissionRow>();

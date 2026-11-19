@@ -19,9 +19,6 @@ export function hasPermission(required: Arrayable<'ignore' | AdminPermissionRequ
     return hasPrincipalPermission(useProfileState().value.permission, patterns);
 }
 
-/**
- * Whether the string is a key in the generated admin permission catalog.
- */
 export function isAdminPermissionKey(value: string): value is AdminPermissionKey {
     return adminPermissionKeySet.has(value);
 }

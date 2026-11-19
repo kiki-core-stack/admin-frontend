@@ -282,9 +282,6 @@ const confirmDelete = createElMessageBoxConfirmHandler<TR>({
     },
 });
 
-/**
- * Whether the current admin may perform `action` on this page (see `permissionGroup`).
- */
 function can(action: string) {
     if (props.permissionGroup === 'ignore') return true;
     const key = `${props.permissionGroup}.${action}`;

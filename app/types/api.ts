@@ -11,10 +11,6 @@ import type { ApiErrorCode } from '@/generated/api-error-code';
  * `data.success === false` plus an `errorCode` and a localized `message`, and `data.data` exists only on success.
  */
 export type ApiRequestResult<T extends object | undefined = undefined> = ApiClientResponse<ApiResponseEnvelope<T>>;
-
-/**
- * The API envelope (`response.data`) of an API call.
- */
 export type ApiResponseEnvelope<T extends object | undefined = object | undefined> = ApiResponseData<
     T,
     ApiResponseErrorCode
