@@ -104,6 +104,7 @@
 </template>
 
 <script lang="ts" setup>
+import { signalUnknownPasskey } from '@kcs-project/pack/libs/auth/passkey/browser';
 import type {
     AuthLoginResultData,
     AuthPasswordLoginData,
@@ -194,9 +195,14 @@ async function login() {
 async function loginWithPasskey() {
     if (!statusOverlayRef.value || statusOverlayRef.value.isVisible) return;
     statusOverlayRef.value.showLoading('登入中...');
-    const proof = await authenticateWithPasskey(async () => await AuthApi.use().getLoginPasskeyOptions());
-    if (proof) {
+    const authentication = await authenticateWithPasskey(async () => await AuthApi.use().getLoginPasskeyOptions());
+    if (authentication) {
+        const { proof } = authentication;
         const response = await AuthApi.use().loginWithPasskey(proof.challengeId, proof.response);
+        if (!response.data.success && response.data.errorCode === 'passkeyUnknown') {
+            void signalUnknownPasskey(authentication.rpId, proof.response.id);
+        }
+
         await handleLoginResult(response.data.data);
     }
 

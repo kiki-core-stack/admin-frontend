@@ -207,9 +207,9 @@ async function submitForm() {
 async function submitPasskey() {
     if (isSubmitting.value) return;
     isSubmitting.value = true;
-    const proof = await authenticateWithPasskey(props.getPasskeyOptions);
+    const authentication = await authenticateWithPasskey(props.getPasskeyOptions);
     isSubmitting.value = false;
-    if (proof) await submitProof(proof);
+    if (authentication) await submitProof(authentication.proof);
 }
 
 async function submitProof(proof: AuthFactorProofData) {

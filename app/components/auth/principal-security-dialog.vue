@@ -24,7 +24,7 @@
                     {{ overview.totpConfirmedAt ? `已綁定（${formatDate(overview.totpConfirmedAt)}）` : '未綁定' }}
                 </el-descriptions-item>
                 <el-descriptions-item
-                    v-if="overview.passkeySupported"
+                    v-if="overview.webauthn"
                     label="密碼金鑰"
                 >
                     {{ overview.passkeys.length }} 把

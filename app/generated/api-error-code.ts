@@ -16,6 +16,7 @@ export const apiErrorCodes = [
   'notFound',
   'originNotAllowed',
   'passkeyLimitReached',
+  'passkeyUnknown',
   'passkeyUnsupported',
   'passkeyVerificationFailed',
   'payloadTooLarge',

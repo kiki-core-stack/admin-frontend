@@ -83,6 +83,6 @@ function onSecondFactorAdded(recoveryCodes?: string[]) {
 // Hooks
 onMounted(async () => {
     const overview = (await ProfileSecurityApi.use().getOverview()).data.data;
-    isPasskeyAvailable.value = isPasskeySupported && !!overview?.passkeySupported;
+    isPasskeyAvailable.value = isPasskeySupported && !!overview?.webauthn;
 });
 </script>

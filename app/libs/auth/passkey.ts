@@ -19,18 +19,22 @@ export const isPasskeySupported = browserSupportsWebAuthn();
 
 /**
  * Asks the browser for a passkey assertion against freshly requested options. Resolves to nothing when the options
- * request failed (already notified by the API layer) or the admin dismissed the browser prompt.
+ * request failed (already notified by the API layer) or the admin dismissed the browser prompt. `rpId` is what
+ * `signalUnknownPasskey` needs when the backend does not know the passkey.
  */
 export async function authenticateWithPasskey(
     getOptions: () => Promise<ApiRequestResult<AuthPasskeyAuthenticationOptionsData>>,
-): Promise<Extract<AuthFactorProofData, { factor: 'passkey' }> | undefined> {
+): Promise<undefined | { proof: Extract<AuthFactorProofData, { factor: 'passkey' }>; rpId?: string }> {
     const optionsData = (await getOptions()).data.data;
     if (!optionsData) return;
     try {
         return {
-            challengeId: optionsData.challengeId,
-            factor: 'passkey',
-            response: await startAuthentication({ optionsJSON: optionsData.options }),
+            proof: {
+                challengeId: optionsData.challengeId,
+                factor: 'passkey',
+                response: await startAuthentication({ optionsJSON: optionsData.options }),
+            },
+            rpId: optionsData.options.rpId,
         };
     } catch (error) {
         notifyPasskeyError(error);
