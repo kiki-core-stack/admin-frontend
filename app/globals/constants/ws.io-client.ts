@@ -2,7 +2,7 @@ import { createWsIoClient } from '@kcs-project/pack/libs/ws.io';
 import type { WsIoEvents } from '@kcs-project/pack/types/ws.io-events';
 
 import { loginPagePath } from '@/constants/auth';
-import { isSessionEndExpected } from '@/libs/session';
+import { isSessionEndExpected } from '@/libs/auth/session';
 
 // Constants/Variables
 export const wsIoClient = createWsIoClient<WsIoEvents.ToServer, WsIoEvents.ToAdminFrontend>(

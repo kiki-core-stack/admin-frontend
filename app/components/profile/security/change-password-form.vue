@@ -52,7 +52,7 @@
 
 <script lang="ts" setup>
 import { loginPagePath } from '@/constants/auth';
-import { expectSessionEnd } from '@/libs/session';
+import { expectSessionEnd } from '@/libs/auth/session';
 import type { AuthChangePasswordFormData } from '@/types/data/auth';
 
 interface Props {

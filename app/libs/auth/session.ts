@@ -12,10 +12,4 @@ export function expectSessionEnd(expected: boolean = true) {
     sessionEndExpected = expected;
 }
 
-export function initializeAuthenticatedSession() {
-    if (!useProfileState().value.id) return;
-    pageHeadTabsController.load();
-    void wsIoClient.connect();
-}
-
 export const isSessionEndExpected = () => sessionEndExpected;

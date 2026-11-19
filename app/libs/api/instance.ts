@@ -7,8 +7,8 @@ import {
     loginPagePath,
     secondFactorSetupPagePath,
 } from '@/constants/auth';
+import { isSessionEndExpected } from '@/libs/auth/session';
 import { requestAuthVerification } from '@/libs/auth/verification';
-import { isSessionEndExpected } from '@/libs/session';
 import type { ApiResponseErrorCode } from '@/types/api';
 
 import { getApiErrorData } from './error-data';

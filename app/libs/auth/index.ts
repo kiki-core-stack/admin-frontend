@@ -4,10 +4,8 @@ import {
     loginPagePath,
     secondFactorSetupPagePath,
 } from '@/constants/auth';
-import {
-    expectSessionEnd,
-    initializeAuthenticatedSession,
-} from '@/libs/session';
+
+import { expectSessionEnd } from './session';
 
 // Functions
 
@@ -30,6 +28,12 @@ export async function enterAuthenticatedSession(result: Extract<AuthLoginResultD
 
     initializeAuthenticatedSession();
     await navigateTo(normalizeRedirectPath(route.query.redirect), { replace: true });
+}
+
+export function initializeAuthenticatedSession() {
+    if (!useProfileState().value.id) return;
+    pageHeadTabsController.load();
+    void wsIoClient.connect();
 }
 
 export async function logout(noAlert: boolean = false) {
