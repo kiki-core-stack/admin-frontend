@@ -9,28 +9,31 @@
         <p class="text-gray mt-4">
             此帳號必須使用雙重驗證。請先綁定驗證器或密碼金鑰，完成後才能繼續使用。
         </p>
-        <div class="mt-4 flex flex-col gap-2">
+        <div class="gap-btns mt-4 flex w-full flex-wrap">
             <el-button
-                class="m-0!"
+                class="min-w-40 flex-1"
+                type="primary"
                 @click="profileSecurityTotpSetupDialogRef?.open()"
             >
                 綁定驗證器
             </el-button>
             <el-button
                 v-if="isPasskeyAvailable"
-                class="m-0!"
+                class="min-w-40 flex-1"
+                type="primary"
                 :loading="isRegisteringPasskey"
                 @click="addPasskey"
             >
                 新增密碼金鑰
             </el-button>
-            <el-button
-                class="m-0!"
-                @click="logout()"
-            >
-                {{ $t('common.logout') }}
-            </el-button>
         </div>
+        <el-button
+            class="mt-2"
+            text
+            @click="logout()"
+        >
+            {{ $t('common.logout') }}
+        </el-button>
         <profile-security-totp-setup-dialog
             ref="profileSecurityTotpSetupDialogRef"
             @confirmed="onSecondFactorAdded"

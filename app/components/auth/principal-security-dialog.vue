@@ -57,6 +57,7 @@
             <el-tabs
                 v-model="activeTab"
                 class="mt-4"
+                stretch
             >
                 <el-tab-pane
                     label="登入裝置"
