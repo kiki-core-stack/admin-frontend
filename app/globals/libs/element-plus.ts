@@ -59,7 +59,10 @@ export function createElMessageBoxConfirmHandler<T = any>(options: ElMessageBoxC
                 draggable: true,
                 ...options.boxOptions,
             },
-        ).catch(() => {});
+        ).catch((error: unknown) => {
+            if (error === 'cancel' || error === 'close') return;
+            console.error('Failed to open confirmation dialog', error);
+        });
     };
 }
 

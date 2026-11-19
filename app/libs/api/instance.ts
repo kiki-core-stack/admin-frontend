@@ -1,6 +1,6 @@
 import { authVerificationHeaderName } from '@kcs-project/pack/constants/auth';
 import { toApiClientFailureResponse } from '@kcs-project/pack/libs/api-client/failure-response';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import type { CreateAxiosDefaults } from 'axios';
 
 import {
@@ -31,7 +31,7 @@ export function createApiAxiosInstance(config?: CreateAxiosDefaults) {
     instance.interceptors.response.use(
         (response) => response,
         async (error) => {
-            if (!(error instanceof AxiosError)) throw error;
+            if (!axios.isAxiosError(error)) throw error;
             // Synthesized envelopes carry the app's own messages.
             const response = await toApiClientFailureResponse(error, (key) => use$t(`errors.${key}`));
             const {

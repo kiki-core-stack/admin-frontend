@@ -61,8 +61,8 @@ const toggleDark = () => void (colorMode.preference = colorMode.preference === '
 
 async function pruneCache() {
     ElNotification.info('清除中...');
-    await PublicApi.use().clearClientCache().catch(() => {});
-    ElNotification.success('清除完成');
+    const response = await PublicApi.use().clearClientCache();
+    if (response.data.success) ElNotification.success('清除完成');
 }
 
 function toggleTheme(event: MouseEvent) {

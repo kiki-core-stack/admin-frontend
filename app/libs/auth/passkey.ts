@@ -68,7 +68,10 @@ export async function promptPasskeyName(title: string, inputValue: string) {
         );
 
         return value.trim();
-    } catch {}
+    } catch (error) {
+        if (error === 'cancel' || error === 'close') return;
+        throw error;
+    }
 }
 
 /**

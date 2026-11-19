@@ -100,7 +100,9 @@ export const pageHeadTabsController = new class {
                     }),
                 );
             });
-        } catch {}
+        } catch {
+            // Invalid saved tabs should not prevent the page from opening.
+        }
     }
 
     save() {
