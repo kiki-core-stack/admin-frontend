@@ -4,11 +4,20 @@ import type {
     CreateAxiosDefaults,
     Method,
 } from 'axios';
+import { isPlainObject } from 'es-toolkit';
 import queryString from 'query-string';
-import type { Except } from 'type-fest';
+import {
+    objectEntries,
+    objectKeys,
+} from 'ts-extras';
+import type {
+    Except,
+    UnknownRecord,
+} from 'type-fest';
 
 import { createApiAxiosInstance } from '@/libs/api/instance';
 import type { ApiRequestResult } from '@/types/api';
+import type { GetListFilter } from '@/types/get-list-query';
 
 const apiInstances = new WeakMap<new (...args: any[]) => any, Map<string, BaseApi>>();
 
@@ -109,4 +118,47 @@ export class BaseApi {
             url,
         });
     }
+
+    /**
+     * Serializes a list filter into the `filter` query param, or `undefined` when nothing is left to filter by.
+     *
+     * Empty conditions (`undefined`, `''`, empty `$in` / `$nin`, empty `$and` / `$or`) are dropped, and populated refs
+     * (such as selector values) are sent as their ids.
+     */
+    protected serializeGetListFilter(filter?: GetListFilter<any>) {
+        const normalizedFilter = filter && normalizeGetListFilter(filter);
+        return normalizedFilter && objectKeys(normalizedFilter).length ? JSON.stringify(normalizedFilter) : undefined;
+    }
+}
+
+// Functions
+function normalizeGetListFilter(filter: GetListFilter<any>) {
+    const serializedFilter: UnknownRecord = {};
+    for (const [key, condition] of objectEntries(filter)) {
+        if (key === '$and' || key === '$or') {
+            const subFilters = (condition as Array<GetListFilter<any>>)
+                .map(normalizeGetListFilter)
+                .filter((subFilter) => objectKeys(subFilter).length);
+
+            if (subFilters.length) serializedFilter[key] = subFilters;
+        } else if (isPlainObject(condition) && !('id' in condition)) {
+            const serializedCondition: UnknownRecord = {};
+            for (const [operator, operand] of objectEntries(condition)) {
+                if (Array.isArray(operand)) {
+                    if (operand.length) serializedCondition[operator] = operand.map(toFilterValue);
+                } else if (operand !== undefined && operand !== '') serializedCondition[operator] = toFilterValue(operand);
+            }
+
+            // `$ignoreCase` alone (its text operator left empty) is not a condition.
+            if (objectKeys(serializedCondition).some((operator) => operator !== '$ignoreCase')) {
+                serializedFilter[key] = serializedCondition;
+            }
+        } else if (condition !== undefined && condition !== '') serializedFilter[key] = toFilterValue(condition);
+    }
+
+    return serializedFilter;
+}
+
+function toFilterValue(value: unknown) {
+    return isPlainObject(value) && typeof value.id === 'string' ? value.id : value;
 }

@@ -1,23 +1,12 @@
 import type { TableRowData } from '@kcs-project/pack/types/data';
 import type { AxiosRequestConfig } from 'axios';
-import {
-    isPlainObject,
-    kebabCase,
-} from 'es-toolkit';
-import {
-    objectEntries,
-    objectKeys,
-} from 'ts-extras';
+import { kebabCase } from 'es-toolkit';
 import type {
     ConditionalKeys,
     Promisable,
-    UnknownRecord,
 } from 'type-fest';
 
-import type {
-    GetListFilter,
-    GetListQueryParams,
-} from '@/types/get-list-query';
+import type { GetListQueryParams } from '@/types/get-list-query';
 
 /**
  * CRUD API of a resource.
@@ -47,12 +36,11 @@ export class BaseCrudApi<TRow extends TableRowData, TInput extends object> exten
     }
 
     async getList(params?: GetListQueryParams<TRow>, config?: AxiosRequestConfig) {
-        const filter = params?.filter && serializeGetListFilter(params.filter);
         return await this.getRequest<{ count: number; list: TRow[]; totals?: Record<string, number | string> }>(
             '/list',
             {
                 ...params,
-                filter: filter && objectKeys(filter).length ? JSON.stringify(filter) : undefined,
+                filter: this.serializeGetListFilter(params?.filter),
             },
             config,
         );
@@ -80,41 +68,4 @@ export class BaseCrudApi<TRow extends TableRowData, TInput extends object> exten
     async setBooleanField(row: TRow, field: ConditionalKeys<TRow, boolean> & string, value: boolean) {
         return await this.patchRequest(`/${row.id}/${kebabCase(field)}`, { [field]: value });
     }
-}
-
-// Functions
-
-/**
- * Drops empty conditions (`undefined`, `''`, empty `$in` / `$nin`, empty `$and` / `$or`) so unset filter fields do not
- * filter, and sends populated refs (such as selector values) as their ids.
- */
-function serializeGetListFilter(filter: GetListFilter<any>) {
-    const serializedFilter: UnknownRecord = {};
-    for (const [key, condition] of objectEntries(filter)) {
-        if (key === '$and' || key === '$or') {
-            const subFilters = (condition as Array<GetListFilter<any>>)
-                .map(serializeGetListFilter)
-                .filter((subFilter) => objectKeys(subFilter).length);
-
-            if (subFilters.length) serializedFilter[key] = subFilters;
-        } else if (isPlainObject(condition) && !('id' in condition)) {
-            const serializedCondition: UnknownRecord = {};
-            for (const [operator, operand] of objectEntries(condition)) {
-                if (Array.isArray(operand)) {
-                    if (operand.length) serializedCondition[operator] = operand.map(toFilterValue);
-                } else if (operand !== undefined && operand !== '') serializedCondition[operator] = toFilterValue(operand);
-            }
-
-            // `$ignoreCase` alone (its text operator left empty) is not a condition.
-            if (objectKeys(serializedCondition).some((operator) => operator !== '$ignoreCase')) {
-                serializedFilter[key] = serializedCondition;
-            }
-        } else if (condition !== undefined && condition !== '') serializedFilter[key] = toFilterValue(condition);
-    }
-
-    return serializedFilter;
-}
-
-function toFilterValue(value: unknown) {
-    return isPlainObject(value) && typeof value.id === 'string' ? value.id : value;
 }
