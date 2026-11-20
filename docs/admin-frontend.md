@@ -4,7 +4,7 @@
 
 ## 啟動
 
-1. 複製 `.env.development` 為 `.env.development.local`，設定 `API_BASE_URL`：management-backend 的 origin（例如 `http://127.0.0.1:8080`），不含 `/api`（產生腳本會自己接上路由路徑）。只有產生腳本使用。
+1. `.env.development.local` 由 main 的開發 profile 產生（見 main 的 docs）；其中 `API_BASE_URL` 為 management-backend 的 origin，不含 `/api`（產生腳本會自己接上路由路徑），只有產生腳本使用。
 2. 頁面中的請求一律打同源的 `/api/...`，前端本身不做 proxy；開發與部署都需要前面有反向代理把 `/api` 轉給 management-backend、其餘轉給前端（main 的 gateway，開發時為 dev gateway）。
 3. 先啟動 management-backend，再 `pnpm dev`：會先以 bun 執行 `scripts/generate-files.ts` 從後端產生 `app/generated/`，再啟動 Nuxt。
 4. 型別檢查用 `pnpm typecheck`（根 `tsconfig.json` 只有 references，`vue-tsc --noEmit` 不會檢查任何檔案）。
