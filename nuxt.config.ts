@@ -192,6 +192,7 @@ export default defineNuxtConfig({
                 '@vueuse/integrations/useQRCode',
                 'axios',
                 'bowser',
+                'cropperjs',
                 'es-toolkit',
                 'es-toolkit/compat',
                 'html5-qrcode',

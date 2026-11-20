@@ -3,7 +3,7 @@ export type GetListFilter<T> = {
     $or?: Array<GetListFilter<T>>;
 } & { [K in keyof T & string]?: GetListFilterCondition<GetListFilterValue<NonNullable<T[K]>>> };
 
-export type GetListFilterCondition<V> = GetListFilterOperators<V> | null | V;
+type GetListFilterCondition<V> = GetListFilterOperators<V> | null | V;
 
 // Strings also accept `Date` (sent as ISO strings); populated refs also accept their id.
 type GetListFilterValue<V> = V extends Array<infer E>
@@ -14,7 +14,7 @@ type GetListFilterValue<V> = V extends Array<infer E>
             ? string | V
             : V;
 
-export interface GetListFilterOperators<V> {
+interface GetListFilterOperators<V> {
     /**
      * Matches values containing the text literally.
      */
