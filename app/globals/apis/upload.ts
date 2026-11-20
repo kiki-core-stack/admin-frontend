@@ -17,7 +17,10 @@ export class UploadApi extends BaseApi {
     async uploadImage(input: UploadImageInput) {
         const formData = new FormData();
         formData.append('file', input.image);
-        return await this.postRequest<{ id: string }>(
+        return await this.postRequest<{
+            id: string;
+            path: string;
+        }>(
             '/image',
             formData,
             merge(input.config ?? {}, { params: { allowGif: input.allowGif } }),
