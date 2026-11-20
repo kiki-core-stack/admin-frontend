@@ -11,22 +11,24 @@
     >
         <div
             ref="cropperContainerRef"
-            class="image-cropper-container w-full overflow-hidden"
+            class="image-cropper-container w-full overflow-hidden p-2"
         />
         <template #footer>
-            <el-button @click="close">
-                取消
-            </el-button>
-            <el-button @click="keepOriginal">
-                使用原圖
-            </el-button>
-            <el-button
-                type="primary"
-                :loading="isCropping"
-                @click="cropImage"
-            >
-                套用裁切
-            </el-button>
+            <div class="gap-btns flex flex-wrap justify-end">
+                <el-button @click="close">
+                    取消
+                </el-button>
+                <el-button @click="keepOriginal">
+                    使用原圖
+                </el-button>
+                <el-button
+                    type="primary"
+                    :loading="isCropping"
+                    @click="cropImage"
+                >
+                    套用裁切
+                </el-button>
+            </div>
         </template>
     </el-dialog>
 </template>
@@ -161,6 +163,7 @@ async function initializeCropper() {
     } catch (error) {
         console.error('圖片載入失敗', error);
         ElNotification.error('圖片載入失敗');
+        close();
     }
 }
 
@@ -214,6 +217,9 @@ defineExpose({
 }
 
 :deep(cropper-canvas) {
+    // The selection starts at the image edges; the padding around it keeps the half of each handle outside them
+    // visible and clickable. The image cannot be zoomed or moved, so nothing else overflows.
+    overflow: visible;
     width: 100%;
     height: 100%;
 }

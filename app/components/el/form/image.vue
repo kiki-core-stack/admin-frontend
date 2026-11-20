@@ -93,13 +93,13 @@
                 />
             </el-button>
         </div>
+        <image-cropper-dialog
+            ref="imageCropperDialogRef"
+            :source="pendingFile"
+            @closed="pendingFile = null"
+            @cropped="onImageCropped"
+        />
     </el-form-item>
-    <image-cropper-dialog
-        ref="imageCropperDialogRef"
-        :source="pendingFile"
-        @closed="pendingFile = null"
-        @cropped="onImageCropped"
-    />
 </template>
 
 <script lang="ts" setup>
