@@ -35,7 +35,7 @@ async function loadData(query: string) {
     isLoadingData.value = true;
     const response = await AdminRoleApi.use().getList({
         fields: ['name'],
-        filter: { name: { $regex: query } },
+        filter: { name: { $contains: query } },
         limit: 100,
     });
 

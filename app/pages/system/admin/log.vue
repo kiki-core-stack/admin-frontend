@@ -24,7 +24,7 @@
                 />
                 <el-form-item label="管理員">
                     <selector-admin
-                        v-model="filter.adminObjectId.$in"
+                        v-model="filter.admin.$in"
                         value-key="id"
                         multiple
                     />
@@ -64,18 +64,22 @@
 
 <script lang="ts" setup>
 import { adminLogTypeToLabelMap } from '@kcs-project/pack/constants/admin';
-import type { AdminLogData } from '@kcs-project/pack/types/data/admin';
+import type { AdminLogType } from '@kcs-project/pack/constants/admin';
+import type {
+    AdminData,
+    AdminLogData,
+} from '@kcs-project/pack/types/data/admin';
 
-import type { GetAdminLogListFilter } from '@/types/admin';
+import type { GetListFilter } from '@/types/get-list-query';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
-const filter = ref<GetAdminLogListFilter>({
-    adminObjectId: { $in: [] },
+const filter = ref({
+    admin: { $in: [] as AdminData[] },
     createdAt: {
         $gte: getMidnightDateFromToday(),
         $lt: getMidnightDateFromToday(1),
     },
-    type: { $in: [] },
-});
+    type: { $in: [] as AdminLogType[] },
+} satisfies GetListFilter<AdminLogData>);
 </script>

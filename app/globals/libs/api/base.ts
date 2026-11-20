@@ -5,10 +5,6 @@ import type {
     Method,
 } from 'axios';
 import queryString from 'query-string';
-import {
-    objectEntries,
-    objectKeys,
-} from 'ts-extras';
 import type { Except } from 'type-fest';
 
 import { createApiAxiosInstance } from '@/libs/api/instance';
@@ -17,14 +13,6 @@ import type { ApiRequestResult } from '@/types/api';
 const apiInstances = new WeakMap<new (...args: any[]) => any, Map<string, BaseApi>>();
 
 export class BaseApi {
-    // Private properties
-    readonly #rangeOperators = new Set([
-        '$gt',
-        '$gte',
-        '$lt',
-        '$lte',
-    ]);
-
     // Protected properties
     protected readonly axiosInstance: AxiosInstance;
 
@@ -48,47 +36,6 @@ export class BaseApi {
     }
 
     // Protected methods
-    protected buildQueryFilter(filter: Record<string, any>) {
-        filter = cloneDeep(filter);
-        objectEntries(filter).forEach(([field, condition]) => {
-            if (condition === null) return;
-            if (condition === undefined || (typeof condition === 'string' && !condition)) {
-                delete filter[field];
-                return;
-            }
-
-            if (Array.isArray(condition)) {
-                if (!condition.length) delete filter[field];
-                return;
-            }
-
-            if (condition instanceof Date) {
-                filter[field] = condition.toISOString();
-                return;
-            }
-
-            if (typeof condition === 'object') {
-                objectEntries(condition).forEach(([operator, operand]) => {
-                    if (this.#rangeOperators.has(operator) && operand instanceof Date) {
-                        condition[operator] = operand.toISOString();
-                        return;
-                    }
-
-                    if (operator === '$in') {
-                        if (!Array.isArray(operand) || !operand.length) delete condition[operator];
-                        return;
-                    }
-
-                    if (operator === '$regex' && (typeof operand !== 'string' || !operand)) delete condition[operator];
-                });
-
-                if (!objectKeys(condition).length) delete filter[field];
-            }
-        });
-
-        return JSON.stringify(filter);
-    }
-
     protected async deleteRequest<T extends object | undefined = undefined>(
         url?: string,
         params?: any,

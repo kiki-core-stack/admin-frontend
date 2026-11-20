@@ -64,14 +64,14 @@
 <script lang="ts" setup>
 import type { EmailSendRecordData } from '@kcs-project/pack/types/data/email';
 
-import type { GetEmailSendRecordListFilter } from '@/types/email';
+import type { GetListFilter } from '@/types/get-list-query';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
-const filter = ref<GetEmailSendRecordListFilter>({
+const filter = ref({
     createdAt: {
         $gte: getMidnightDateFromToday(),
         $lt: getMidnightDateFromToday(1),
     },
-});
+} satisfies GetListFilter<EmailSendRecordData>);
 </script>

@@ -167,6 +167,7 @@ import type {
 } from 'type-fest';
 
 import type { AdminPermissionGroup } from '@/generated/admin/permission';
+import type { GetListFilter } from '@/types/get-list-query';
 
 type ControlActionBtnFunction = (row: TR) => boolean | undefined;
 
@@ -193,7 +194,7 @@ interface Props {
     disableRowDeleteBtnRule?: ControlActionBtnFunction;
     disableRowEditBtnRule?: ControlActionBtnFunction;
     enableSelection?: boolean;
-    filter?: Record<string, any>;
+    filter?: GetListFilter<TR>;
     formRules?: ElFormRules<Record<string, any>>;
     hideActionsColumn?: boolean;
     hideAddDataBtn?: boolean;

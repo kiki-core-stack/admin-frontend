@@ -55,20 +55,21 @@ import {
     authEventTypeToLabelMap,
     authFactorToLabelMap,
 } from '@kcs-project/pack/constants/auth';
+import type { AuthEventType } from '@kcs-project/pack/constants/auth';
 import type { AuthEventData } from '@kcs-project/pack/types/data/auth';
 
 import { parseUserAgentToDeviceInfo } from '@/libs/user-agent';
-import type { GetAuthEventListFilter } from '@/types/auth';
+import type { GetListFilter } from '@/types/get-list-query';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
-const filter = ref<GetAuthEventListFilter>({
+const filter = ref({
     createdAt: {
         $gte: getMidnightDateFromToday(-6),
         $lt: getMidnightDateFromToday(1),
     },
-    type: { $in: [] },
-});
+    type: { $in: [] as AuthEventType[] },
+} satisfies GetListFilter<AuthEventData>);
 
 // Functions
 function formatType(row: AuthEventData) {

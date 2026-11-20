@@ -1,4 +1,4 @@
-export interface GetHomeDashboardDataFilter {
+export interface GetHomeDashboardDataParams {
     endAt: Date;
     startAt: Date;
 }

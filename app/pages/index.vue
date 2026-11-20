@@ -98,13 +98,13 @@
 </template>
 
 <script lang="ts" setup>
-import type { GetHomeDashboardDataFilter } from '@/types/home';
+import type { GetHomeDashboardDataParams } from '@/types/home';
 
 interface AdminHomeDashboardData {}
 
 // Constants/Refs/Variables
 const dashboardData = ref<AdminHomeDashboardData | undefined>();
-const filter = ref<GetHomeDashboardDataFilter>({
+const filter = ref<GetHomeDashboardDataParams>({
     endAt: getMidnightDateFromToday(1),
     startAt: getMidnightDateFromToday(),
 });

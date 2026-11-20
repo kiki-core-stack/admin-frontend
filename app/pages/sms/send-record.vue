@@ -56,14 +56,14 @@
 <script lang="ts" setup>
 import type { SmsSendRecordData } from '@kcs-project/pack/types/data/sms';
 
-import type { GetSmsSendRecordListFilter } from '@/types/sms';
+import type { GetListFilter } from '@/types/get-list-query';
 
 // Constants/Refs/Variables
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
-const filter = ref<GetSmsSendRecordListFilter>({
+const filter = ref({
     createdAt: {
         $gte: getMidnightDateFromToday(),
         $lt: getMidnightDateFromToday(1),
     },
-});
+} satisfies GetListFilter<SmsSendRecordData>);
 </script>
