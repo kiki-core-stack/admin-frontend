@@ -1,6 +1,8 @@
+import { siteDefaultLocale } from '../../shared/site';
+
 export default defineNuxtConfig({
     i18n: {
-        defaultLocale: 'zh-TW',
+        defaultLocale: siteDefaultLocale,
         locales: [
             {
                 code: 'zh-TW',
