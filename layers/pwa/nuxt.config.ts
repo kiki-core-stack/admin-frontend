@@ -1,0 +1,53 @@
+import { fileURLToPath } from 'node:url';
+
+import {
+    siteDescription,
+    siteName,
+    siteThemeColor,
+} from '../../shared/site';
+
+export default defineNuxtConfig({
+    modules: ['@vite-pwa/nuxt'],
+    pwa: {
+        buildSW: {
+            globPatterns: [],
+            swSrc: fileURLToPath(new URL('./app/service-worker/sw.ts', import.meta.url)),
+        },
+        client: { periodicSyncForUpdates: 60 * 60 },
+        devOptions: { enabled: false },
+        filename: 'sw.js',
+        manifest: {
+            background_color: siteThemeColor,
+            description: siteDescription,
+            display: 'standalone',
+            icons: [
+                {
+                    sizes: '192x192',
+                    src: '/icon-192x192.png',
+                    type: 'image/png',
+                },
+                {
+                    purpose: 'any',
+                    sizes: '512x512',
+                    src: '/icon-512x512.png',
+                    type: 'image/png',
+                },
+                {
+                    purpose: 'maskable',
+                    sizes: '512x512',
+                    src: '/icon-maskable-512x512.png',
+                    type: 'image/png',
+                },
+            ],
+            id: '/',
+            lang: 'zh-TW',
+            name: siteName,
+            scope: '/',
+            short_name: siteName,
+            start_url: '/',
+            theme_color: siteThemeColor,
+        },
+        registerType: 'prompt',
+        strategies: 'buildSW',
+    },
+});
