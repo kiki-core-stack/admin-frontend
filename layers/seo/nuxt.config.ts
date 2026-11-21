@@ -21,10 +21,8 @@ export default defineNuxtConfig({
     schemaOrg: {
         enabled: seoIndexingEnabled,
         identity: {
-            '@type': [],
-            'logo': `${siteUrl}/favicon.ico`,
-            'name': siteName,
-            'url': siteUrl,
+            logo: '/favicon.ico',
+            name: siteName,
         },
     },
     seo: {},
@@ -41,7 +39,7 @@ export default defineNuxtConfig({
         defaultSitemapsChunkSize: false,
         enabled: seoIndexingEnabled,
         minify: process.env.NODE_ENV === 'production',
-        sitemaps: {},
+        // sitemaps: {},
         sortEntries: true,
     },
     // Disable old build asset retention and deployment update detection.
