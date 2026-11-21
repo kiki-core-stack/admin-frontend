@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url';
 
 import {
+    siteDefaultLocale,
     siteDescription,
     siteName,
     siteThemeColor,
@@ -40,7 +41,7 @@ export default defineNuxtConfig({
                 },
             ],
             id: '/',
-            lang: 'zh-TW',
+            lang: siteDefaultLocale,
             name: siteName,
             scope: '/',
             short_name: siteName,

@@ -1,6 +1,7 @@
 import { getRequiredEnv } from '@kikiutils/shared/env';
 
 import {
+    siteDefaultLocale,
     siteDescription,
     siteName,
 } from '../../shared/site';
@@ -27,7 +28,7 @@ export default defineNuxtConfig({
     },
     seo: {},
     site: {
-        defaultLocale: 'zh-TW',
+        defaultLocale: siteDefaultLocale,
         description: siteDescription,
         indexable: seoIndexingEnabled,
         name: siteName,
