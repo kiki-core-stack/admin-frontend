@@ -77,8 +77,8 @@ const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const filter = ref({
     admin: { $in: [] as AdminData[] },
     createdAt: {
-        $gte: getMidnightDateFromToday(),
-        $lt: getMidnightDateFromToday(1),
+        $gte: getStartOfDayFromToday(),
+        $lt: getStartOfDayFromToday(1),
     },
     type: { $in: [] as AdminLogType[] },
 } satisfies GetListFilter<AdminLogData>);

@@ -65,8 +65,8 @@ import type { GetListFilter } from '@/types/get-list-query';
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const filter = ref({
     createdAt: {
-        $gte: getMidnightDateFromToday(-6),
-        $lt: getMidnightDateFromToday(1),
+        $gte: getStartOfDayFromToday(-6),
+        $lt: getStartOfDayFromToday(1),
     },
     type: { $in: [] as AuthEventType[] },
 } satisfies GetListFilter<AuthEventData>);

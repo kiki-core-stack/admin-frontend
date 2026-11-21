@@ -70,8 +70,8 @@ import type { GetListFilter } from '@/types/get-list-query';
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const filter = ref({
     createdAt: {
-        $gte: getMidnightDateFromToday(),
-        $lt: getMidnightDateFromToday(1),
+        $gte: getStartOfDayFromToday(),
+        $lt: getStartOfDayFromToday(1),
     },
 } satisfies GetListFilter<EmailSendRecordData>);
 </script>

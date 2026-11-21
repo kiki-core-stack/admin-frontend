@@ -105,8 +105,8 @@ interface AdminHomeDashboardData {}
 // Constants/Refs/Variables
 const dashboardData = ref<AdminHomeDashboardData | undefined>();
 const filter = ref<GetHomeDashboardDataParams>({
-    endAt: getMidnightDateFromToday(1),
-    startAt: getMidnightDateFromToday(),
+    endAt: getStartOfDayFromToday(1),
+    startAt: getStartOfDayFromToday(),
 });
 
 const hasViewDashboardPermission = hasPermission('home.dashboard.view');

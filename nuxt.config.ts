@@ -185,7 +185,6 @@ export default defineNuxtConfig({
                 '@kikiutils/shared/datetime',
                 '@kikiutils/shared/element-plus',
                 '@kikiutils/shared/enum',
-                '@kikiutils/shared/random',
                 '@kikiutils/shared/url',
                 '@kikiutils/shared/vue',
                 '@kikiutils/shared/web',
