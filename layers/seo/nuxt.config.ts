@@ -1,4 +1,4 @@
-import { checkAndGetEnvValue } from '@kikiutils/shared/env';
+import { getRequiredEnv } from '@kikiutils/shared/env';
 
 import {
     siteDescription,
@@ -8,7 +8,7 @@ import {
 // Constants/Variables
 const envValidationSkipped = process.env.SKIP_ENV_VALIDATION === 'true';
 const seoIndexingEnabled = process.env.SEO_INDEXING_ENABLED?.trim() === 'true';
-const siteUrl = (envValidationSkipped ? process.env.NUXT_SITE_URL : checkAndGetEnvValue('NUXT_SITE_URL'))
+const siteUrl = (envValidationSkipped ? process.env.NUXT_SITE_URL : getRequiredEnv('NUXT_SITE_URL'))
     ?.trim()
     .replace(/\/+$/, '');
 
