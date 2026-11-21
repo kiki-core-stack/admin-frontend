@@ -1,6 +1,7 @@
-// Constants/Variables
-const siteName = '總後台';
-const siteTitle = '總後台';
+import {
+    siteName,
+    siteTitle,
+} from './shared/site';
 
 // Nuxt configuration reference: https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -18,148 +19,21 @@ export default defineNuxtConfig({
         host: process.env.DEV_SERVER_HOST,
         port: Number(process.env.DEV_SERVER_PORT) || undefined,
     },
-    experimental: {
-        asyncContext: true,
-        extractSerializablePageMeta: true,
-        typescriptPlugin: true,
-        watcher: 'builder',
-    },
-    hooks: {
-        'prepare:types': function ({ tsConfig }) {
-            delete tsConfig.compilerOptions?.paths?.['~'];
-            delete tsConfig.compilerOptions?.paths?.['~/*'];
-        },
-    },
-    i18n: {
-        defaultLocale: 'zh-TW',
-        locales: [
-            {
-                code: 'zh-TW',
-                files: ['zh-TW/index.ts'],
-                name: '繁體中文',
-            },
-        ],
-        strategy: 'no_prefix',
-    },
-    icon: {
-        clientBundle: {
-            icons: [],
-            includeCustomCollections: true,
-            scan: true,
-        },
-        componentName: 'NuxtIcon',
-        customCollections: [
-            {
-                dir: './app/assets/icons',
-                prefix: 'icon',
-                recursive: true,
-            },
-        ],
-        mode: 'svg',
-        provider: 'none',
-    },
+    experimental: { typescriptPlugin: true },
     kikiutilsNuxt: {
         autoImportUtils: { '@kikiutils/shared': { elementPlus: true } },
         enabledModules: {
             colorMode: true,
             elementPlus: true,
-            security: true,
         },
     },
-    modules: [
-        '@kikiutils/nuxt',
-        '@nuxt/icon',
-        '@nuxtjs/i18n',
-    ],
+    modules: ['@kikiutils/nuxt'],
     plugins: [
         '@/plugins/load-profile',
         '@/plugins/auth-redirect',
         '@/plugins/initialize-session',
     ],
-    robots: { disallow: '/' },
-    security: {
-        headers: {
-            contentSecurityPolicy: {
-                'base-uri': [`'self'`],
-                'connect-src': [
-                    `'self'`,
-                    'https://*.analytics.google.com',
-                    'https://*.google-analytics.com',
-                    'https://*.googletagmanager.com',
-                    'https://fonts.googleapis.com',
-                    'https://fonts.gstatic.com',
-                    'https://stats.g.doubleclick.net',
-                    'https://i.ytimg.com',
-                    'https://s.ytimg.com',
-                    'https://www.youtube.com',
-                    'https://www.youtube-nocookie.com',
-                ],
-                'default-src': [`'none'`],
-                'font-src': [
-                    `'self'`,
-                    'data:',
-                    'https://fonts.gstatic.com',
-                ],
-                'frame-src': [
-                    `'self'`,
-                    'https://www.youtube.com',
-                    'https://www.youtube-nocookie.com',
-                ],
-                'img-src': [
-                    `'self'`,
-                    'blob:',
-                    'data:',
-                    'https://*.google-analytics.com',
-                    'https://*.googletagmanager.com',
-                    'https://i.ytimg.com',
-                ],
-                'manifest-src': [`'self'`],
-                'media-src': [`'self'`],
-                'script-src': [
-                    `'self'`,
-                    'https:',
-                    `'unsafe-inline'`,
-                    `'strict-dynamic'`,
-                    `'nonce-{{nonce}}'`,
-                ],
-                'script-src-attr': [
-                    `'unsafe-hashes'`,
-                    // Allow the @nuxt/image onerror handler to mark failed images.
-                    // Handler: this.setAttribute('data-error', 1)
-                    `'sha256-bwK6T5wZVTANitXbrTsel7kl/PyCjCd/Dq5Qoz3imjM='`,
-                    // Allow the unplugin-fonts onload handler to activate the preloaded Google Fonts stylesheet.
-                    // Handler: this.rel='stylesheet'
-                    `'sha256-F1noxsLOnJhyRSgc0zu5JgzoLjG2BBMaXaSG24k2mRM='`,
-                ],
-                'style-src': [
-                    `'self'`,
-                    `'unsafe-inline'`,
-                    'https://fonts.googleapis.com',
-                ],
-                'worker-src': [`'self'`],
-            },
-            crossOriginEmbedderPolicy: false,
-            permissionsPolicy: {
-                'camera': ['self'],
-                'encrypted-media': [
-                    'self',
-                    '"https://www.youtube.com"',
-                    '"https://www.youtube-nocookie.com"',
-                ],
-                'fullscreen': [
-                    'self',
-                    '"https://www.youtube.com"',
-                    '"https://www.youtube-nocookie.com"',
-                ],
-            },
-            referrerPolicy: 'strict-origin-when-cross-origin',
-        },
-    },
-    site: {
-        defaultLocale: 'zh-TW',
-        indexable: false,
-        name: siteName,
-    },
+    routeRules: {},
     ssr: false,
     typescript: { nodeTsConfig: { include: ['../scripts/**/*.ts'] } },
     unfonts: {
@@ -200,6 +74,6 @@ export default defineNuxtConfig({
                 'sweetalert2',
             ],
         },
-        server: { allowedHosts: (process.env.DEV_VITE_SERVER_ALLOWED_HOSTS || '').split(',') },
+        server: { allowedHosts: process.env.DEV_VITE_SERVER_ALLOWED_HOSTS?.split(',').filter(Boolean) },
     },
 });

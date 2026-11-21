@@ -33,7 +33,7 @@ export function createApiAxiosInstance(config?: CreateAxiosDefaults) {
         async (error) => {
             if (!axios.isAxiosError(error)) throw error;
             // Synthesized envelopes carry the app's own messages.
-            const response = await toApiClientFailureResponse(error, (key) => use$t(`errors.${key}`));
+            const response = await toApiClientFailureResponse(error, (key) => useNuxtApp().$i18n.t(`errors.${key}`));
             const {
                 errorCode,
                 message,

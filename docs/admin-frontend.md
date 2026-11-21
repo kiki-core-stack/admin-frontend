@@ -18,7 +18,7 @@
 - app/constants/：側邊選單與各項目需要的權限（`sidebar.ts`）、登入相關頁面的路徑。
 - app/plugins/：`load-profile` → `auth-redirect` → `initialize-session`，順序由 `nuxt.config.ts` 的 `plugins` 指定（導向與連線都依賴先載入的個人資料）。
 - app/types/：API 回應、表單與 filter 型別。
-- i18n/locales/：介面文字；錯誤、驗證、enum 與權限名稱由後端或 pack 提供，不放這裡。
+- layers/i18n/i18n/locales/：介面文字；錯誤、驗證、enum 與權限名稱由後端或 pack 提供，不放這裡。
 
 ## API 呼叫
 
