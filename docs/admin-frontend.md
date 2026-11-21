@@ -44,6 +44,11 @@
   - 使用者取消驗證時，呼叫端拿到 `errorCode === 'verificationRequired'` 的失敗回應且不會顯示錯誤通知，當作使用者取消處理。
 - 使用者自己登出或變更密碼時，先以 `expectSessionEnd` 標記，讓隨後的強制登出通知或 401 不被當成意外登出。
 
+## 圖片欄位
+
+- `el-form-image`：選擇或拖放圖片後裁切，以 `v-model:file` 取得裁切後的檔案；GIF 不裁切以保留動畫，需設定 `allowGif`，上傳時也要帶 `allowGif`。表單項目的 `prop` 是後端的 File id 欄位，是否已選圖片由元件自己檢查。
+- 送出前以 `uploadImageAndGetFileId`（多張用 `uploadImagesAndGetFileIds`）換成 File id；既有圖片以 `initialImageFileId` 傳入，透過 `/api/file/redirect/<id>` 顯示。
+
 ## data-table-page
 
 ```vue
