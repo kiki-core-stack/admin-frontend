@@ -153,7 +153,10 @@ async function initializeCropper() {
         await cropperImage.$ready();
         if (cropper !== initializedCropper) return;
 
-        const imageRect = getRelativeRect(cropperImage, container);
+        // Selection coordinates are relative to the cropper canvas, which sits inside the padded container.
+        const cropperCanvas = initializedCropper.getCropperCanvas();
+        if (!cropperCanvas) return;
+        const imageRect = getRelativeRect(cropperImage, cropperCanvas);
         selection.$change(
             imageRect.x,
             imageRect.y,
@@ -190,8 +193,10 @@ function onCropperSelectionChange(event: Event) {
     if (!isSelectionWithinImage(selection, imageBounds)) event.preventDefault();
 }
 
-function onDialogClosed() {
+async function onDialogClosed() {
     destroyCropper();
+    // el-dialog emits closed before resetting v-model to false; deferring lets a listener reopen the dialog.
+    await nextTick();
     emit('closed');
 }
 
