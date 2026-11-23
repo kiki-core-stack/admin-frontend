@@ -48,7 +48,8 @@ export default defineNuxtConfig({
             start_url: '/',
             theme_color: siteThemeColor,
         },
-        registerType: 'prompt',
+        // Update prompts are app-specific UI; switch to 'prompt' once an app ships one.
+        registerType: 'autoUpdate',
         strategies: 'buildSW',
     },
 });

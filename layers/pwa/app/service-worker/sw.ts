@@ -11,6 +11,9 @@ cleanupOutdatedCaches();
 precacheAndRoute(self.__WB_MANIFEST);
 
 // Lifecycle
+
+// `registerType: 'autoUpdate'` expects the worker to activate itself instead of waiting for open pages to close.
+void self.skipWaiting();
 clientsClaim();
 
 // Event listeners
@@ -21,10 +24,6 @@ self.addEventListener(
             // Lets the page probe whether a service worker is controlling it.
             case 'PING':
                 event.source?.postMessage({ type: 'PONG' });
-                break;
-            // Sent by the update prompt (`registerType: 'prompt'`) to activate the waiting worker.
-            case 'SKIP_WAITING':
-                event.waitUntil(self.skipWaiting());
                 break;
         }
     },
