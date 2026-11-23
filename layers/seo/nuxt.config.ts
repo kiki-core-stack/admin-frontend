@@ -35,7 +35,6 @@ export default defineNuxtConfig({
         url: siteUrl,
     },
     sitemap: {
-        autoI18n: false,
         cacheMaxAgeSeconds: 900,
         defaultSitemapsChunkSize: false,
         enabled: seoIndexingEnabled,
