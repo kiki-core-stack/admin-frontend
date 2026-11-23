@@ -1,6 +1,6 @@
 import type { ClientApiErrorCode } from '@kcs-project/pack/types/api';
 
-export interface AppLocaleMessages {
+export interface LocaleMessages {
     common: {
         account: string;
         actions: string;
@@ -33,5 +33,5 @@ export interface AppLocaleMessages {
 }
 
 declare module 'vue-i18n' {
-    export interface DefineLocaleMessage extends AppLocaleMessages {}
+    export interface DefineLocaleMessage extends LocaleMessages {}
 }

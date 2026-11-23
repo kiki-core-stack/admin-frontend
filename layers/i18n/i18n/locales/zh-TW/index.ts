@@ -1,4 +1,4 @@
-import type { AppLocaleMessages } from '../types';
+import type { LocaleMessages } from '../types';
 
 export default {
     common: {
@@ -24,4 +24,4 @@ export default {
             },
         },
     },
-} satisfies AppLocaleMessages;
+} satisfies LocaleMessages;
