@@ -1,10 +1,10 @@
-// @nuxtjs/i18n only emits hreflang alternates, the locale-aware canonical and og:locale through useLocaleHead;
-// nuxt-seo-utils does not add hreflang.
+// The admin SPA uses no_prefix and is not indexed, so hreflang, canonical and og:locale serve no purpose;
+// only <html lang> is set.
 export default defineNuxtPlugin(() => {
-    const localeHead = useLocaleHead();
-    useHead(() => ({
-        htmlAttrs: { lang: localeHead.value.htmlAttrs.lang },
-        link: localeHead.value.link,
-        meta: localeHead.value.meta,
-    }));
+    const localeHead = useLocaleHead({
+        dir: false,
+        seo: false,
+    });
+
+    useHead({ htmlAttrs: { lang: () => localeHead.value.htmlAttrs.lang } });
 });
