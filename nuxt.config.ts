@@ -30,7 +30,7 @@ export default defineNuxtConfig({
     modules: ['@kikiutils/nuxt'],
     // Pack ships TypeScript sources and the i18n locale files import its messages, which Nitro also bundles; its
     // esbuild transform skips node_modules by default.
-    nitro: { esbuild: { options: { exclude: /node_modules\/(?!(?:\.pnpm\/)?@kiki-core-stack[+/]pack)/ } } },
+    nitro: { esbuild: { options: { exclude: /node_modules\/(?!(?:\.pnpm\/)?@[\w-]+[+/]pack[/@])/ } } },
     plugins: [
         '@/plugins/load-profile',
         '@/plugins/auth-redirect',
