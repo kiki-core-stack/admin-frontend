@@ -77,7 +77,11 @@ web_modules/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variable files; production configuration comes from the container environment
+# dotenv environment variable files
+.env.development
+.env.production
+
+# Production configuration comes from the container environment
 .env*
 
 # parcel-bundler cache (https://parceljs.org/)
