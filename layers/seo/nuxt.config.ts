@@ -16,6 +16,17 @@ const siteUrl = (envValidationSkipped ? process.env.NUXT_SITE_URL : getRequiredE
 export default defineNuxtConfig({
     // Disable AI-readable Markdown pages and discovery endpoints.
     aiReady: false,
+    app: {
+        head: {
+            meta: [
+                // nuxt-seo-utils does not infer twitter:card; without it X and Discord show a small thumbnail.
+                {
+                    content: 'summary_large_image',
+                    name: 'twitter:card',
+                },
+            ],
+        },
+    },
     linkChecker: { enabled: false },
     modules: ['@nuxtjs/seo'],
     ogImage: { enabled: false },

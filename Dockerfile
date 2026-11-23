@@ -32,7 +32,7 @@ RUN pnpm run typecheck && \
 FROM node:26-slim
 
 ## Configure the runtime environment and working directory
-ENV TZ='UTC'
+ENV TZ='Asia/Taipei'
 WORKDIR /app
 
 ## Install runtime packages and configure the runtime user
