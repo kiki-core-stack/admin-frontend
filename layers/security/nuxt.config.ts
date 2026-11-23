@@ -59,9 +59,13 @@ export default defineNuxtConfig({
                     `'unsafe-inline'`,
                     'https://fonts.googleapis.com',
                 ],
+                // The dev server only serves HTTP, so upgrading breaks subresources on pages opened via a LAN IP.
+                'upgrade-insecure-requests': process.env.NODE_ENV === 'production',
                 'worker-src': [`'self'`],
             },
             crossOriginEmbedderPolicy: false,
+            // Keep window.opener for cross-origin popups such as OAuth sign-in windows.
+            crossOriginOpenerPolicy: 'same-origin-allow-popups',
             permissionsPolicy: {
                 'camera': ['self'],
                 'encrypted-media': [
