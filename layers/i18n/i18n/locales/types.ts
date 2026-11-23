@@ -1,6 +1,12 @@
-import type { ClientApiErrorCode } from '@kcs-project/pack/types/api';
+import type { PackMessages } from '@kcs-project/pack/i18n/messages/types';
 
-export interface LocaleMessages {
+import type { AdminPermissionMessages } from '../../../../app/generated/admin/permission';
+
+/**
+ * Pack messages are included only where the frontend shows them; API errors and validation issues arrive already
+ * localized by the backend.
+ */
+export interface LocaleMessages extends Pick<PackMessages, 'apiClientErrors' | 'enums'> {
     common: {
         account: string;
         actions: string;
@@ -11,16 +17,6 @@ export interface LocaleMessages {
         search: string;
     };
 
-    /**
-     * Messages of client-side failures only; API errors carry their own localized message.
-     */
-    errors: Record<ClientApiErrorCode, string> & {
-        /**
-         * The server answered with something other than an API envelope (e.g. a proxy error page).
-         */
-        invalidResponse: string;
-    };
-
     pages: {
         auth: {
             login: {
@@ -29,6 +25,10 @@ export interface LocaleMessages {
                 title: string;
             };
         };
+    };
+
+    permissions: {
+        admin: AdminPermissionMessages;
     };
 }
 

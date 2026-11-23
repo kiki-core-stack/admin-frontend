@@ -23,11 +23,12 @@
                 name="fa6-solid:sun"
             />
         </el-button>
+        <layout-header-locale-switcher class="ml-1" />
         <el-actions-dropdown
             class="ml-1"
             btn-size="default"
             btn-type="default"
-            :btn-text="$t('common.actions')"
+            :btn-text="t('common.actions')"
         >
             <el-dropdown-item
                 class="justify-center"
@@ -39,7 +40,7 @@
                 class="justify-center"
                 @click="logout()"
             >
-                {{ $t('common.logout') }}
+                {{ t('common.logout') }}
             </el-dropdown-item>
         </el-actions-dropdown>
     </el-header>
@@ -49,6 +50,7 @@
 import { logout } from '@/libs/auth';
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const colorMode = useColorMode();
 const sidebarState = useSidebarState();
 let latestTransitionId = 0;

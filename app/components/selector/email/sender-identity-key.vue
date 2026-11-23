@@ -6,15 +6,15 @@
         <el-option
             v-for="item in getEnumNumberValues(EmailSenderIdentityKey)"
             :key="item"
-            :label="localize(emailSenderIdentityKeyToLabelMap[item])"
+            :label="t(`enums.email.senderIdentityKey.${item}`)"
             :value="item"
         />
     </el-select>
 </template>
 
 <script lang="ts" setup>
-import {
-    EmailSenderIdentityKey,
-    emailSenderIdentityKeyToLabelMap,
-} from '@kcs-project/pack/constants/email';
+import { EmailSenderIdentityKey } from '@kcs-project/pack/constants/email';
+
+// Constants/Refs/Variables
+const { t } = useI18n();
 </script>

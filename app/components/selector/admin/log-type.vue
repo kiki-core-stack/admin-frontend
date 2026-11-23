@@ -6,15 +6,15 @@
         <el-option
             v-for="item in getEnumNumberValues(AdminLogType)"
             :key="item"
-            :label="localize(adminLogTypeToLabelMap[item])"
+            :label="t(`enums.admin.logType.${item}`)"
             :value="item"
         />
     </el-select>
 </template>
 
 <script lang="ts" setup>
-import {
-    AdminLogType,
-    adminLogTypeToLabelMap,
-} from '@kcs-project/pack/constants/admin';
+import { AdminLogType } from '@kcs-project/pack/constants/admin';
+
+// Constants/Refs/Variables
+const { t } = useI18n();
 </script>

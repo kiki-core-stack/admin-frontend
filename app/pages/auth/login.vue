@@ -1,12 +1,12 @@
 <template>
     <div class="w-full max-w-[360px] items-stretch! p-0! text-left! md:w-auto md:max-w-none">
         <Head>
-            <Title>{{ $t('common.login') }}</Title>
+            <Title>{{ t('common.login') }}</Title>
         </Head>
         <div class="flex w-full">
             <div class="lt-md:p-5 w-full p-8 md:w-[360px]">
                 <h1 class="fs-28px mb-6">
-                    {{ secondFactorChallenge ? '雙重驗證' : $t('pages.auth.login.title') }}
+                    {{ secondFactorChallenge ? '雙重驗證' : t('pages.auth.login.title') }}
                 </h1>
                 <template v-if="secondFactorChallenge">
                     <auth-factor-proof-form
@@ -37,7 +37,7 @@
                         name="account"
                         prop="account"
                         size="large"
-                        :label="$t('common.account')"
+                        :label="t('common.account')"
                     />
                     <el-form-input
                         v-model="formData.password"
@@ -46,7 +46,7 @@
                         prop="password"
                         size="large"
                         type="password"
-                        :label="$t('common.password')"
+                        :label="t('common.password')"
                         show-password
                     />
                     <el-button
@@ -55,7 +55,7 @@
                         size="large"
                         type="primary"
                     >
-                        {{ $t('common.login') }}
+                        {{ t('common.login') }}
                     </el-button>
                     <template v-if="isPasskeySupported || isQrCodeLoginEnabled">
                         <div class="my-5 flex items-center gap-3">
@@ -70,7 +70,7 @@
                                 size="large"
                                 @click="loginWithPasskey"
                             >
-                                {{ $t('pages.auth.login.passkeyLogin') }}
+                                {{ t('pages.auth.login.passkeyLogin') }}
                             </el-button>
                             <el-button
                                 v-if="isQrCodeLoginEnabled"
@@ -78,7 +78,7 @@
                                 size="large"
                                 @click="authQrCodeLoginDialogRef?.open()"
                             >
-                                {{ $t('pages.auth.login.qrCodeLogin') }}
+                                {{ t('pages.auth.login.qrCodeLogin') }}
                             </el-button>
                         </div>
                     </template>
@@ -123,6 +123,7 @@ definePageMeta({
 });
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const accountInputRef = useTemplateRef('accountInputRef');
 const authQrCodeLoginDialogRef = useTemplateRef('authQrCodeLoginDialogRef');
 const formData = ref<AuthPasswordLoginData>({

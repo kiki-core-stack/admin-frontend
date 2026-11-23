@@ -17,7 +17,7 @@
             <el-table-column
                 align="center"
                 label="服務商"
-                :formatter="(row: EmailProviderData) => localize(emailProviderCodeToLabelMap[row.code])"
+                :formatter="(row: EmailProviderData) => t(`enums.email.providerCode.${row.code}`)"
             />
             <el-table-confirmable-status-switch-column
                 field="enabled"
@@ -81,7 +81,7 @@
                     <el-option
                         v-for="provider in getEnumNumberValues(EmailProviderCode)"
                         :key="provider"
-                        :label="localize(emailProviderCodeToLabelMap[provider])"
+                        :label="t(`enums.email.providerCode.${provider}`)"
                         :value="provider"
                     />
                 </el-select>
@@ -95,15 +95,13 @@
 </template>
 
 <script lang="ts" setup>
-import {
-    EmailProviderCode,
-    emailProviderCodeToLabelMap,
-} from '@kcs-project/pack/constants/email';
+import { EmailProviderCode } from '@kcs-project/pack/constants/email';
 import type { EmailProviderData } from '@kcs-project/pack/types/data/email';
 
 import type { EmailProviderFormData } from '@/types/data/email';
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const formData = ref<EmailProviderFormData>({
     apiProxyUrl: '',

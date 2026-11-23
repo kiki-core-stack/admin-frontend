@@ -1,6 +1,6 @@
 // Generates the backend-derived files in app/generated (run before `nuxt dev`; needs the dev backend running).
 import { generateApiErrorCodeFile } from '@kcs-project/pack/libs/codegen/api-error-code-file';
-import { generateManagementPermissionFile } from '@kcs-project/pack/libs/codegen/management-permission-file';
+import { generateManagementPermissionFiles } from '@kcs-project/pack/libs/codegen/management-permission-files';
 import { Path } from '@kikiutils/shared/classes/path';
 import { getRequiredEnv } from '@kikiutils/shared/env';
 
@@ -12,9 +12,9 @@ await Promise.all([
         apiBaseUrl,
         targetFilePath: generatedDirPath.join('api-error-code.ts').toString(),
     }),
-    generateManagementPermissionFile({
+    generateManagementPermissionFiles({
         apiBaseUrl,
         managementType: 'admin',
-        targetFilePath: generatedDirPath.join('admin', 'permission.ts').toString(),
+        targetDirectoryPath: generatedDirPath.join('admin', 'permission').toString(),
     }),
 ]);

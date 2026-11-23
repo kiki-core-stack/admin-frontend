@@ -11,14 +11,14 @@
 
 ## 結構
 
-- app/generated/：由後端產生的錯誤碼與權限（群組、key、各語系名稱、依賴表），不可手改；有進版控，後端新增錯誤碼或權限後重新跑 dev 並 commit。
+- app/generated/：由後端產生的錯誤碼與權限（`admin/permission/index.ts` 為群組、key、依賴表與型別，`messages/<locale>.ts` 為各語系名稱），不可手改；有進版控，後端新增錯誤碼或權限後重新跑 dev 並 commit。
 - app/globals/：自動匯入；`apis/` 每個資源一個 API 類別（繼承 `BaseApi` 或 `BaseCrudApi`，以 `XxxApi.use()` 取得實例）。
 - app/libs/：需明確 import 的內部實作（axios 實例、登入與驗證身分、session）。
 - app/components/、app/composables/、app/pages/、app/layouts/：元件、composable、頁面與版面。
 - app/constants/：側邊選單與各項目需要的權限（`sidebar.ts`）、登入相關頁面的路徑。
 - app/plugins/：`load-profile` → `auth-redirect` → `initialize-session`，順序由 `nuxt.config.ts` 的 `plugins` 指定（導向與連線都依賴先載入的個人資料）。
 - app/types/：API 回應、表單與 filter 型別。
-- layers/i18n/i18n/locales/：介面文字；錯誤、驗證、enum 與權限名稱由後端或 pack 提供，不放這裡。
+- layers/i18n/i18n/locales/：各語系的 vue-i18n 訊息（語系清單取自 pack 的 `localeDefinitions`）；除了介面文字，也併入 pack 的 `enums`、`apiClientErrors` 與產生的權限名稱。API 錯誤與驗證訊息由後端翻好，不放這裡。元件內一律用 `const { t } = useI18n();`（template 與 script 共用，不用 `$t`）；元件外（axios 攔截器等）用 `useNuxtApp().$i18n`。
 
 ## API 呼叫
 

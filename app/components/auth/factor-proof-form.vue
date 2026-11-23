@@ -106,7 +106,6 @@
 </template>
 
 <script lang="ts" setup>
-import { authFactorToLabelMap } from '@kcs-project/pack/constants/auth';
 import type { AuthFactor } from '@kcs-project/pack/types/auth';
 import type { AuthSentCodeData } from '@kcs-project/pack/types/data/auth';
 
@@ -142,6 +141,7 @@ interface Props {
 const props = defineProps<Props>();
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const codeResendCooldown = useTimeoutFn(() => {}, 60000, { immediate: false });
 const formData = ref({
     code: '',
@@ -165,7 +165,7 @@ const factorOptions = computed(() => props.factors
         return factor !== 'external';
     })
     .map((factor) => ({
-        label: localize(authFactorToLabelMap[factor]),
+        label: t(`enums.auth.factor.${factor}`),
         value: factor,
     })));
 

@@ -55,7 +55,7 @@
                         v-for="platformScope in platformScopes"
                         :key="platformScope"
                         :disabled="platformScope === PlatformScope.System && targets.length > 1"
-                        :label="localize(platformScopeToLabelMap[platformScope])"
+                        :label="t(`enums.platform.scope.${platformScope}`)"
                         :value="platformScope"
                     />
                 </el-select>
@@ -100,10 +100,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-    PlatformScope,
-    platformScopeToLabelMap,
-} from '@kcs-project/pack/constants/platform';
+import { PlatformScope } from '@kcs-project/pack/constants/platform';
 import type { Component } from 'vue';
 
 import SelectorAdmin from '@/components/selector/admin/index.vue';
@@ -113,6 +110,7 @@ import type { PlatformIpAccessPolicyTargetData } from '@/types/data/platform';
 const targets = defineModel<PlatformIpAccessPolicyTargetData[]>({ required: true });
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const principalIdsFormItemRules = [
     createElFormItemRuleWithDefaults(
         '請至少選擇一個項目',

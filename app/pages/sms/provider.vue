@@ -17,7 +17,7 @@
             <el-table-column
                 align="center"
                 label="服務商"
-                :formatter="(row: SmsProviderData) => localize(smsProviderCodeToLabelMap[row.code])"
+                :formatter="(row: SmsProviderData) => t(`enums.sms.providerCode.${row.code}`)"
             />
             <el-table-confirmable-status-switch-column
                 field="enabled"
@@ -81,7 +81,7 @@
                     <el-option
                         v-for="provider in getEnumNumberValues(SmsProviderCode)"
                         :key="provider"
-                        :label="localize(smsProviderCodeToLabelMap[provider])"
+                        :label="t(`enums.sms.providerCode.${provider}`)"
                         :value="provider"
                     />
                 </el-select>
@@ -99,15 +99,13 @@
 </template>
 
 <script lang="ts" setup>
-import {
-    SmsProviderCode,
-    smsProviderCodeToLabelMap,
-} from '@kcs-project/pack/constants/sms';
+import { SmsProviderCode } from '@kcs-project/pack/constants/sms';
 import type { SmsProviderData } from '@kcs-project/pack/types/data/sms';
 
 import type { SmsProviderFormData } from '@/types/data/sms';
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const formData = ref<SmsProviderFormData>({
     apiProxyUrl: '',

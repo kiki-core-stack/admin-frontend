@@ -10,7 +10,7 @@
         <template #table>
             <el-table-column
                 label="設定範圍"
-                :formatter="(row: PlatformConfigData) => localize(platformScopeToLabelMap[row.scope])"
+                :formatter="(row: PlatformConfigData) => t(`enums.platform.scope.${row.scope}`)"
             />
             <el-table-column
                 label="建立管理員帳號"
@@ -23,7 +23,7 @@
         </template>
         <template #form>
             <el-form-item label="設定範圍">
-                {{ localize(platformScopeToLabelMap[formData.scope]) }}
+                {{ t(`enums.platform.scope.${formData.scope}`) }}
             </el-form-item>
             <platform-config-form-system
                 v-if="formData.scope === PlatformScope.System"
@@ -43,11 +43,11 @@
 import {
     defaultPlatformConfigs,
     PlatformScope,
-    platformScopeToLabelMap,
 } from '@kcs-project/pack/constants/platform';
 import type { PlatformConfigData } from '@kcs-project/pack/types/data/platform';
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const formData = ref<CrudFormData<PlatformConfigData>>({
     config: cloneDeep(defaultPlatformConfigs[PlatformScope.System]),
     scope: PlatformScope.System,

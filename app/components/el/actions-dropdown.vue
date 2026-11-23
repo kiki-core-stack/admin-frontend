@@ -8,7 +8,7 @@
             :size="btnSize"
             :type="btnType"
         >
-            {{ btnText ?? $t('common.actions') }}
+            {{ btnText ?? t('common.actions') }}
         </el-action-btn>
         <template #dropdown>
             <el-dropdown-menu>
@@ -34,4 +34,7 @@ withDefaults(
         btnType: 'primary',
     },
 );
+
+// Constants/Refs/Variables
+const { t } = useI18n();
 </script>

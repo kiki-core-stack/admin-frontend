@@ -36,7 +36,7 @@
             />
             <el-table-column
                 label="使用因子"
-                :formatter="(row: AuthEventData) => row.factor ? localize(authFactorToLabelMap[row.factor]) : ''"
+                :formatter="(row: AuthEventData) => row.factor ? t(`enums.auth.factor.${row.factor}`) : ''"
             />
             <el-table-column
                 label="IP"
@@ -52,8 +52,6 @@
 
 <script lang="ts" setup>
 import {
-    authEventTypeToLabelMap,
-    authFactorToLabelMap,
 } from '@kcs-project/pack/constants/auth';
 import type { AuthEventType } from '@kcs-project/pack/constants/auth';
 import type { AuthEventData } from '@kcs-project/pack/types/data/auth';
@@ -62,6 +60,7 @@ import { parseUserAgentToDeviceInfo } from '@/libs/user-agent';
 import type { GetListFilter } from '@/types/get-list-query';
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const filter = ref({
     createdAt: {
@@ -73,7 +72,7 @@ const filter = ref({
 
 // Functions
 function formatType(row: AuthEventData) {
-    const label = localize(authEventTypeToLabelMap[row.type]);
+    const label = t(`enums.auth.eventType.${row.type}`);
     // Events such as enforcement changes or resets are performed on this account by another admin.
     const isByOther = row.actorRealm !== row.realm || row.actorPrincipalId !== row.principalId;
     return isByOther ? `${label}（由其他管理員操作）` : label;

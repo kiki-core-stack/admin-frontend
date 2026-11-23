@@ -44,7 +44,7 @@
             />
             <el-table-column
                 label="類型"
-                :formatter="(row: AdminLogData) => localize(adminLogTypeToLabelMap[row.type])"
+                :formatter="(row: AdminLogData) => t(`enums.admin.logType.${row.type}`)"
             />
             <el-table-column
                 label="備註"
@@ -63,7 +63,6 @@
 </template>
 
 <script lang="ts" setup>
-import { adminLogTypeToLabelMap } from '@kcs-project/pack/constants/admin';
 import type { AdminLogType } from '@kcs-project/pack/constants/admin';
 import type {
     AdminData,
@@ -73,6 +72,7 @@ import type {
 import type { GetListFilter } from '@/types/get-list-query';
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const filter = ref({
     admin: { $in: [] as AdminData[] },

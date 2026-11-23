@@ -66,7 +66,7 @@
                     <el-option
                         v-for="mode in getEnumNumberValues(PlatformIpAccessPolicyMode)"
                         :key="mode"
-                        :label="localize(platformIpAccessPolicyModeToLabelMap[mode])"
+                        :label="t(`enums.platform.ipAccessPolicyMode.${mode}`)"
                         :value="mode"
                     />
                 </el-select>
@@ -96,9 +96,7 @@
 <script lang="ts" setup>
 import {
     PlatformIpAccessPolicyMode,
-    platformIpAccessPolicyModeToLabelMap,
     PlatformScope,
-    platformScopeToLabelMap,
 } from '@kcs-project/pack/constants/platform';
 
 import type {
@@ -107,6 +105,7 @@ import type {
 } from '@/types/data/platform';
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const formData = ref<PlatformIpAccessPolicyFormData>({
     enabled: false,
@@ -137,14 +136,14 @@ const formRules: ElFormRules<PlatformIpAccessPolicyFormData> = {
 
 // Functions
 function formatMode(row: PlatformIpAccessPolicyListItemData) {
-    return localize(platformIpAccessPolicyModeToLabelMap[row.mode]);
+    return t(`enums.platform.ipAccessPolicyMode.${row.mode}`);
 }
 
 function formatTargets(row: PlatformIpAccessPolicyListItemData) {
     return row
         .targets
         .map((target) => {
-            const scope = localize(platformScopeToLabelMap[target.scope]);
+            const scope = t(`enums.platform.scope.${target.scope}`);
             if (target.scope === PlatformScope.System) return scope;
             return `${scope}／${target.principalIds === null ? '全部' : `${target.principalIds.length} 個指定項目`}`;
         })

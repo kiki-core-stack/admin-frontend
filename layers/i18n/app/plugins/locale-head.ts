@@ -1,10 +1,6 @@
-// The admin SPA uses no_prefix and is not indexed, so hreflang, canonical and og:locale serve no purpose;
-// only <html lang> is set.
-export default defineNuxtPlugin(() => {
-    const localeHead = useLocaleHead({
-        dir: false,
-        seo: false,
-    });
-
-    useHead({ htmlAttrs: { lang: () => localeHead.value.htmlAttrs.lang } });
+// The admin SPA uses no_prefix and is not indexed, so only <html lang> is set; useLocaleHead would also build SEO links
+// and warn about the missing baseUrl.
+export default defineNuxtPlugin((nuxtApp) => {
+    const { localeProperties } = nuxtApp.$i18n;
+    useHead({ htmlAttrs: { lang: () => localeProperties.value.language } });
 });

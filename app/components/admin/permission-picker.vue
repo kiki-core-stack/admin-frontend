@@ -48,7 +48,7 @@
                     <el-checkbox
                         v-for="key in row.keys"
                         :key="key"
-                        :label="localize(adminPermissionLabelMap[key])"
+                        :label="t(`permissions.admin['${key}']`)"
                         :model-value="selectedKeySet.has(key)"
                         @change="(checked) => setKeys([key], !!checked)"
                     />
@@ -69,7 +69,6 @@ import { objectEntries } from 'ts-extras';
 import {
     adminPermissionGroups,
     adminPermissionKeys,
-    adminPermissionLabelMap,
     adminPermissionRequirementMap,
 } from '@/generated/admin/permission';
 import type {
@@ -94,6 +93,7 @@ interface PermissionSection {
 const model = defineModel<string[]>({ required: true });
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const keyToDependentKeysMap = new Map<AdminPermissionKey, AdminPermissionKey[]>();
 for (const [key, requiredKeys] of objectEntries(adminPermissionRequirementMap)) {
     requiredKeys?.forEach((requiredKey) => {
@@ -121,7 +121,7 @@ const sections = computed(() => {
             {
                 group,
                 keys: [],
-                label: localize(adminPermissionLabelMap[group]),
+                label: t(`permissions.admin['${group}']`),
                 rows: [],
             },
         );
@@ -137,7 +137,7 @@ const sections = computed(() => {
             row = {
                 keys: [],
                 label: labelPaths.length
-                    ? labelPaths.map((path) => localize(adminPermissionLabelMap[path as AdminPermissionGroup])).join(' / ')
+                    ? labelPaths.map((path) => t(`permissions.admin['${path}']`)).join(' / ')
                     : section.label,
                 path: rowPath,
             };
@@ -162,7 +162,7 @@ const visibleSections = computed(() => {
         const rows = matches(section.label)
             ? section.rows
             : section.rows.filter(
-                (row) => matches(row.label) || row.keys.some((key) => matches(localize(adminPermissionLabelMap[key]))),
+                (row) => matches(row.label) || row.keys.some((key) => matches(t(`permissions.admin['${key}']`))),
             );
 
         return rows.length

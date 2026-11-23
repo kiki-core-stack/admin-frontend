@@ -1,6 +1,10 @@
+import packMessages from '@kcs-project/pack/i18n/messages/zh-TW';
+
+import adminPermissionMessages from '../../../../../app/generated/admin/permission/messages/zh-TW';
 import type { LocaleMessages } from '../types';
 
 export default {
+    apiClientErrors: packMessages.apiClientErrors,
     common: {
         account: '帳號',
         actions: '操作',
@@ -10,11 +14,7 @@ export default {
         password: '密碼',
         search: '搜尋',
     },
-    errors: {
-        aborted: '請求已取消',
-        invalidResponse: '伺服器回應異常',
-        networkError: '請檢查網路連線',
-    },
+    enums: packMessages.enums,
     pages: {
         auth: {
             login: {
@@ -24,4 +24,5 @@ export default {
             },
         },
     },
+    permissions: { admin: adminPermissionMessages },
 } satisfies LocaleMessages;

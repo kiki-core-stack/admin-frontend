@@ -45,12 +45,12 @@
 </template>
 
 <script lang="ts" setup>
-import { authFactorToLabelMap } from '@kcs-project/pack/constants/auth';
 import type { AuthSessionData } from '@kcs-project/pack/types/data/auth';
 
 import { parseUserAgentToDeviceInfo } from '@/libs/user-agent';
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const isQrCodeLoginEnabled = ref(false);
 const profileSecurityScanLoginQrCodeDialogRef = useTemplateRef('profileSecurityScanLoginQrCodeDialogRef');
@@ -68,7 +68,7 @@ const confirmLogoutOtherSessions = createElMessageBoxConfirmHandler({
 });
 
 function formatLoginMethod(row: AuthSessionData) {
-    const factorsText = row.factors.map((factor) => localize(authFactorToLabelMap[factor])).join('＋');
+    const factorsText = row.factors.map((factor) => t(`enums.auth.factor.${factor}`)).join('＋');
     if (!row.approvedBySessionId) return factorsText;
     return factorsText ? `QR Code 核准（${factorsText}）` : 'QR Code 核准';
 }

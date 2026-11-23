@@ -32,7 +32,7 @@
             text
             @click="logout()"
         >
-            {{ $t('common.logout') }}
+            {{ t('common.logout') }}
         </el-button>
         <profile-security-totp-setup-dialog
             ref="profileSecurityTotpSetupDialogRef"
@@ -58,6 +58,7 @@ definePageMeta({
 });
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const isPasskeyAvailable = ref(false);
 const isRegisteringPasskey = ref(false);
 const profileSecurityRecoveryCodesDialogRef = useTemplateRef('profileSecurityRecoveryCodesDialogRef');

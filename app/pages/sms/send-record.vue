@@ -35,7 +35,7 @@
             <el-table-column
                 align="center"
                 label="狀態"
-                :formatter="(row: SmsSendRecordData) => localize(commonStatusToLabelMap[row.status])"
+                :formatter="(row: SmsSendRecordData) => t(`enums.common.status.${row.status}`)"
             />
             <el-table-column
                 label="錯誤原因"
@@ -59,6 +59,7 @@ import type { SmsSendRecordData } from '@kcs-project/pack/types/data/sms';
 import type { GetListFilter } from '@/types/get-list-query';
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const filter = ref({
     createdAt: {

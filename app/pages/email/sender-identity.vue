@@ -5,14 +5,14 @@
         permission-group="email.senderIdentity"
         resource-name="電子郵件寄件身分"
         title="電子郵件寄件身分管理"
-        :confirm-delete-message="(row) => `確定要刪除電子郵件寄件身分「${localize(emailSenderIdentityKeyToLabelMap[row.key])}」嗎？`"
+        :confirm-delete-message="(row) => `確定要刪除電子郵件寄件身分「${t(`enums.email.senderIdentityKey.${row.key}`)}」嗎？`"
         :crud-api="EmailSenderIdentityApi.use()"
         :form-rules="formRules"
     >
         <template #table>
             <el-table-column
                 label="寄件身分"
-                :formatter="(row: EmailSenderIdentityData) => localize(emailSenderIdentityKeyToLabelMap[row.key])"
+                :formatter="(row: EmailSenderIdentityData) => t(`enums.email.senderIdentityKey.${row.key}`)"
             />
             <el-table-column
                 label="寄件地址"
@@ -21,7 +21,7 @@
             <el-table-confirmable-status-switch-column
                 field="enabled"
                 label="啟用"
-                :confirm-message="(row) => `是否切換寄件身分為 ${localize(emailSenderIdentityKeyToLabelMap[row.key])} 的啟用狀態？`"
+                :confirm-message="(row) => `是否切換寄件身分為 ${t(`enums.email.senderIdentityKey.${row.key}`)} 的啟用狀態？`"
                 :crud-api="EmailSenderIdentityApi.use()"
                 :disabled-condition="!dataTablePageRef?.can('toggle')"
                 @status-change="dataTablePageRef?.loadData()"
@@ -60,13 +60,11 @@
 </template>
 
 <script lang="ts" setup>
-import {
-    EmailSenderIdentityKey,
-    emailSenderIdentityKeyToLabelMap,
-} from '@kcs-project/pack/constants/email';
+import { EmailSenderIdentityKey } from '@kcs-project/pack/constants/email';
 import type { EmailSenderIdentityData } from '@kcs-project/pack/types/data/email';
 
 // Constants/Refs/Variables
+const { t } = useI18n();
 const dataTablePageRef = useTemplateRef('dataTablePageRef');
 const formData = ref<CrudFormData<EmailSenderIdentityData>>({
     enabled: false,
