@@ -15,14 +15,7 @@ type GetListFilterValue<V> = V extends Array<infer E>
             : V;
 
 interface GetListFilterOperators<V> {
-    /**
-     * Matches values containing the text literally.
-     */
     $contains?: string;
-
-    /**
-     * Matches values ending with the text literally.
-     */
     $endsWith?: string;
     $eq?: null | V;
 
