@@ -1,3 +1,4 @@
+export const siteBackgroundColor = '#ffffff';
 export const siteDefaultLocale = 'zh-TW';
 export const siteDescription = 'nuxt template';
 export const siteName = 'nuxt template';

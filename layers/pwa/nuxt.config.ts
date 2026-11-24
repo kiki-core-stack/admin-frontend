@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url';
 
 import {
+    siteBackgroundColor,
     siteDefaultLocale,
     siteDescription,
     siteName,
@@ -18,7 +19,7 @@ export default defineNuxtConfig({
         devOptions: { enabled: false },
         filename: 'sw.js',
         manifest: {
-            background_color: siteThemeColor,
+            background_color: siteBackgroundColor,
             description: siteDescription,
             display: 'standalone',
             icons: [
