@@ -42,6 +42,10 @@ export default defineNuxtConfig({
                 ],
                 'manifest-src': [`'self'`],
                 'media-src': [`'self'`],
+                // 'strict-dynamic' needs the SSR per-request nonce. Pages served as static HTML (ssr: false with
+                // nuxt generate, or prerendered routes) get SRI hashes instead, and under 'strict-dynamic' the entry
+                // script's import() of lazy chunks counts as parser-inserted and is blocked (Chrome 158+). Those
+                // apps must replace this list with [`'self'`] (plus any external script hosts they load).
                 'script-src': [
                     `'self'`,
                     'https:',
