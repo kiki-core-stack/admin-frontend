@@ -13,7 +13,7 @@
 
 - app/generated/：由後端產生的錯誤碼與權限，不可手改；有進版控，後端新增錯誤碼或權限後重新跑 dev 並 commit。
 - app/plugins/：`load-profile` → `auth-redirect` → `initialize-session`，順序由 `nuxt.config.ts` 的 `plugins` 指定（導向與連線都依賴先載入的個人資料）。
-- layers/i18n/i18n/locales/：除了介面文字，也併入 pack 的 `enums`、`apiClientErrors` 與產生的權限名稱；API 錯誤與驗證訊息由後端翻好，不放這裡。元件內一律用 `const { t } = useI18n();`（template 與 script 共用，不用 `$t`）；元件外（axios 攔截器等）用 `useNuxtApp().$i18n`。
+- layers/i18n/i18n/locales/：除了介面文字，也併入 pack 的 `enums`、`apiClientErrors` 與產生的權限名稱；API 錯誤與驗證訊息由後端翻好，不放這裡。元件外（axios 攔截器等）用 `useNuxtApp().$i18n`。
 
 ## API 呼叫
 
