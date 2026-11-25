@@ -2,7 +2,8 @@ import type { UploadImageInput } from '@/globals/apis/upload';
 
 export async function uploadImageAndGetFileId(input: UploadImageInput) {
     const response = await UploadApi.use().uploadImage(input);
-    if (!response.data.data?.id) throw response;
+    // The API client has already shown the failure; throwing aborts the caller's save.
+    if (!response.data.data?.id) throw new Error('Image upload failed', { cause: response });
     return response.data.data.id;
 }
 
