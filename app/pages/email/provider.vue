@@ -7,6 +7,7 @@
         title="電子郵件服務商管理"
         :before-dialog-open="(row) => void (formData.config = cloneDeep(row?.config || {}))"
         :crud-api="EmailProviderApi.use()"
+        :disable-row-delete-btn-rule="(row) => !!row.usedAt"
         :form-rules="formRules"
     >
         <template #table>
@@ -32,6 +33,11 @@
                 label="優先度"
                 prop="priority"
                 sortable="custom"
+            />
+            <el-table-datetime-column
+                empty-text="未使用"
+                label="首次使用時間"
+                prop="usedAt"
             />
             <el-table-column
                 label="建立管理員帳號"
