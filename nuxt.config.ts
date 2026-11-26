@@ -52,9 +52,12 @@ export default defineNuxtConfig({
     },
     vite: {
         optimizeDeps: {
+            // Vite takes a TypeScript dependency with only `export enum` for
+            // CommonJS and rewrites its named imports to a default import that does not
+            // exist (vitejs/vite#17878), so serve it unbundled.
+            exclude: ['@kcs-project/pack/constants/admin'],
             include: [
                 '@kcs-project/pack/constants',
-                '@kcs-project/pack/constants/admin',
                 '@kcs-project/pack/constants/email',
                 '@kcs-project/pack/constants/ws.io-event-names',
                 '@kcs-project/pack/libs/permission',
