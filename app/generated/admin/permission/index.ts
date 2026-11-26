@@ -69,6 +69,7 @@ export const adminPermissionRequirementMap: Readonly<Partial<Record<AdminPermiss
   'admin.account.manageSecurity': ["admin.account.list"],
   'admin.account.toggle': ["admin.account.list"],
   'admin.account.update': ["admin.account.list","admin.role.list"],
+  'admin.log.list': ["admin.account.list"],
   'admin.role.create': ["admin.role.list"],
   'admin.role.delete': ["admin.role.list"],
   'admin.role.update': ["admin.role.list"],
