@@ -7,7 +7,7 @@ import type {
 export type EmailProviderFormData = SetOptional<
     CrudFormData<
         SetFieldType<EmailProviderData, 'config', Record<string, any>>,
-        'cacheKey'
+        'cacheKey' | 'usedAt'
     >,
     'code'
 >;

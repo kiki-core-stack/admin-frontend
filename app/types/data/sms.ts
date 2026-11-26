@@ -7,7 +7,7 @@ import type {
 export type SmsProviderFormData = SetOptional<
     CrudFormData<
         SetFieldType<SmsProviderData, 'config', Record<string, any>>,
-        'cacheKey'
+        'cacheKey' | 'usedAt'
     >,
     'code'
 >;
