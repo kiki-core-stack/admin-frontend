@@ -59,7 +59,7 @@ interface Props {
 
 // Define props, models and emits
 const props = defineProps<Props>();
-const emit = defineEmits<{ (e: 'saved'): void }>();
+const emit = defineEmits<{ (e: 'saved', row: TR | undefined): void }>();
 const formData = defineModel<FD>('formData', { required: true });
 
 // Constants/Refs/Variables
@@ -133,7 +133,7 @@ async function save() {
 
         close();
         ElNotification.success(row ? '儲存成功' : '新增成功');
-        emit('saved');
+        emit('saved', row);
     } finally {
         statusOverlayRef.value?.hide();
     }

@@ -135,7 +135,7 @@
                     :crud-api="crudApi"
                     :resource-name="resourceName"
                     :rules="formRules"
-                    @saved="loadData"
+                    @saved="onFormSaved"
                 >
                     <template #default="{ editingRow }">
                         <slot
@@ -237,6 +237,8 @@ const props = withDefaults(
     },
 );
 
+const emit = defineEmits<{ (e: 'saved', row: TR | undefined): void }>();
+
 // Pages with a form pass their full form data at setup; pages without one (list/delete only) omit it.
 const formData = defineModel<FD>('formData');
 const timeRangeEndAt = defineModel<Date>('timeRangeEnd', { default: () => new EnhancedDate() });
@@ -334,6 +336,11 @@ async function loadData() {
     autoReloadDataCountdownDropdownBtnRef.value?.start();
 }
 
+async function onFormSaved(row: TR | undefined) {
+    emit('saved', row);
+    await loadData();
+}
+
 async function onSortChange(data: OnSortChangeData) {
     sortQueryParam.value = toSortQueryParam(data);
     await loadData();
@@ -355,6 +362,8 @@ onMounted(loadData);
 usePreserveScroll(mainContainerRef);
 
 // Watchers
+// Kept-alive pages only load on mount, so a page opened without the list permission loads once it is granted.
+watch(() => can('list'), async (nv) => await (nv && loadData()));
 watch(() => props.title, (nv) => pageTitle.value = nv);
 
 // Exposes

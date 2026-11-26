@@ -109,14 +109,16 @@ const filter = ref<GetHomeDashboardDataParams>({
     startAt: getStartOfDayFromToday(),
 });
 
-const hasViewDashboardPermission = hasPermission('home.dashboard.view');
 const isInitialLoading = ref(true);
 const isLoadingData = ref(false);
 const loadError = ref(false);
 
+// Computed properties
+const hasViewDashboardPermission = computed(() => hasPermission('home.dashboard.view'));
+
 // Functions
 async function loadData() {
-    if (isLoadingData.value || !hasViewDashboardPermission) return;
+    if (isLoadingData.value || !hasViewDashboardPermission.value) return;
     isLoadingData.value = true;
     loadError.value = false;
 
@@ -130,6 +132,10 @@ async function loadData() {
 
 // Hooks
 onMounted(loadData);
+
+// Watchers
+// The page is kept alive, so a permission granted after mounting has to trigger the load.
+watch(hasViewDashboardPermission, async (nv) => await (nv && loadData()));
 </script>
 
 <style lang="scss" scoped>

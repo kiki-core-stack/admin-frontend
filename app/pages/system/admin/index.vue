@@ -9,6 +9,7 @@
         :crud-api="AdminApi.use()"
         :disable-row-delete-btn-rule="(row) => row.id === profileState.id"
         :form-rules="formRules"
+        @saved="(row) => row?.id === profileState.id && updateProfileState()"
     >
         <template #table>
             <el-table-column

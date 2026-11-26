@@ -6,6 +6,7 @@
         title="管理員身分組管理"
         :crud-api="AdminRoleApi.use()"
         :form-rules="formRules"
+        @saved="updateProfileState()"
     >
         <template #table>
             <el-table-column
